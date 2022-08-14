@@ -1,0 +1,587 @@
+---
+title: Version 1.70.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.70.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.70.0
+==============
+
+Version 1.70.0
+--------------
+
+
+April 12th, 2019 06:04 GMT
+
+
+[Documentation](/doc/libs/1_70_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_70\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.70.0/source/boost_1_70_0.tar.bz2) | 430ae8354789de4fd19ee52f3b1f739e1fba576f0aded0897c3c2bc00fb38778 |
+| [boost\_1\_70\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.70.0/source/boost_1_70_0.tar.gz) | 882b48708d211a5f48e60b0124cf5863c1534cd544ecd0664bb534a4b5d506e9 |
+| windows | [boost\_1\_70\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.70.0/source/boost_1_70_0.7z) | ae2bb1b35d1f238e72e3f819b42336f4bd27c9ed2092aab5d87818ccb0c9161a |
+| [boost\_1\_70\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.70.0/source/boost_1_70_0.zip) | 48f379b2e90dd1084429aae87d6bdbde9670139fa7569ee856c8c86dd366039d |
+
+
+### Known Issues
+ These are patches from library authors which were found too late to be fixed
+ in the release. Be careful as they have not been through the normal testing
+ process.
+ 
+
+
+* Fix moved-from executor in idle ping timeout ([#1599](https://github.com/boostorg/beast/issues/1599))
+ 
+	+ [Beast
+	 patch](/patches/1_70_0/0001-beast-fix-moved-from-executor.patch)
+
+### New Libraries
+
+
+* [Outcome](/libs/outcome/): A set of tools for reporting
+ and handling function failures in contexts where *directly*
+ using C++ exception handling is unsuitable, from Niall Douglas.
+* [Histogram](/libs/histogram/): Fast and extensible
+ multi-dimensional histograms with convenient interface for C++14, from
+ Hans Dembinski.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ This release includes a number of new features, bug fixes, performance
+	 enhancements, and documentation improvements. Notable changes include:
+	 
+		- Added the ability to use custom I/O executors with I/O objects
+		 (such as sockets).
+		- Added a new `async\_result`
+		 form with an `initiate`
+		 static member function.
+		- Updated the Coroutines TS support and promoted it to the `asio` namespace.
+		- Added a new `DynamicBuffer\_v2`
+		 concept which is CopyConstructible.
+		- Added a new `async\_compose`
+		 function that simplifies the implementation of user-defined
+		 asynchronous operations.
+		- Added a `make\_strand`
+		 helper function.
+		- Relaxed the completion condition type requirements to only
+		 require move-constructibility rather than copy-constructibility.
+		- Added a constructor for `local::basic\_endpoint`
+		 that takes a `string\_view`.
+		- Added the noexcept qualifier to various functions.
+		- Added a new `BOOST\_ASIO\_DISABLE\_VISIBILITY`
+		 configuration `#define`.
+		- Enabled recycling of the memory used to type-erase a function
+		 object with the polymorphic executor.
+		- Changed receive operations to return the correct number of
+		 bytes transferred when truncation (`error::message\_size`)
+		 occurs on a datagram-oriented socket.
+		- Fixed calculation of absolute timeout when the backend uses
+		 `pthread\_cond\_timedwait`.
+		- Changed the range-based asynchronous connect operation to deduce
+		 the `EndpointSequence`
+		 iterator type.
+		- Fixed `buffer\_sequence\_begin`
+		 and `buffer\_sequence\_end`
+		 to prevent implicit conversion.
+		- Ensured SSL handshake errors are propagated to the peer before
+		 the local operation completes.
+		- Suppressed the `eof`
+		 error on SSL shutdown as it actually indicates success.
+		- Added a fallback error code for when we OpenSSL produces an
+		 `SSL\_ERROR\_SYSCALL`
+		 result without an associated error.
+		- Changed composed asynchronous read and write operations to
+		 move buffer sequence objects.
+		- Fixed a macOS-specific warning about the deprecation of `OSMemoryBarrier`.
+		- Fixed compile errors that occur when using the composed read
+		 and write operations with MSVC 11.0.
+		- Improved `dispatch`,
+		 `post` and `defer` documentation.
+		- Fixed a Windows-specific memory leak that may occur when `system\_executor` is used.
+	+ Consult the [Revision
+	 History](/doc/libs/1_70_0/doc/html/boost_asio/history.html) for further details.
+* [Beast](/libs/beast/):
+**BIG
+ Update!!!**
+
+	+ Some APIs have changed.
+	+ The [reference](/libs/beast/doc/html/beast/quickref.html)
+	 shows a star ★ next to each new item.
+	+ Beast needs your help!
+	 
+		- [Tell
+		 Us](https://github.com/boostorg/beast/wiki/Companies-and-Individuals-Using-Beast) how you or your company use Beast
+		- Please [report](https://github.com/boostorg/beast/issues/new)
+		 any bugs, feature requests, or general feedback
+		- Join the [**C++ Slack Workspace**](https://cppalliance.org/slack/) for free
+		 and chat with us in the #beast and #boost channels
+		- Don't forget to [star
+		 the repository](https://github.com/boostorg/beast) ⭐!
+	+ More tutorials, code like the pros!
+	 
+		- [Networking
+		 Refresher](/libs/beast/doc/html/beast/using_io/asio_refresher.html) teaches you from the ground up.
+		- Updated [Asynchronous
+		 Echo](/libs/beast/doc/html/beast/using_io/writing_composed_operations/echo.html) example
+		- Updated [**Detect SSL**](/libs/beast/doc/html/beast/using_io/writing_composed_operations/detect_ssl.html) composed operation
+		 tutorial
+		- [websocket-chat-multi](/libs/beast/example/websocket/server/chat-multi)
+		 threaded chat server with a JavaScript [browser
+		 client](/libs/beast/example/websocket/server/chat-multi/chat_client.html)
+	+ [`basic\_stream`](/libs/beast/doc/html/beast/ref/boost__beast__basic_stream.html) and [`tcp\_stream`](/libs/beast/doc/html/beast/ref/boost__beast__tcp_stream.html) offer:
+	 
+		- Timeouts: `async\_read\_some`,
+		 `async\_write\_some`
+		 complete with [`error::timeout`](/libs/beast/doc/html/beast/ref/boost__beast__error.html) on expiration!
+		- Traffic-shaping policies [`simple`](/libs/beast/doc/html/beast/ref/boost__beast__simple_rate_policy.html) and [`unlimited`](/libs/beast/doc/html/beast/ref/boost__beast__unlimited_rate_policy.html), or a user-defined
+		 [*RatePolicy*](/libs/beast/doc/html/beast/concepts/RatePolicy.html)!
+		- Put the strand directly on the socket using [P1322R0](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1322r0.html),
+		 no more `bind\_executor`
+		 at call sites!
+	+ Base classes [`async\_base`](/libs/beast/doc/html/beast/ref/boost__beast__async_base.html) and [`stable\_async\_base`](/libs/beast/doc/html/beast/ref/boost__beast__stable_async_base.html) and handle
+	 all composed operation boilerplate for you.
+	+ [`ssl\_stream`](/libs/beast/doc/html/beast/ref/boost__beast__ssl_stream.html) provides a movable,
+	 assignable SSL stream with a flat write optimization.
+	+ All asynchronous operations use Asio's `async\_initiate`
+	 for efficient integration with Coroutines TS.
+	+ ⚡ ***faster compilation***,
+	 define `BOOST\_BEAST\_SEPARATE\_COMPILATION`
+	 and `#include <boost/beast/src.hpp>`
+	 in one of your .cpp files!
+	+ See the full [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html) for a complete list of changes.
+* [Context](/libs/context/):
+
+	+ [#91](https://github.com/boostorg/context/issues/91): cleanup of stack if creating ucontext fails
+	+ [#97](https://github.com/boostorg/context/issues/97): add missing BOST\_CONTEXT\_DECL in stack\_context
+	+ [#98](https://github.com/boostorg/context/issues/98): fix jump\_i386\_sysv\_macho writing garbage to the x87
+	 control word
+* [Coroutine2](/libs/coroutine2/):
+
+	+ [#28](https://github.com/boostorg/coroutine2/issues/28): don't crash on pthread\_cancel
+* [DLL](/libs/dll/):
+
+	+ New macro [BOOST\_DLL\_USE\_STD\_FS](/libs/dll/BOOST_DLL_USE_STD_FS.html).
+	 Define it to `1` to make
+	 the Boost.DLL use C++17's `std::filesystem::path`,
+	 `std::system\_error` and `std::error\_code` ([#21](https://github.com/boostorg/dll/issues/21)). Note that
+	 exception types change from `boost::system::system\_error`
+	 to `std::system\_error`, so make sure to update
+	 `catch`es.
+	+ Significant rewrite of the dynamic loadable detection and decoration
+	 logic. More precise errors are now reported in case of loading failures.
+	 Added `shared\_library::decorate()` function that returns a decorated
+	 path to the library without doing any platform related queries and
+	 detections. Prefer using `shared\_library::load`
+	 and `shared\_library`
+	 constructors for better results (many thanks to Loïc Touraine for
+	 the work [PR#23](https://github.com/boostorg/dll/pull/23)).
+	+ CI hardening, docs updates, typos fixes, cleanups and many portability
+	 fixes.
+* [Dynamic Bitset](/libs/dynamic_bitset/):
+
+	+ Disabled hardware-assisted popcount (added in 1.69.0) on MSVC due
+	 to undefined behavior on older CPUs. ([#33](https://github.com/boostorg/dynamic_bitset/issues/33) [PR#35](https://github.com/boostorg/dynamic_bitset/pull/35))
+* [Fiber](/libs/fiber/):
+
+	+ [#191](https://github.com/boostorg/fiber/issues/191): ignore unused argument warning
+	+ [#196](https://github.com/boostorg/fiber/issues/196): fix high contention on remote\_ready\_splk\_
+* [Filesystem](/libs/filesystem/):
+
+	+ Fixed a few instances of dereferencing `std::string::end()` in `path`
+	 implementation.
+	+ Fixed program termination in case of out of memory condition in directory
+	 iterators constructors and operations accepting a reference to `error\_code`. ([#58](https://github.com/boostorg/filesystem/issues/58))
+	+ Fixed possible linking errors caused by missing definitions of static
+	 members of `path`.
+	 ([#12759](https://svn.boost.org/trac/boost/ticket/12759))
+	+ Fixed possible use of uninitialized data in directory iterator increment
+	 operation on Linux.
+	+ Added support for movability to directory iterators.
+	+ Added file status query overloads for `directory\_entry`.
+	 This avoids a relatively expensive OS query when file status is requested
+	 for a result of dereferencing a directory iterator. ([PR#55](https://github.com/boostorg/filesystem/pull/55))
+	+ Reworked `current\_path`
+	 and `read\_symlink`
+	 implementation to avoid possible memory exhaustion on broken or tampered
+	 with filesystems. The functions now have an internal limit of the
+	 path size they will accept from the OS, which is currently 16 MiB.
+	+ Increased the size of the internal buffer used by `copy\_file`.
+* [Integer](/libs/integer/):
+
+	+ Added Extended Euclidean Algorithm and Modular Multiplicative Inverse
+	 function. (Nick Thompson, [PR#11](https://github.com/boostorg/integer/pull/11))
+* [Log](/libs/log/):
+
+	+ New features:
+	 
+		- Added support for generating another log file name before collecting
+		 the file in the text file sink backend. This allows to combine
+		 appending to an existing log file with timestamps and file
+		 counters in log filenames, and, consequently, file collection
+		 in general.
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/):
+
+	+ New features:
+	 
+		- Add Lanczos smoothing derivatives
+		- Move `numerical\_differentiation.hpp`
+		 from `boost/math/tools/` to `boost/math/differentiation/finite\_difference.hpp`.
+		- Add mean, variance, skewness, kurtosis, median, Gini coefficient,
+		 and median absolute deviation to `tools/univariate\_statistics.hpp`.
+		- Add correlation coefficients and covariance to `tools/bivariate\_statistics.hpp`
+		- Add absolute Gini coefficient, Hoyer sparsity, oracle SNR,
+		 and the *M*[sub 2]*M*[sub
+		 4] SNR estimator to `tools/signal\_statistics.hpp`.
+		- Add total variation, l0, l1, l2, and sup norms, as well as
+		 corresponding distance functions to `tools/norms.hpp`.
+		- Add move constructors for polynomials, support complex coefficients,
+		 add `.prime()` and `.integrate()`
+		 methods.
+		- Add `quadratic\_roots`
+		 to `tools/roots.hpp`.
+		- Add support for complex-valued functions to Newton's method
+		 in `roots.hpp`.
+		- Add Catmull-Rom interpolator.
+* [Mp11](/libs/mp11/):
+
+	+ Renamed `mp\_invoke`
+	 to `mp\_invoke\_q`
+	+ Added `mp\_similar`
+	+ Added `mp\_set\_union`,
+	 `mp\_set\_intersection`,
+	 `mp\_set\_difference`
+	+ Added `mp\_not\_fn`
+	+ Added `mp\_transform\_first`,
+	 `mp\_transform\_second`,
+	 `mp\_transform\_third`
+	+ Added `mp\_filter`
+	+ Added `mp\_eval\_if\_not`,
+	 `mp\_eval\_or`, `mp\_valid\_q`
+	+ Added `mp\_back`, `mp\_pop\_back`
+* [Multi-index Containers](/libs/multi_index/):
+
+	+ `size\_type` and `difference\_type` are now defined
+	 as the allocator's same-named types. This will not make any difference
+	 in the vast majority of cases, but allows for some degree of control
+	 of resulting internal structures via user-defined allocator types
+	 (see issue [#17](https://github.com/boostorg/multi_index/issues/17) for motivation). For the moment being,
+	 this change is not documented in the reference section (i.e., it
+	 has semi-official status).
+	+ Maintenance work.
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Fix various conversion issues in the traits classes, check for compatibility
+	 with Boost.Optional.
+	+ Prevent instantiation of `std::numeric\_limits`
+	 on any old type when checking for convertibility. See [#98](https://github.com/boostorg/multiprecision/issues/98).
+	+ Update variable precision code to account for arbitrary precision
+	 integers. See [#103](https://github.com/boostorg/multiprecision/issues/103).
+	+ Add support for XML serialization archives.
+	+ Fix bug in fixed precision iostream formatting in `mpf\_float`
+	 and `mpfr\_float`. See
+	 [#113](https://github.com/boostorg/multiprecision/issues/113).
+	+ Add more overloads for special functions which are better handled
+	 natively by MPFR.
+	+ Fixed bug in generic `exp`
+	 implementation which could cause invariant failure.
+	+ Fixed generic conversion from float to integer to avoid undefined
+	 behaviour. See [#110](https://github.com/boostorg/multiprecision/issues/110).
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Improved handling of stateful allocators and allocator propagation
+	 traits, after an error reported by Billy O'Neal ([PR#9](https://github.com/boostorg/poly_collection/pull/9)).
+	+ Fixed a potentially serious bug with an internal cache structure.
+* [Spirit](/libs/spirit/):
+
+	+ Removed use of deprecated `boost/detail/iterator.hpp`
+	 header. [PR#432](https://github.com/boostorg/spirit/pull/432)
+	+ X3
+	 
+		- Integer parsers should now handle user defined types. [PR#429](https://github.com/boostorg/spirit/pull/429)
+		- **Note:** The `check\_overflow`
+		 trait default implementation now relies on `std::numeric\_limits<T>::is\_bounded`
+		 instead of `boost::integer\_traits<T>::is\_integral`.
+		- Removed sequence into plain parsing. Now it triggers a compile
+		 time error instead of silently parsing the the sequence and
+		 taking the last value as a result. [PR#439](https://github.com/boostorg/spirit/pull/439)
+		- Fixed `parse\_rule`
+		 instantiation with `BOOST\_SPIRIT\_INSTANTIATE`
+		 when:
+		 
+			* A rule has no attribute. [PR#455](https://github.com/boostorg/spirit/pull/455)
+			* An actual attribute is not of type a rule was declared
+			 with. [PR#456](https://github.com/boostorg/spirit/pull/456) [#457](https://github.com/boostorg/spirit/issues/457)
+		- A **huge** thanks goes out to
+		 [Xeverous](https://github.com/Xeverous) for
+		 reporting a regression in [#453](https://github.com/boostorg/spirit/issues/453).
+		- Fixed unneded attribute synthesization and no-transformation
+		 attribute reference pass-through in rules. [#444](https://github.com/boostorg/spirit/issues/444) [PR#449](https://github.com/boostorg/spirit/pull/449) [PR#452](https://github.com/boostorg/spirit/pull/452)
+		- Removed broken 1.0#INF parser. It was poorly documented and
+		 never worked. [#415](https://github.com/boostorg/spirit/issues/415) [PR#458](https://github.com/boostorg/spirit/pull/458) [#8699](https://svn.boost.org/trac/boost/ticket/8699)
+		- The undocumented `make\_attribute`
+		 trait was removed due to bugs [PR#449](https://github.com/boostorg/spirit/pull/449)
+		 and to simplify
+		 attribute transformation. [PR#460](https://github.com/boostorg/spirit/pull/460)
+		- If you were using it to workaround bugs in attribute transformation
+		 - they should not be needed anymore as of this release.
+		- The integer value parser now respects `std::numeric\_limits<T>::digits10`
+		 value. [PR#469](https://github.com/boostorg/spirit/pull/469)
+		- Fixed underflow check for a `(Min %
+		Base)
+		== 0`
+		 corner case. [PR#469](https://github.com/boostorg/spirit/pull/469)
+		- Fixed an output value on overflow of IgnoreOverflowDigits=true
+		 integer parser. [PR#470](https://github.com/boostorg/spirit/pull/470)
+		- Container attribute elements were copyied, but not moved. [PR#472](https://github.com/boostorg/spirit/pull/472)
+		- Special handling of references in `transform\_attribute`
+		 was removed. [PR#480](https://github.com/boostorg/spirit/pull/480)
+	+ V2
+	 
+		- Macro name collisions and namespace conflicts with Boost.Endian
+		 were fixed. [PR#349](https://github.com/boostorg/spirit/pull/349) [PR#482](https://github.com/boostorg/spirit/pull/482)
+		- utree
+		 
+			* Fixed UB in tag getter due to left shift of negative
+			 value. [PR#423](https://github.com/boostorg/spirit/pull/423)
+			* Fixed double-conversion (`spirit::string
+			-> std::string
+			-> spirit::string`).
+			 [PR#462](https://github.com/boostorg/spirit/pull/462)
+		- Qi
+		 
+			* Added static asserts for rule skipper type problems.
+			 [PR#427](https://github.com/boostorg/spirit/pull/427)
+			* The `check\_overflow`
+			 trait default implementation now relies on `std::numeric\_limits<T>::is\_bounded` instead
+			 of `boost::integer\_traits<T>::is\_integral`
+			[PR#429](https://github.com/boostorg/spirit/pull/429)
+			* Integer parsers should now handle user defined types.
+			 [PR#429](https://github.com/boostorg/spirit/pull/429)
+			* **Note:** The `check\_overflow` trait
+			 default implementation now relies on `std::numeric\_limits<T>::is\_bounded`
+			 instead of `boost::integer\_traits<T>::is\_integral`.
+			* Removed broken 1.0#INF parser. It was poorly documented
+			 and never worked. [#415](https://github.com/boostorg/spirit/issues/415) [PR#458](https://github.com/boostorg/spirit/pull/458) [#8699](https://svn.boost.org/trac/boost/ticket/8699)
+			* The undocumented `make\_attribute`
+			 trait was merged into `transform\_attribute`
+			 trait. [PR#471](https://github.com/boostorg/spirit/pull/471)
+			* The `pre\_transform`,
+			 `post\_transform`,
+			 and `fail\_transform`
+			 utility functions were removed in favor of directly using
+			 `pre`/`post`/`fail` of the transform
+			 trait. [PR#467](https://github.com/boostorg/spirit/pull/467)
+			* The integer value parser now respects `std::numeric\_limits<T>::digits10`
+			 value. [PR#469](https://github.com/boostorg/spirit/pull/469)
+			* Fixed underflow check for a `(Min %
+			Base)
+			== 0`
+			 corner case. [PR#469](https://github.com/boostorg/spirit/pull/469)
+			* Fixed an output value on overflow of IgnoreOverflowDigits=true
+			 integer parser. [PR#470](https://github.com/boostorg/spirit/pull/470)
+			* Special handling of references in `transform\_attribute`
+			 was removed. [PR#480](https://github.com/boostorg/spirit/pull/480)
+		- Lex
+		 
+			* Fixed UB in default constructor of lexer with user specified
+			 token type. [PR#420](https://github.com/boostorg/spirit/pull/420)
+	+ Classic:
+	 
+		- Fixed `position\_iterator`
+		 forming reference to local when the underlying iterator dereference
+		 operator returns a non-reference type. [PR#422](https://github.com/boostorg/spirit/pull/422) [#9737](https://svn.boost.org/trac/boost/ticket/9737)
+* [Stacktrace](/libs/stacktrace/):
+
+	+ Build fix for iOS 32-bit ARM (many thanks to Ivan Ponomarev for providing
+	 the fix [PR#70](https://github.com/boostorg/stacktrace/pull/70))
+	+ Fixed multiple typos, warnings and updated the docs.
+* [Test](/libs/test/):
+
+	+ Boost.test v3.10 see the [Changes
+	 log](/libs/test/doc/html/boost_test/change_log.html) for more details.
+	+ Breaking changes:
+	 
+		- Boost.Test `minimal.hpp`
+		 is now showing a deprecation warning,
+		- Change in floating point comparison may fail tests that were
+		 silently not using the floating point comparison logic prior
+		 to this release,
+		- Internal API change to `unit\_test\_log\_formatter`,
+		 see detailed change log,
+	+ New feature:
+	 
+		- Floating point comparison has been extended to capture non-floating
+		 point and arithmetic operands: expressions like `BOOST\_TEST(3.0001 ==
+		3)`
+		 now use floating point support of Boost.Test,
+		- Custom datasets are not required to declare the `sample` type field anymore,
+		- Extending template test cases from `std::tuple`
+		 to any variadic definition,
+		- Windows support for timed tests,
+		- Timed test on test-suites,
+		- Removed dependency to Boost.Timer,
+		- New macro `BOOST\_TEST\_INFO\_SCOPE`
+		 for scoped context declaration,
+		- Improved `BOOST\_TEST\_CONTEXT`
+		 syntax
+	+ Bug fixes and pull requests:
+	 
+		- Trac tickets: [#7397](https://svn.boost.org/trac/boost/ticket/7397), [#9434](https://svn.boost.org/trac/boost/ticket/9434), [#13106](https://svn.boost.org/trac/boost/ticket/13106), [#13418](https://svn.boost.org/trac/boost/ticket/13418)
+		- GitHub Issues: [#133](https://github.com/boostorg/test/issues/133), [#138](https://github.com/boostorg/test/issues/138), [#141](https://github.com/boostorg/test/issues/141), [#157](https://github.com/boostorg/test/issues/157),
+		 [#160](https://github.com/boostorg/test/issues/160), [#174](https://github.com/boostorg/test/issues/174), [#176](https://github.com/boostorg/test/issues/176), [#177](https://github.com/boostorg/test/issues/177), [#180](https://github.com/boostorg/test/issues/180),
+		 [#181](https://github.com/boostorg/test/issues/181), [#194](https://github.com/boostorg/test/issues/194), [#196](https://github.com/boostorg/test/issues/196), [#198](https://github.com/boostorg/test/issues/198), [#199](https://github.com/boostorg/test/issues/199),
+		 [#202](https://github.com/boostorg/test/issues/202), [#203](https://github.com/boostorg/test/issues/203), [#204](https://github.com/boostorg/test/issues/204)
+		- GitHub Pull Requests: [PR#171](https://github.com/boostorg/test/pull/171), [PR#172](https://github.com/boostorg/test/pull/172), [PR#182](https://github.com/boostorg/test/pull/182),
+		 [PR#183](https://github.com/boostorg/test/pull/183), [PR#184](https://github.com/boostorg/test/pull/184), [PR#190](https://github.com/boostorg/test/pull/190), [PR#195](https://github.com/boostorg/test/pull/195),
+		 [PR#195](https://github.com/boostorg/test/pull/195), [PR#197](https://github.com/boostorg/test/pull/197), [PR#205](https://github.com/boostorg/test/pull/205)
+* [TypeIndex](/libs/type_index/):
+
+	+ Support for the GHS C++ compiler added (many thanks to Brandon Castellano
+	 for providing the patch [PR#28](https://github.com/boostorg/type_index/pull/28))
+	+ Optimized string and type comparisons (many thanks to Andrey Semashev
+	 for providing the patch [PR#23](https://github.com/boostorg/type_index/pull/23))
+	+ Fixed clang-win compilation (many thanks to Peter Dimov for providing
+	 the patch [PR#25](https://github.com/boostorg/type_index/pull/25))
+	+ CI hardening.
+* [TypeTraits](/libs/type_traits/):
+
+	+ Added is\_bounded\_array and is\_unbounded\_array (Glen Fernandes).
+	+ Added copy\_reference and copy\_cv\_ref (Glen Fernandes).
+	+ Improved support for msvc with /clr option.
+	+ Misc compiler compatibility fixes.
+* [Variant](/libs/variant/):
+
+	+ Many cleanups and internal improvements, many thanks to Nikita Kniazev
+	 ([PR#55](https://github.com/boostorg/variant/pull/55), [PR#56](https://github.com/boostorg/variant/pull/56), [PR#57](https://github.com/boostorg/variant/pull/57)) and Louis Dionne
+	 ([PR#51](https://github.com/boostorg/variant/pull/51))
+	+ CI hardening.
+* [uBlas](/libs/numeric/ublas/):
+
+	+ Addition of tensor framework (many thanks to Cem Bassoy [PR#65](https://github.com/boostorg/ublas/pull/65))
+	+ Addition of basic OpenCL support (many thanks to Fady Essam [PR#59](https://github.com/boostorg/ublas/pull/59))
+	+ Integration of basic benchmark suite (many thanks to Stefan Seefeld
+	 [PR#57](https://github.com/boostorg/ublas/pull/57))
+	+ CI integration and hardening
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Daniel James, Vladimir Prus, Marshall Clow and Michael Caisse managed this
+ release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

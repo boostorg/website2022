@@ -1,0 +1,420 @@
+---
+title: Version 1.68.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.68.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.68.0
+==============
+
+Version 1.68.0
+--------------
+
+
+August 9th, 2018 03:46 GMT
+
+
+[Documentation](/doc/libs/1_68_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_68\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.tar.bz2) | 7f6130bc3cf65f56a618888ce9d5ea704fa10b462be126ad053e80e553d6d8b7 |
+| [boost\_1\_68\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.tar.gz) | da3411ea45622579d419bfda66f45cd0f8c32a181d84adfa936f5688388995cf |
+| windows | [boost\_1\_68\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.7z) | 59804d8fad02cf3b09485f3dbc0f9097c05fc1e0123f0c133b35a6c6f601109a |
+| [boost\_1\_68\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_1_68_0.zip) | 3b1db0b67079266c40b98329d85916e910bbadfc3db3e860c049056788d4d5cd |
+
+
+### Notes for Windows
+ users
+ Boost.WinAPI has been updated to target Windows 7 by default, where possible.
+ In previous releases Windows Vista was the default.
+ 
+ Boost.WinAPI is used internally as the Windows SDK abstraction layer in a number
+ of Boost libraries, including Boost.Beast, Boost.Chrono, Boost.DateTime, Boost.Dll,
+ Boost.Log, Boost.Process, Boost.Stacktrace, Boost.System, Boost.Thread and
+ Boost.UUID. To select the target Windows version define `BOOST\_USE\_WINAPI\_VERSION`
+ to the numeric version similar to `\_WIN32\_WINNT`
+ while compiling Boost and user's code. For example:
+ 
+```
+    b2 release define=BOOST\_USE\_WINAPI\_VERSION=0x0501 stage
+
+```
+
+
+ The list of Windows API version numbers can be seen on [this](https://msdn.microsoft.com/en-us/library/6sehtctf.aspx)
+ page.
+ 
+
+### New Libraries
+
+
+* [YAP](/libs/yap/): An expression template library
+ for C++14 and later, from Zach Laine.
+
+### Updated Libraries
+
+
+* [Beast](/libs/beast/):
+
+	+ This version fixes a missing executor work guard in all composed
+	 operations used in the implementation. Users who are experiencing
+	 crashes related to asynchronous completion handlers are encouraged
+	 to upgrade.
+	+ For a complete list of changes, please view the official [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html).
+* [Context](/libs/context/):
+
+	+ [#78](https://github.com/boostorg/context/issues/78): Linker error with `context-impl=ucontext`:
+	 multiple definition of `boost::context::detail::current\_rec`
+* [Coroutine2](/libs/coroutine2/):
+
+	+ [#14](https://github.com/boostorg/coroutine2/issues/14): crash while stack unwinding
+	+ [#18](https://github.com/boostorg/coroutine2/issues/18): some guidance on why to use coroutine2
+	+ [#20](https://github.com/boostorg/coroutine2/issues/20): failes to compile test in due to the error C2039
+	+ [#22](https://github.com/boostorg/coroutine2/issues/22): undefined behaviour documentation
+* [Fiber](/libs/fiber/):
+
+	+ [#170](https://github.com/boostorg/fiber/issues/170): buffered\_channel::try\_push has incorrect documentation
+	+ [#172: WIN64](https://github.com/boostorg/fiber/issues/172: WIN64): 'invalid conversion from 'HANDLE' to
+	 'std::thread::native\_handle\_type' errors for builds using mingw-w64
+	+ [#175](https://github.com/boostorg/fiber/issues/175): throw exception "Operation not permitted"
+	+ NUMA support moved to extra library (fiber-numa); enabled via property
+	 numa (numa=on)
+* [Fusion](/libs/fusion/):
+
+	+ Added a workaround for ambiguous call of `fusion::deque`
+	 constructor on GCC 4.4/c++0x ([PR#178](https://github.com/boostorg/fusion/pull/178), [commit](https://github.com/boostorg/fusion/pull/178/commits/9de32721749b635ff3e04e690da89cf06602c122)).
+	+ Fixed a bug with C-style array ([PR#177](https://github.com/boostorg/fusion/pull/177)).
+	+ Fixed a `fusion::for\_each` signature to take functor
+	 by value ([#4427](https://svn.boost.org/trac/boost/ticket/4427)).
+	 
+		- This may break existing code with non-copyable (non-movable)
+		 functor, but the implementation wasn't correct for a long time;
+		 the documantation was correct from the first. So, please make
+		 sure your usage.
+	+ Fixed unintentional MPL placeholder substitution bug on `fusion::transform` ([#5490](https://svn.boost.org/trac/boost/ticket/5490)).
+	+ Moved description, how to conform Fusion sequence as MPL sequence,
+	 to mpl section ([#4029](https://svn.boost.org/trac/boost/ticket/4029)).
+	+ Added notes regarding IO facility for adapted type ([#6091](https://svn.boost.org/trac/boost/ticket/6091)).
+* [Geometry](/libs/geometry/):
+
+	+ Improvements
+	 
+		- [469](https://github.com/boostorg/geometry/pull/469)
+		 Horizontal grid shift (nadgrids) in SRS transformations (undocumented
+		 for now due to potential interface changes).
+		- [478](https://github.com/boostorg/geometry/pull/478)
+		 Box-Segment distance for spherical and geographic coordinate
+		 systems.
+		- [487](https://github.com/boostorg/geometry/pull/487)
+		 Missing combinations of geometries in distance for spherical
+		 and geographic cs
+		- [489](https://github.com/boostorg/geometry/pull/489)
+		 Additional direct geodesic problem formulas for internal use
+	+ Solved issues
+	 
+		- [470](https://github.com/boostorg/geometry/issues/470)
+		 Assertion failure with short spherical and geographic segments.
+		- [471](https://github.com/boostorg/geometry/issues/471)
+		 Invalid envelope of spherical polygon
+		- [498](https://github.com/boostorg/geometry/issues/498)
+		 Unexpected results with expand() and make\_inverse() for spherical
+		 and geographic CS
+		- [504](https://github.com/boostorg/geometry/issues/504)
+		 Unused parameter warnings.
+	+ Bugfixes
+	 
+		- [488](https://github.com/boostorg/geometry/pull/488)
+		 Handle non-true-references in closing\_iterator and ever\_circling\_range\_iterator
+		- [495](https://github.com/boostorg/geometry/pull/495)
+		 VxWorks 7 cross-compilation issue.
+* [GIL](/libs/gil/):
+
+	+ Added
+	 
+		- The library now requires a C++11-compliant compiler.
+		- New top-level all-in-one `include/boost/gil.hpp`
+		 header ([PR#70](https://github.com/boostorg/gil/pull/70)).
+		- New Toolbox extension, [reviewed
+		 and accepted into Boost](https://lists.boost.org/boost-announce/2011/01/0281.php).
+	+ Changed
+	 
+		- IO extensions have been entirely rewritten as IO v2, [reviewed
+		 and accepted into Boost](https://lists.boost.org/boost-announce/2011/01/0281.php).
+		- Documentation has been reformatted and updated.
+	+ Removed
+	 
+		- IO v1 extension has been replaced with IO v2.
+* [Graph](/libs/graph/):
+
+	+ Conditionally replace deprecated/removed C++98 `std::bind1st`
+	 by `std::bind`, `std::auto\_ptr`
+	 by `std::unique\_ptr`, and `std::random\_shuffle`
+	 by `std::shuffle`. ([PR#89](https://github.com/boostorg/graph/pull/89))
+	+ Fix compiler error with release builds on VS2015 ([PR#84](https://github.com/boostorg/graph/pull/84))
+	+ Fix the Stanford GraphBase examples ([PR#87](https://github.com/boostorg/graph/pull/87))
+	+ Fix friend declarations for iterator\_core\_access ([PR#103](https://github.com/boostorg/graph/pull/103))
+	+ Add missing `<boost/iterator.hpp>` include ([PR#104](https://github.com/boostorg/graph/pull/104))
+	+ Avoid an unused variable warning ([PR#90](https://github.com/boostorg/graph/pull/90))
+	+ Fix some typos in documentation ([PR#88](https://github.com/boostorg/graph/pull/88), [PR#98](https://github.com/boostorg/graph/pull/98), [PR#102](https://github.com/boostorg/graph/pull/102))
+	+ Fix some issues in tests and examples ([PR#85](https://github.com/boostorg/graph/pull/85), [PR#105](https://github.com/boostorg/graph/pull/105))
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Fixes for clang-tidy warnings [#12092](https://svn.boost.org/trac/boost/ticket/12092)
+* [Log](/libs/log/):
+
+	+ Improved support for VxWorks. ([PR#39](https://github.com/boostorg/log/pull/39))
+	+ Save and restore `ebx`
+	 register on x86 PIE targets in the `dump`
+	 stream manipulator implementation.
+* [Math](/libs/math/):
+
+	+ Support for arbitrary precision complex valued quadrature and hence
+	 contour integration
+	+ Improve performance of polynomial addition
+	+ Continue to improve numerical integration routines, and in particular
+	 add support for contour integrals.
+	+ Improve accuracy of erfc function's rational approximations.
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ Containers of moveable but non-copyable elements can now be serialized
+	 (ticket [#13478](https://svn.boost.org/trac/boost/ticket/13478)). Thanks to Sébastien Paris for the report.
+	+ `multi\_index\_container`'s
+	 default constructor is no longer `explicit`
+	 (ticket [#13518](https://svn.boost.org/trac/boost/ticket/13518)).
+* [Multiprecision](/libs/multiprecision):
+
+	+ Support added for complex multiprecision numbers.
+	+ Changed conversion to unsigned integer types to be truncating to
+	 match standard defined behaviour.
+	+ Correct bug in MPFR string formatting.
+	+ Fix undefined behaviour in cpp\_dec\_float conversion from long long.
+	+ Add support for Eigen interoperability.
+	+ float128.hpp: Fix Intel on Windows build.
+	+ Fix type used in temporaries when expanding expression templates
+	 containing mixed expressions.
+	+ Fix infinite loop in gmp\_float to fixed-point string conversion.
+	+ Update the expression templates to issue static\_asserts with better
+	 error messages when you try and do something unsupported.
+	+ Fix bug in cpp\_int where incrementing to zero doesn't set the sign
+	 correctly.
+	+ Remove erroneous use of std::move, and rely on NVRO instead.
+	+ Fix up support for changes to MPIR-3.0.
+	+ Fix various conversion errors in cpp\_bin\_float when the exponent
+	 type is a `long long`,
+	 or else we're converting to an integer that is wider than we are.
+	+ Fix compatibility issue with GCC-8 caused by the introduction of
+	 `std::byte`.
+* [Optional](/libs/optional/):
+
+	+ Added member function `has\_value()` for compatibility with `std::optional` ([issue
+	 #52](https://github.com/boostorg/optional/issues/52)).
+	+ Added member function `map()` for transforming `optional<T>`
+	 into `optional<U>`
+	 using a function of type `T
+	-> U`.
+	+ Added member function `flat\_map()` for transforming `optional<T>`
+	 into `optional<U>`
+	 using a function of type `T
+	-> optonal<U>`.
+* [Predef](/libs/predef/):
+
+	+ Add support for \_\_ARM\_ARCH macro. (from Tim Blechmann)
+	+ Add detection for PTX architecture. (from Benjamin Worpitz)
+	+ Add nvcc compiler detection. (from Benjamin Worpitz)
+	+ Add support for detecting CUDA. (from Benjamin Worpitz)
+	+ Remove reference to obsolete BOOST\_ARCH\_AMD64. (from Peter Kolbus)
+* [Program Options](/libs/program_options/):
+
+	+ Support for multiple long names for an option, thanks to Eyal Rozenberg
+	 ([PR#53](https://github.com/boostorg/program_options/pull/53))
+* [Python](/libs/python/):
+
+	+ Bug fixes to correct autolink support (Windows) ([#193](https://github.com/boostorg/python/issues/193))
+* [Rational](/libs/rational/):
+
+	+ Fixed undefined behavior in normalize() ([PR#19](https://github.com/boostorg/rational/pull/19)).
+* [System](/libs/system/):
+
+	+ Add constexpr to error\_code and error\_condition members under C++14
+	 and above ([PR#23](https://github.com/boostorg/system/pull/23)).
+* [Signals](/libs/signals/):
+
+	+ **Removal Notice:** Boost.Signals will
+	 be removed in the next release. Boost.Signals was deprecated in version
+	 1.54.0. Transition to Boost.Signals2 now to avoid disruption.
+* [Spirit](/libs/spirit/):
+
+	+ Spirit.X3:
+	 
+		- Small list parser optimization ([PR#368](https://github.com/boostorg/spirit/pull/368)).
+		- Pass container attributes through sequence parser or unary
+		 ending down to a sequence parser ([PR#370](https://github.com/boostorg/spirit/pull/370) [#12085](https://svn.boost.org/trac/boost/ticket/12085)).
+		- More fine grained sequence attribute check message ([PR#371](https://github.com/boostorg/spirit/pull/371)).
+		- Removed redundant check in `skip\_over`
+		 ([PR#373](https://github.com/boostorg/spirit/pull/373)).
+		- Workaround constexpr in noexcept VS2015 bug in entire `x3::variant` ([PR#379](https://github.com/boostorg/spirit/pull/379)).
+		- Fixed calc4b example compilation ([PR#384](https://github.com/boostorg/spirit/pull/384)).
+		- Minor code improvements ([PR#374](https://github.com/boostorg/spirit/pull/374)).
+	+ Spirit.Qi:
+	 
+		- Fixed ADT support by permutation and sequence\_or operator ([PR#376](https://github.com/boostorg/spirit/pull/376)).
+		- Specialize iterator\_source for random access ([PR#383](https://github.com/boostorg/spirit/pull/383)).
+		- Removed redundant check in `skip\_over`
+		 ([PR#373](https://github.com/boostorg/spirit/pull/373)).
+	+ Spirit.Karma:
+	 
+		- Fixed UB in `get\_absolute\_value`
+		 function ([PR#246](https://github.com/boostorg/spirit/pull/246)).
+		- Fixed use after scope bug if ADT getter returns by value ([PR#375](https://github.com/boostorg/spirit/pull/375) [#6126](https://svn.boost.org/trac/boost/ticket/6126)).
+	+ Spirit.Classic:
+	 
+		- Fixed a regression introduced in [PR#336](https://github.com/boostorg/spirit/pull/336) ([PR#386](https://github.com/boostorg/spirit/pull/386)).
+		- Minor code improvements ([PR#367](https://github.com/boostorg/spirit/pull/367)).
+* [Stacktrace](/libs/stacktrace/):
+
+	+ Fixed compilation on Solaris and other platforms that do qualify
+	 address as const in `dladdr`
+	 function (github 54).
+	+ Dropped dependency on Boost.LexicalCast.
+* [Test](/libs/test/):
+
+	+ Boost.test v3.8 see the [Changes
+	 log](libs/test/doc/html/boost_test/change_log.html) for more details.
+	+ Breaking changes
+	 
+		- The `master\_test\_suite\_t`
+		 object is no more copyable
+	+ New feature:
+	 
+		- Dataset test case can now use command line parameters
+	+ Bug fixes and pull requests:
+	 
+		- Trac tickets: [#12095](https://svn.boost.org/trac/boost/ticket/12095), [#12953](https://svn.boost.org/trac/boost/ticket/12953), [#13504](https://svn.boost.org/trac/boost/ticket/13504), [#13525](https://svn.boost.org/trac/boost/ticket/13525),
+		 [#13528](https://svn.boost.org/trac/boost/ticket/13528)
+		- Pull requests: [PR#143](https://github.com/boostorg/test/pull/143), [PR#145](https://github.com/boostorg/test/pull/145)
+* [TypeIndex](/libs/type_index/):
+
+	+ Dropped dependency on Boost.MPL.
+* [Uuid](/libs/uuid/):
+
+	+ **Breaking change:** sha1 detail namespace
+	 header redirection for backwards compatibility was removed ([PR#69](https://github.com/boostorg/uuid/pull/69)).
+	+ Added support for std::hash ([PR#67](https://github.com/boostorg/uuid/pull/67)).
+	+ Added support for move semantics on random generators ([PR#74](https://github.com/boostorg/uuid/pull/74)).
+	+ Properly handle EINTR when acquiring entropy ([PR#74](https://github.com/boostorg/uuid/pull/74)).
+	+ Use getrandom(2) instead of getentropy(3) on linux ([PR#75](https://github.com/boostorg/uuid/pull/75)).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1
+	+ Clang, C++17: 5.0.2, 6.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0
+	+ Apple Clang, C++17: 9.1.0
+	+ Apple Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0
+	+ Apple Clang, C++17: 9.1.0
+	+ Apple Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Daniel James, Vladimir Prus, and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

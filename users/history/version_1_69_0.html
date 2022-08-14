@@ -1,0 +1,545 @@
+---
+title: Version 1.69.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.69.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.69.0
+==============
+
+Version 1.69.0
+--------------
+
+
+December 12th, 2018 02:58 GMT
+
+
+[Documentation](/doc/libs/1_69_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_69\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.69.0/source/boost_1_69_0.tar.bz2) | 8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406 |
+| [boost\_1\_69\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.69.0/source/boost_1_69_0.tar.gz) | 9a2c2819310839ea373f42d69e733c339b4e9a19deab6bfec448281554aa4dbb |
+| windows | [boost\_1\_69\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.69.0/source/boost_1_69_0.7z) | af05616f71006f97833e130aad886c96136457511ace4b5496d6566e69cbe0ca |
+| [boost\_1\_69\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.69.0/source/boost_1_69_0.zip) | d074bcbcc0501c4917b965fc890e303ee70d8b01ff5712bae4a6c54f2b6b4e52 |
+
+
+### Notes for non-Windows
+ users
+ The Boost build system now supports visibilities. If you are building shared
+ libraries, they will use hidden visibility by default. As a result Boost shared
+ libraries become smaller, load faster and have less chances to get a symbol
+ collision.
+ 
+ See [Boost.Build
+ visibility and local-visibility](/build/manual/develop/index.html#bbv2.builtin.features.visibility) for more info.
+ 
+ To disable that feature you can use use a command line `./b2 visibility=global` to
+ build.
+ 
+
+### New Libraries
+
+
+* [Safe Numerics](/libs/safe_numerics/): A library
+ for guaranteed correct integer arithmetic for C++14 and later, from Robert
+ Ramey.
+
+### Updated Libraries
+
+
+* [Any](/libs/any/):
+
+	+ Fixed issue with visibility. Now `boost::any`
+	 variables constructed in one shared library with hidden visibility
+	 could be used and destroyed in other shared library with hidden visibility.
+	+ Maintenance: dropped some dependencies on other Boost libraries,
+	 fixes for docs.
+* [Asio](/libs/asio/):
+
+	+ Fixed a problem with the detection of `std::future`
+	 availability with libstdc++.
+	+ Fixed compile error in regex overload of `read\_until`.
+	+ Fixed a timer heap corruption issue that can occur when moving a
+	 cancelled timer.
+	+ Fixed detection of `std::experimental::string\_view`
+	 and `std::string\_view` with newer clang/libc++.
+	+ Fixed MSVC version detection for availability of `std::invoke\_result`.
+	+ Fixed the buffer sequence traits to test the new requirements, if
+	 `decltype` is available.
+	+ Fixed an MSVC issue when building with exceptions disabled.
+	+ Added SSL context options for TLS v1.3.
+	+ Added a compile-time test for TLS v1 support.
+	+ Fixed the macro used to test for TLS v1.2 support.
+	+ Prevented global objects from being created once per thread on Windows.
+	+ Fixed a crash when using `size()`, `max\_size()` or `empty()` on default-constructed resolver
+	 results.
+	+ Changed to move the return value in `basic\_resolver\_results::begin()` to avoid copying.
+	+ Enabled move support for the Intel Compiler.
+	+ Fixed `std::string\_view` detection issue when
+	 using clang-cl.
+	+ Fixed the handler tracking operation name for `io\_context::executor\_type::dispatch`.
+	+ Fixed a buffer overflow that could occur when parsing an address
+	 string with a 64-bit scope id.
+	+ Added examples showing how to write composed operations.
+	+ Added C++11 versions of the Timeouts, Timers, SOCKS4 and SSL examples.
+	+ Fixed minor issues in documentation and examples.
+* [Assign](/libs/assign/):
+
+	+ Add rvalue reference, perfect forwarding, and variadic template support
+	 ([PR#6](https://github.com/boostorg/assign/pull/6)) ([#10477](https://svn.boost.org/trac/boost/ticket/10477))
+	+ Avoid conversion to container's allocator ([PR#29](https://github.com/boostorg/assign/pull/29)) ([#5419](https://svn.boost.org/trac/boost/ticket/5419))
+	 ([#7364](https://svn.boost.org/trac/boost/ticket/7364))
+* [Beast](/libs/beast/):
+
+	+ This version fixes some issues in the examples, and provides a new
+	 experimental socket which supports built-in timeouts on asynchronous
+	 operations.
+	+ New CppCon 2018 [websocket
+	 chat example](https://www.boost.org/doc/libs/master/libs/beast/doc/html/beast/examples.html#beast.examples.cppcon_2018) and [presentation
+	 video](https://www.youtube.com/watch?v=7FQwAjELMek).
+	+ For a complete list of changes, please view the official [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html).
+* [CircularBuffer](/libs/circular_buffer/):
+
+	+ Use the empty base optimization for storing allocators that are empty
+	 and not final (Glen Fernandes).
+* [Concept Check](/libs/concept_check/):
+
+	+ Removed dependency on mpl. ([PR#14](https://github.com/boostorg/concept_check/pull/14))
+* [Context](/libs/context/):
+
+	+ [#85](https://github.com/boostorg/context/issues/85): duplicate alias should be missing GCC alias
+	+ [#87](https://github.com/boostorg/context/issues/87): the clang-win toolset (clang-cl.exe) uses masm from
+	 the underlying msvc
+	+ [#90](https://github.com/boostorg/context/issues/90): remove useless lines in Jamfile.v2
+	+ [#91](https://github.com/boostorg/context/issues/91): add .file section for \*\_elf\_gas.S files
+* [Core](/libs/core/):
+
+	+ Implemented `boost::empty\_value`,
+	 for library authors to conveniently leverage the Empty Base Optimization
+	 to store objects of potentially empty types (Glen Fernandes). This
+	 facility is now used in Boost.Beast, Boost.CircularBuffer, Boost.MultiArray,
+	 and more.
+	+ Implemented `boost::quick\_exit`
+	 to provide the C++11 standard library facility `std::quick\_exit`
+	 functionality (Peter Dimov).
+	+ Reduced the number of statics in Lightweight Test, and employ lighter
+	 abort behavior for MSVC compilers upon failure to call `boost::report\_errors` (Glen Fernandes).
+* [DLL](/libs/dll/):
+
+	+ Resolved link issues with the smart library [#20](https://github.com/boostorg/dll/issues/20).
+	+ Maintenance: fixes for docs and tests.
+* [Dynamic Bitset](/libs/dynamic_bitset/):
+
+	+ Performance improvements (over 2x in some cases). ([PR#26](https://github.com/boostorg/dynamic_bitset/pull/26))
+	+ Added range-based set, reset, flip methods ([PR#27](https://github.com/boostorg/dynamic_bitset/pull/27))
+* [Fiber](/libs/fiber/):
+
+	+ [#181](https://github.com/boostorg/fiber/issues/181): unbuffered\_channel push not return
+	+ [#182](https://github.com/boostorg/fiber/issues/182): Remove UTF-8 BOM at begining of the file
+	+ [#183](https://github.com/boostorg/fiber/issues/183): Fix boost-install use; should only be issued once
+* [Filesystem](/libs/filesystem/):
+
+	+ Don't use `readdir\_r`
+	 on Linux and Android since the `readdir`
+	 function is already thread-safe. ([PR#68](https://github.com/boostorg/filesystem/pull/68), [#72](https://github.com/boostorg/filesystem/issues/72))
+	+ Fixed crashes in `boost::filesystem::copy`
+	 due to undefined behavior in the implementation. ([PR#71](https://github.com/boostorg/filesystem/pull/71))
+	+ Fixed undefined behavior in `boost::filesystem::directory\_iterator`
+	 implementation. ([PR#77](https://github.com/boostorg/filesystem/pull/77))
+	+ Fixed compilation errors when using directory iterators with `BOOST\_FOREACH`.
+	+ Removed workarounds for older PGI C++ compiler versions to fix compilation
+	 on the newer ones. ([PR#49](https://github.com/boostorg/filesystem/pull/49))
+	+ Fixed MSVC warnings about narrowing conversions. ([PR#44](https://github.com/boostorg/filesystem/pull/44))
+* [Flyweight](/libs/flyweight/index.html):
+
+	+ Fixed some issues in GCC related to Boost.MPL placeholder expression
+	 handling.
+	+ Maintenance fixes.
+* [Function](/libs/function/):
+
+	+ Removed dependencies on mpl, test ([PR#20](https://github.com/boostorg/function/pull/20)) ([PR#22](https://github.com/boostorg/function/pull/22))
+* [Geometry](/libs/geometry/):
+
+	+ Improvements
+	 
+		- [PR#486](https://github.com/boostorg/geometry/pull/486) Karney's solution of direct geodesic problem
+		 for internal use (thanks to Adeel Ahmad).
+		- [PR#490](https://github.com/boostorg/geometry/pull/490) Discrete Frechet and Hausdorff distance algorithms
+		 (thanks to Yaghyavardhan Singh Khangarot).
+		- [PR#496](https://github.com/boostorg/geometry/pull/496) New run-time and upgraded compile-time SRS
+		 transformation interfaces (undocumented for now due to potential
+		 interface changes).
+	+ Solved issues
+	 
+		- [#520](https://github.com/boostorg/geometry/issues/520) Missing documentation for dsv().
+		- [#521](https://github.com/boostorg/geometry/issues/521) Wrong documentation description for distance().
+		- [#524](https://github.com/boostorg/geometry/issues/524) Fixed 'enumeration values not handled in switch'
+		 warnings.
+		- [#527](https://github.com/boostorg/geometry/issues/527) Workaround for VS 2017 (msvc-15).
+	+ Bugfixes
+	 
+		- [PR#505](https://github.com/boostorg/geometry/pull/505) Fixed overflow in overlay algorithms (thanks
+		 to Dane Springmeyer).
+		- [PR#518](https://github.com/boostorg/geometry/pull/518) Fixed passing of temporaries in append() (thanks
+		 to xventura81).
+		- [PR#522](https://github.com/boostorg/geometry/pull/522) Support python3 in building documentation.
+* [GIL](/libs/gil/):
+
+	+ Changed
+	 
+		- Refactored library includes to `#include
+		<boost/gil/...>` structure ([PR#145](https://github.com/boostorg/gil/pull/145)).
+	+ Removed
+	 
+		- Header `include/boost/gil\_all.hpp`
+		 file as deprecated ([PR#145](https://github.com/boostorg/gil/pull/145)).
+		- Header `include/boost/gil\_concepts.hpp`
+		 file as deprecated ([PR#145](https://github.com/boostorg/gil/pull/145)).
+		- Header `include/boost/gil\_config.hpp`
+		 file as unnecessary ([PR#144](https://github.com/boostorg/gil/pull/144)).
+	+ Fixed
+	 
+		- Fixed `point<T>` divide and multiply to
+		 not to hardcode result as `point<double>` ([PR#157](https://github.com/boostorg/gil/pull/157)).
+		- Fixed conflict between `std::fill\_n`
+		 and `boost::range::fill\_n` ([PR#152](https://github.com/boostorg/gil/pull/152)).
+		- Fixed issue with re-assignment of functor from `for\_each\_pixel` ([PR#139](https://github.com/boostorg/gil/pull/139)).
+		- Fixed missing template keyword prior to dependent name `axis\_iterator` ([PR#129](https://github.com/boostorg/gil/pull/129)).
+* [Integer](/libs/integer/):
+
+	+ `boost/pending/integer\_log2.hpp` header is deprecated and will
+	 be removed in future releases. Use `boost/integer/integer\_log2.hpp`
+	 instead.
+* [Iostreams](/libs/iostreams/):
+
+	+ Remove call to nonexistent member seekpos() of std::fpos ([PR#58](https://github.com/boostorg/iostreams/pull/58))
+* [Iterator](/libs/iterator/):
+
+	+ Fixed compilation problems with ambiguous unqualified calls to `advance` and `distance`
+	 on iterators whose types involve types in the namespace `boost`. ([#43](https://github.com/boostorg/iterator/issues/43))
+* [LexicalCast](/libs/lexical_cast/):
+
+	+ Fixed sign-conversion warnings [#8991](https://svn.boost.org/trac/boost/ticket/8991).
+	+ Maintenance: dropped some dependencies on other Boost libraries,
+	 fixed build system warnings.
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- Updated syslog sink backend to avoid using deprecated Boost.ASIO
+		 interfaces. ([#59](https://github.com/boostorg/log/issues/59))
+	+ Bug fixes:
+	 
+		- Fixed a possible incorrect estimation of the total size of
+		 rotated files in the target directory of a text file sink in
+		 some cases.
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Logic](/libs/logic/):
+
+	+ **Breaking change:** Use explicit operator
+	 bool when available ([PR#5](https://github.com/boostorg/logic/pull/5))
+* [Math](/libs/math/):
+
+	+ Add LambertW functions.
+	+ Update integration routines to support complex valued integrands
+	 and contour integrals.
+	+ Added the derivative of the Barycentric rational approximation.
+	+ Minor fixes to better support variable precision floating point types.
+	+ Removed use of deprecated Boost.Endian in favour of Predef.
+	+ Updated continued fraction and series evaluation code to support
+	 complex types.
+	+ Prevent logic error leading to infinite loop in toms748\_solve. See
+	 [#138](https://github.com/boostorg/math/issues/138).
+	+ Fix mean and standard\_deviation for extreme\_value\_distribution. See
+	 [#139](https://github.com/boostorg/math/issues/139).
+	+ Improve heuristics used in newton\_raphson\_iterate. See [#145](https://github.com/boostorg/math/issues/145).
+	+ Fix result of `erf(NaN)`. See [#141 #141](https://github.com/boostorg/math/issues/141 #141).
+	+ Big push to reduce GCC warnings. See [#136 #136](https://github.com/boostorg/math/issues/136 #136).
+	+ Refactor polynomial addition. See [PR#132](https://github.com/boostorg/math/pull/132).
+	+ Fix for vxWorks having a `real`
+	 function in the global namespace. See [PR#131](https://github.com/boostorg/math/pull/131).
+	+ Improve `sinc` approximations
+	 and add better tests.
+	+ Fix typo in Student's T hypothesis testing documentation, see [#143](https://github.com/boostorg/math/issues/143).
+* [Mp11](/libs/mp11/):
+
+	+ Implemented the `mp\_starts\_with`
+	 facility (Glen Fernandes).
+* [MultiArray](/libs/multi_array/):
+
+	+ Improve C++11 allocator model support including: Support for C++11
+	 minimal allocators, support for stateful allocators, using the allocator
+	 for construction and destruction of the value type, and using the
+	 empty base optimization for storing empty or stateless allocators
+	 (Glen Fernandes).
+* [Multi-index Containers](/libs/multi_index/):
+
+	+ Introduced an alternative [terse
+	 key specification syntax](/libs/multi_index/doc/tutorial/key_extraction.html#key) for C++17 compliant environments.
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Big update to better support variable precision types so that the
+	 precision of the result is always the largest of all the arguments.
+	+ Add support for allocators that are `final`
+	 in \_\_cpp\_int (Glen Fernandes).
+	+ Removed use of deprecated Boost.Endian in favour of Predef.
+	+ Add support for `std::string\_view`.
+	+ Fixed minor bug in constant initialization. See [#67](https://github.com/boostorg/multiprecision/issues/67).
+	+ Make assignment of non-finite value to `cpp\_int`
+	 a runtime errors. See [#58](https://github.com/boostorg/multiprecision/issues/58).
+	+ Added typedefs for `cpp\_bin\_float\_oct`
+	 and `cpp\_complex\_oct`.
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Added Boost.PolyCollection-specific versions of algorithms `std::for\_each\_n` and `std::sample`.
+* [Pool](/libs/pool/):
+
+	+ Replace boost::mutex use to avoid a dependency on Boost.Thread ([PR#23](https://github.com/boostorg/pool/pull/23))
+* [Preprocessor](/libs/preprocessor/):
+
+	+ Supports the new C++ standard conforming preprocessor in VC++ 14.1,
+	 which is currently enabled by using the /experimental:preprocessor
+	 switch, in Visual Studio 2017 15.8 on up.
+* [Rational](/libs/rational/):
+
+	+ Add constexpr support ([PR#28](https://github.com/boostorg/rational/pull/28)) ([PR#32](https://github.com/boostorg/rational/pull/32))
+* [Spirit](/libs/spirit/):
+
+	+ Spirit.X3:
+	 
+		- Drop own FP routines in favor of `boost::math`
+		 ([#392](https://github.com/boostorg/spirit/issues/392)) ([#13531](https://svn.boost.org/trac/boost/ticket/13531))
+		- Missing visibility mark on exception types ([#409](https://github.com/boostorg/spirit/issues/409))
+		- to\_utf8: Fixed wchar\_t handling on Windows ([#413](https://github.com/boostorg/spirit/issues/413))
+		 ([#395](https://github.com/boostorg/spirit/issues/395))
+	+ Spirit V2
+	 
+		- Drop own FP routines in favor of `boost::math`
+		 ([#392](https://github.com/boostorg/spirit/issues/392)) ([#13531](https://svn.boost.org/trac/boost/ticket/13531))
+		- Missing visibility mark on exception types ([#409](https://github.com/boostorg/spirit/issues/409))
+		- Fixed transform\_attribute ambiguity ([#407](https://github.com/boostorg/spirit/issues/407)) ([#396](https://github.com/boostorg/spirit/issues/396))
+		- to\_utf8: Fixed wchar\_t handling on Windows ([#413](https://github.com/boostorg/spirit/issues/413))
+		 ([#395](https://github.com/boostorg/spirit/issues/395))
+	+ Spirit.Classic:
+	 
+		- Missing visibility mark on exception types ([#409](https://github.com/boostorg/spirit/issues/409))
+* [Stacktrace](/libs/stacktrace/):
+
+	+ `libbacktrace` usage
+	 was significantly improved. `BOOST\_STACKTRACE\_USE\_BACKTRACE`
+	 or `boost\_stacktrace\_backtrace`
+	 users are encouraged to update:
+	 
+		- Memory consumprion dropped down.
+		- Stack capturing became faster by an order of magnitude.
+		- `syminfo` fallback
+		 enabled to provide information for visible symbols even without
+		 debug information (thanks to github user driesdeschout!)[#60](https://github.com/boostorg/stacktrace/issues/60),
+		 [#61](https://github.com/boostorg/stacktrace/issues/61).
+		- Exact location of the `backtrace.h`
+		 header now can be specified via `BOOST\_STACKTRACE\_BACKTRACE\_INCLUDE\_FILE`,
+		 to allow `backtrace.h`
+		 header usage on platforms and compilers where that header is
+		 unreachable otherwise (for example Ubuntu Xenial + Clang) [#59](https://github.com/boostorg/stacktrace/issues/59).
+	+ Optimized stack capturing if `max\_depth`
+	 is set (thanks to Jan Eisenhauer for the PR!) [#67](https://github.com/boostorg/stacktrace/issues/67).
+	+ Added `to\_string(const stacktrace& )`
+	 functions for fast conversion of stacktraces to `std::string`
+	[#57](https://github.com/boostorg/stacktrace/issues/57).
+	+ Maintenance: updated docs [#62](https://github.com/boostorg/stacktrace/issues/62), tests updated.
+* [System](/libs/system/):
+
+	+ Boost.System is now header-only. A stub library is still built for
+	 compatibility, but linking to it is no longer necessary.
+	+ Even more functions have been marked `constexpr`.
+	+ The destructor of `error\_category`
+	 is now `protected` and
+	 no longer `virtual`. This
+	 is a potentially breaking change, but its impact is expected to be
+	 limited.
+	+ `error\_category` now
+	 has a constructor that accepts a 64 bit identifier, enabling distinct
+	 category objects to compare equal.
+	+ The constructors of `error\_category`
+	 are now `protected`.
+	+ A non-allocating, nonthrowing overload of `message`
+	 has been added.
+	+ A virtual function `failed`
+	 has been added, allowing categories for which success is not synonymous
+	 with 0.
+	+ The deprecated `boost::system::throws`
+	 object has been removed.
+	+ `boost::throws()`
+	 is now deprecated and its use is discouraged.
+	+ The constructor of `system\_error`
+	 taking a single `error\_code`
+	 argument is now `explicit`.
+	+ `system\_error::code()`
+	 now returns by value.
+* [Test](/libs/test/):
+
+	+ Boost.test v3.9 see the [Changes
+	 log](libs/test/doc/html/boost_test/change_log.html) for more details.
+	+ New feature:
+	 
+		- Official support of header-only variant of Boost.Test with
+		 multiple translation units.
+		- Now possible to manually add a test case by specifying its
+		 name, with `BOOST\_TEST\_CASE\_NAME`
+		- Better support of `boost::exception`
+		 in the logs
+	+ Bug fixes and pull requests:
+	 
+		- Trac tickets: [#13380](https://svn.boost.org/trac/boost/ticket/13380), [#13625](https://svn.boost.org/trac/boost/ticket/13625), [#13637](https://svn.boost.org/trac/boost/ticket/13637)
+		- GitHub Issues: [#149](https://github.com/boostorg/test/issues/149), [#150](https://github.com/boostorg/test/issues/150), [#156](https://github.com/boostorg/test/issues/156), [#158](https://github.com/boostorg/test/issues/158),
+		 [#163](https://github.com/boostorg/test/issues/163)
+		- GitHub Pull Requests: [PR#147](https://github.com/boostorg/test/pull/147), [PR#148](https://github.com/boostorg/test/pull/148), [PR#151](https://github.com/boostorg/test/pull/151),
+		 [PR#154](https://github.com/boostorg/test/pull/154), [PR#161](https://github.com/boostorg/test/pull/161)
+* [TypeIndex](/libs/type_index/):
+
+	+ Fix the regression and speed up parsing of the `boost/type\_traits.hpp`
+	 header by 30% (thanks to Nikita Kniazev for the PR!) [#21](https://github.com/boostorg/type_index/issues/21).
+* [Utility](/libs/utility/):
+
+	+ Added support for non-inheritable empty types to `boost::compressed\_pair`
+	 by avoiding the empty base optimization for types which are declared
+	 as final (Glen Fernandes).
+* [Variant](/libs/variant/):
+
+	+ Fixed issue with visibility. Now `boost::bad\_visit`
+	 exception could cross the boundaries of shared library with hidden
+	 visibility and could be catched in other shared library with hidden
+	 visibility.
+* [YAP](/libs/yap/):
+
+	+ Minor changes to support MSVC++ version 14.15 (Visual Studio 2017
+	 version 15.8).
+	+ Doc fixes.
+
+### Discontinued Libraries
+
+
+* Signals (v1) is now removed. Its removal was announced in 1.68 and its
+ deprecation was announced in 1.54. Boost 1.68 is the last release that
+ provides this library. Users are encouraged to use Signals2 instead. The
+ Boost community thanks Douglas Gregor for his work on Signals which served
+ its users well and which also inspired Signals2.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1
+	+ Clang, C++17: 5.0.2, 6.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Daniel James, Vladimir Prus, Marshall Clow and Michael Caisse managed this
+ release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

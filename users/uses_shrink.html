@@ -1,0 +1,655 @@
+---
+title: Shrink Wrapped Boost
+copyright: Rene Rivera 2007.
+revised: 
+---﻿
+
+
+Shrink Wrapped Boost
+
+
+
+Shrink Wrapped Boost
+====================
+
+Boost has found it's way into many products that are
+ available "off the shelf", including consumer applications from
+ Adobe, through to business middleware from SAP.
+
+
+Adobe Photoshop CS2
+-------------------
+
+
+[Adobe
+ Photoshop CS2](http://www.adobe.com/products/photoshop/index.html) uses the [Adobe Software Libraries](http://opensource.adobe.com/),
+ which in turn depend upon large parts of Boost. The [Adobe Software
+ Libraries](http://opensource.adobe.com/) are being rolled out across the Adobe product
+ line to provide cross platform user interface logic.
+
+
+Adobe Indesign
+--------------
+
+
+[Adobe
+ Indesign](http://www.adobe.com/products/indesign/index.html) offers best of breed page design: Indesign and
+ it's asociated SDK depend upon Boost [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Functional](../doc/libs/release/libs/functional/index.html)
+ and others.
+
+
+SAP NetWeaver
+-------------
+
+
+[SAP
+ NetWeaver](http://www.sap.com/platform/netweaver/index.epx) is the technical foundation of mySAP Business
+ Suite solutions, SAP xApps composite applications, partner
+ solutions, and customer custom-built applications. [Boost.Regex](../doc/libs/release/libs/regex/index.html)
+ provides the regular expression implementation for SAP's
+ [ABAP
+ language](https://www.sdn.sap.com/irj/sdn?node=linkDnode6-3).
+
+
+Real Networks, Rhapsody
+-----------------------
+
+
+The [Rhapsody
+ Music Service](http://www.real.com/) allows its subscribers to legally
+ download/transfer/burn over a million songs. The Rhapsody
+ client software was built with many Boost libraries:
+
+
+[Boost.Format](../doc/libs/release/libs/format/index.html):
+ Boost.Format is top notch. Using it is a bliss.
+
+
+[Boost.Functional](../doc/libs/release/libs/functional/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ and [Boost.Bind](../doc/libs/release/libs/bind/index.html):
+ These three libraries, along with [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html)
+ are the most used in our application. I could not imagine not
+ having them handy.
+
+
+[Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html):
+ Hands down, the most useful, and used library of the lot!
+
+
+[Boost.DateTime](../doc/libs/release/libs/date_time/index.html):
+ Simple to use, effective, does the job. I love the flexible
+ input string parsing facilities, and the human readable ISO
+ output.
+
+
+[Boost.Iterator](../doc/libs/release/libs/iterator/index.html):
+ Wow. Moving legacy iterating interfaces, or interfaces that
+ should of been properly designed as iterators to STL compliant
+ iterators was easy and painless. The gains in functionality to
+ our code made by this library are invaluable.
+
+
+[Boost.Regex](../doc/libs/release/libs/regex/index.html):
+ When you need it, it works magic.
+
+
+[Boost.Thread](../doc/libs/release/libs/thread/index.html):
+ Used to implement the monitor pattern in key areas.
+
+
+[Boost.Preprocessor](../doc/libs/release/libs/preprocessor/index.html):
+ Used to implement repetitive unit-test code generation. The
+ codebase benefited greatly from the clarity [Boost.Preprocessor](../doc/libs/release/libs/preprocessor/index.html)
+ brought.
+
+
+Skyjuice Software, Quick File Rename
+------------------------------------
+[Skyjuice Software](http://www.skyjuicesoftware.com)
+[Quick File Rename](http://www.skyjuicesoftware.com/software/QuickFileRename)
+ is a unicode batch file and
+ folder renamer which allows photo collectors and audiophiles to rename
+ thousands of files and folders in seconds. Users can tag audio files,
+ extract meta data information for photos, and perform other batch rename
+ operations to allow better categorisation of files and folders in Windows
+ Explorer. Complex rename operations can be combined into a single step
+ using a rules system. A command line mode is also supported.
+ Parts of boost used: All regular expressions used in Quick File Rename are
+ parsed by
+ [Boost.Regex](../doc/libs/release/libs/random/index.html). 
+ This provided us with tremendous power for the text
+ manipulation that is used frequently in both in the GUI and console modes.
+ 
+
+
+DataSolid GmbH Germany, CADdy++ Mechanical Design (c)
+-----------------------------------------------------
+
+
+[CADdy++
+ Mechanical Design professional (c)](http://www.DataSolid.com) is a fully parametric 3D
+ CAD application with unbroken link between 3D models and 2D
+ drawings. CADdy++ uses the Boost libraries: [Boost.Any](../doc/libs/release/libs/any/index.html),
+ [Boost.Tokenizer](../doc/libs/release/libs/tokenizer/index.html),
+ [Boost.Signals](../doc/libs/release/libs/signals/index.html),
+ [Boost.PropertyMap](../doc/libs/release/libs/property_map/index.html),
+ [Array](../doc/libs/release/libs/array/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Operators](../doc/libs/release/libs/utility/operators.htm),
+ [Boost.Tuple](../doc/libs/release/libs/tuple/index.html),
+ [Boost.Random](../doc/libs/release/libs/random/index.html).
+
+
+*"Many thanks to all the boost developers for their great
+ work and effort spending into boost."*
+
+
+Dimension 5, Miner3D
+--------------------
+
+
+Data visualization technology enabling advanced data
+ analysis, visualization, sonification and speech applications
+ for business and science.
+
+
+The [Miner3D](http://www.miner3D.com) application provides means
+ for interactive visual analysis of arbitrary tabular data from
+ various data sources. It has a powerful OpenGL-based
+ visualization engine and an intuitive GUI. This combination
+ helps a human eye guide the application of statistical tools
+ and spot the patterns that might otherwise remain hidden.
+
+
+*"We are using the following boost libraries: [Boost.DateTime](../doc/libs/release/libs/date_time/index.html),
+ [Boost.Variant](../doc/libs/release/libs/variant/index.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Format](../doc/libs/release/libs/format/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html),
+ [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html),
+ [Boost.Operators](../doc/libs/release/libs/utility/operators.htm),
+ [Boost.DynamicBitset](../doc/libs/release/libs/dynamic_bitset/index.html),
+ [Boost.EnableIf](../doc/libs/release/libs/utility/enable_if.html),
+ [Boost.Timer](../doc/libs/release/libs/timer/index.html)."*
+
+
+Synergy, mailIntercept
+----------------------
+
+
+[mailIntercept](http://www.mintercept.com) from [Synergy](http://www.synergy.com.br) is a
+ mail interceptor service for Exchange Server 2000/2003.
+
+
+mailIntercept intercepts and interprets the e-mails from a
+ LAN using Exchange Server and converts the microsoft
+ proprietary format to MIME and passes them to an SMTP filter
+ and returns the emails to the Exchange Server as modified by
+ the SMTP filter, converted back to the microsoft proprietary
+ format and with its features preserved.
+
+
+mailIntercept was built using the following Boost libraries:
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Phoenix](../doc/libs/release/libs/spirit/phoenix/index.html),
+ [Boost.Spirit](../doc/libs/release/libs/spirit/index.html),
+ [Boost.PointerContainer](../doc/libs/release/libs/ptr_container/index.html),
+ [Boost.Serialization](../doc/libs/release/libs/serialization/index.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Iterator](../doc/libs/release/libs/iterator/index.html),
+ [Boost.Lambda](../doc/libs/release/libs/lambda/index.html),
+ [Boost.LexicalCast](../doc/libs/release/libs/conversion/lexical_cast.htm),
+ [Boost.Operators](../doc/libs/release/libs/utility/operators.htm),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Tribool](../doc/libs/release/doc/html/tribool.html)
+ and [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html)
+
+
+Integrated Research P/L, PROGNOSIS IP Telephony Manager and
+ IP Telephony Express
+---------------------------------------------------------------------------------
+
+
+[PROGNOSIS](http://www.ir.com)
+ is a suite of IP telephony management software products,
+ specifically designed to address the key challenges of IP
+ telephony life cycle management, including network-readiness,
+ assessment, pre-deployment assurance testing, and ongoing Day-2
+ management of Cisco CallManager, Cisco Unity, and Cisco AVVID
+ infrastructure. *"The Boost libraries used were: [Boost.Any](../doc/libs/release/libs/any/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.LexicalCast](../doc/libs/release/libs/conversion/lexical_cast.htm),
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html),
+ [Boost.NumericCast](../doc/libs/release/libs/conversion/cast.htm#numeric_cast),
+ [Boost.Ref](../doc/libs/release/libs/bind/ref.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Thread](../doc/libs/release/libs/thread/index.html),
+ [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html)."*
+
+
+Kinook Software, Visual Build Professional
+------------------------------------------
+
+
+[Visual Build Professional](http://www.visualbuild.com/) is
+ a tool that enables developers, software process engineers, and
+ build specialists to create an automated, repeatable process
+ for building their software. Visual Build provides built-in
+ support for Microsoft Visual Studio .NET and 2005, Visual
+ Basic, Visual C++, Visual J++, SourceSafe, eMbedded Tools,
+ Borland Delphi, JBuilder, C++Builder, and more.
+
+
+The following Boost Libraries were used: [Boost.Any](../doc/libs/release/libs/any/index.html),
+ [Boost.MemFn](../doc/libs/release/libs/bind/mem_fn.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.StaticAssert](../doc/libs/release/libs/static_assert/index.html)
+
+
+Kinook Software, Ultra Recall
+-----------------------------
+
+
+[Ultra
+ Recall](http://www.ultrarecall.com/) is a personal information management (PIM) /
+ knowledge management (KM) application for Microsoft Windows. It
+ helps you capture, organize, and recall all of your electronic
+ information across all the applications that you use.
+
+
+Used the following Boost libraries: [Boost.Format](../doc/libs/release/libs/format/index.html),
+ [Boost.SharedPointer](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.StaticAssert](../doc/libs/release/libs/static_assert/index.html)
+
+
+Applied Dynamics International, ADvantageDE
+-------------------------------------------
+
+
+[Applied
+ Dynamics International (ADI)](http://www.adi.com) provides state-of-the art
+ software and hardware tools to the automotive, aerospace, and
+ defense industries to design and test embedded control systems.
+ ADI's tools provide advanced capabilities in real-time
+ hardware-in-the-loop (HIL) simulation, rapid prototyping, and
+ embedded controller software development. We have been a
+ leading supplier of HIL simulation solutions since 1957.
+
+
+ADvantageDE is the development environment. It allows
+ simulation models to be easily connected to one another or to
+ hardware components for real-time simulation. ADvantageDE
+ projects can be created for execution on your PC, Unix
+ workstation or on our real-time platforms.
+
+
+ADvantageVI is the point of control and the graphical user
+ interface for all of the run-time activities. The run-time
+ architecture includes extensive features for interacting with,
+ visualizing, and automating simulation and test activities.
+
+
+DasCom provides access to real-time simulation data from
+ most Windows applications, such as Micrsoft Excel, National
+ Instruments Labview, etc.
+
+
+The following Boost Libraries are used: [Array](../doc/libs/release/libs/array/index.html), [Boost.Assign](../doc/libs/release/libs/assign/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.CRC](../doc/libs/release/libs/crc/index.html),
+ [Boost.DynamicBitset](../doc/libs/release/libs/dynamic_bitset/index.html),
+ [Boost.EnableIf](../doc/libs/release/libs/utility/enable_if.html),
+ [Boost.FileSystem](../doc/libs/release/libs/filesystem/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.Functional](../doc/libs/release/libs/functional/index.html),
+ [Boost.Iterator](../doc/libs/release/libs/iterator/index.html),
+ [Boost.Lambda](../doc/libs/release/libs/lambda/index.html),
+ [Boost.Optional](../doc/libs/release/libs/optional/index.html),
+ [Boost.Preprocessor](../doc/libs/release/libs/preprocessor/index.html),
+ [Boost.Ref](../doc/libs/release/libs/bind/ref.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Serialization](../doc/libs/release/libs/serialization/index.html),
+ [Boost.Signals](../doc/libs/release/libs/signals/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.StaticAssert](../doc/libs/release/libs/static_assert/index.html),
+ [Boost.Spirit](../doc/libs/release/libs/spirit/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.Tokenizer](../doc/libs/release/libs/tokenizer/index.html),
+ [Boost.Tuple](../doc/libs/release/libs/tuple/index.html),
+ [Boost.Utility](../doc/libs/release/libs/utility/index.html)
+ and [Boost.Variant](../doc/libs/release/libs/variant/index.html)
+
+
+PeerGuardian
+------------
+
+
+[PeerGuardian 2](http://phoenixlabs.org/pg2/) is Methlabs
+ premier IP blocker for Windows. With features like support for
+ multiple lists, a list editor, automatic updates, and blocking
+ all of IPv4 (TCP, UDP, ICMP, etc), PeerGuardian 2 is the safest
+ and easiest way to protect your privacy on P2P.
+
+
+Boost Libraries used include [Boost.CRC](../doc/libs/release/libs/crc/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Integer](../doc/libs/release/libs/integer/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.Functional](../doc/libs/release/libs/functional/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.LexicalCast](../doc/libs/release/libs/conversion/lexical_cast.htm),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.Random](../doc/libs/release/libs/random/index.html),
+ [Boost.Format](../doc/libs/release/libs/format/index.html),
+ [Boost.Utility](../doc/libs/release/libs/utility/index.html).
+
+
+DECOMSYS::DESIGNER PRO
+----------------------
+
+
+[DECOMSYS::DESIGNER PRO](http://www.decomsys.com/) enables
+ the user to design a highly complex [FlexRay](http://www.flexray.com/) communication system,
+ which is going to be the fundament for tomorrow's automotive
+ electronics.
+
+
+*"Boost Libraries used: [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.DynamicBitset](../doc/libs/release/libs/dynamic_bitset/index.html),
+ [Boost.Format](../doc/libs/release/libs/format/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.Iterator](../doc/libs/release/libs/iterator/index.html),
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html),
+ [Boost.MultiIndex](../doc/libs/release/libs/multi_index/index.html),
+ [Boost.Utility](../doc/libs/release/libs/utility/index.html),
+ [Boost.Operators](../doc/libs/release/libs/utility/operators.htm),
+ [Boost.Preprocessor](../doc/libs/release/libs/preprocessor/index.html)
+ (nice for generating data for unit tests), [Boost.ProgramOptions](../doc/libs/release/libs/program_options/index.html)
+ (for the unit test programs), [Boost.Ref](../doc/libs/release/libs/bind/ref.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Serialization](../doc/libs/release/libs/serialization/index.html),
+ [Boost.Signals](../doc/libs/release/libs/signals/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Spirit](../doc/libs/release/libs/spirit/index.html),
+ [Boost.Timer](../doc/libs/release/libs/timer/index.html) and
+ [Boost.Variant](../doc/libs/release/libs/variant/index.html)*
+
+
+*"We are also planning to use Andreas Huber's FSM library
+ and Iostreams (together with Serialize) once they are
+ officially released."*
+
+
+Wise Riddles Software, Audiomatic
+---------------------------------
+
+
+[Audiomatic](http://www.wiseriddles.com/Products/Audiomatic/)
+ is a tool used to make system-wide macros and then launch those
+ macros with a voice command or keyboard shortcut at any time...
+ from any Windows application. Audiomatic enables you to launch
+ programs, files, or websites; simulate keystrokes; play sounds;
+ speak text; or even run scripts. You can do it all with a voice
+ command or keyboard shortcut! *"Boost libraries Used:
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.DateTime](../doc/libs/release/libs/date_time/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.Utility](../doc/libs/release/libs/utility/index.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.Thread](../doc/libs/release/libs/thread/index.html),
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html)
+ and [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html)."*
+
+
+SMProcess FxEngine
+------------------
+
+
+The [FxEngine](http://www.smprocess.com/Bin/FxEngineSetup.exe)
+ from [SMProcess](http://www.smprocess.com) is a Free Framework
+ for data flow processing and the design of dynamic systems
+ using plugins. The Framework provides a full control to the
+ plugin architecture for applications that require custom
+ solutions.
+
+
+The Framework is essentially based on three boost libraries:
+ [Boost.Thread](../doc/libs/release/libs/thread/index.html):
+ Used to implement each "Pin" work. [Boost.Thread](../doc/libs/release/libs/thread/index.html)
+ includes everything what we were looking for a portable
+ framework like mutex and condition components. [Boost.Functional](../doc/libs/release/libs/functional/index.html)
+ and [Boost.Bind](../doc/libs/release/libs/bind/index.html):
+ Provide a great flexibility compared to the STL. [Boost.Timer](../doc/libs/release/libs/timer/index.html): A
+ very straightforward and effective timer.
+
+
+Remobo
+------
+
+
+[Remobo](http://www.remobo.com) from [AWIT Systems, Inc](http://www.remobo.com) creates an
+ Instant Private Network (IPN) between your computers and your
+ friends. It's a COMPUTER Network based on your Social Network.
+ With IPN service, you and your friends can work or play
+ together over Internet as if you were sitting on the same
+ office or home LAN (Local Area Network).
+
+
+The Boost libraries used were: [Asio](../doc/libs/release/libs/asio/index.html), [Bind](../doc/libs/release/libs/bind/index.html), [DateTime](../doc/libs/release/libs/date_time/index.html),
+ [Non-Copyable](../doc/libs/release/libs/utility/utility.htm#Class_noncopyable), [File
+ System](../doc/libs/release/libs/filesystem/index.html), [Function](../doc/libs/release/libs/function/index.html),
+ [Lexical
+ Cast](../doc/libs/release/libs/conversion/lexical_cast.htm), [Ref](../doc/libs/release/libs/bind/ref.html), [Regex](../doc/libs/release/libs/regex/index.html), [Serialization](../doc/libs/release/libs/serialization/index.html),
+ [Smart
+ Pointer](../doc/libs/release/libs/smart_ptr/index.html), [StateChart](../doc/libs/release/libs/statechart/index.html),
+ [Threads](../doc/libs/release/libs/thread/index.html),
+ [Tokenizer](../doc/libs/release/libs/tokenizer/index.html),
+ [Tribool](../doc/libs/release/doc/html/tribool),
+ [Tuples](../doc/libs/release/libs/tuple/doc/tuple_users_guide.html),
+ [Utility](../doc/libs/release/libs/utility/index.html),
+ [Variant](../doc/libs/release/libs/variant/index.html),
+ [Format](../doc/libs/release/libs/format/index.html),
+ [MPL](../doc/libs/release/libs/mpl/index.html),
+ [Multi
+ Index](../doc/libs/release/libs/multi_index/index.html), [Preprocessor](../doc/libs/release/libs/preprocessor/doc/index.html),
+ [Type
+ Traits](../doc/libs/release/libs/type_traits/index.html)
+
+
+Megahard Software Technologies Inc., Rule in Hell
+-------------------------------------------------
+
+
+Rule in Hell is a Massively Multiplayer Online Role Playing
+ Game (still in beta).
+
+
+The Boost libraries used were: [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.Any](../doc/libs/release/libs/any/index.html),
+ [Boost.Tuple](../doc/libs/release/libs/tuple/index.html),
+ [Boost.Ref](../doc/libs/release/libs/bind/ref.html),
+ [Boost.SharedPointer](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html)
+ and [Boost.Utility](../doc/libs/release/libs/utility/index.html).
+
+
+*"By far the combination of [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Function](../doc/libs/release/libs/function/index.html),
+ [Boost.SharedPointer](../doc/libs/release/libs/smart_ptr/index.html)
+ and [Boost.Ref](../doc/libs/release/libs/bind/ref.html) is what
+ we use most heavily".*
+
+
+Dr. Detlef Meyer-Eltz, TextTransformer
+--------------------------------------
+
+
+The [TextTransformer](http://www.texttransformer.com) is a
+ Windows IDE for the generation of top down parsers with
+ included c++ interpreter code for semantic actions. Both can be
+ executed or debugged immediately on single source files or on
+ groups of files. Generated parsers can be exported as c++ code
+ including as well the interpretable code as any arbitrary other
+ code. Tokens are defined as POSIX regular expressions and rules
+ are defined in a similar syntax quasi as regular expressions of
+ regular expressions. The construction of parse trees and their
+ traversal is supported.
+
+
+*"The TextTransformer is essentially based on the
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ by which the tokens for a parser can be defined. The [Boost.LexicalCast](../doc/libs/release/libs/conversion/lexical_cast.htm)
+ and the Format library are used for the integrated c++
+ interpreter. For the future also an interpreter version of the
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html)
+ is planned. The [Boost.ProgramOptions](../doc/libs/release/libs/program_options/index.html)
+ library will be used too to improve the command line version of
+ the texttransformer."*
+
+
+Redshift Software, The Thot Tool
+--------------------------------
+
+
+[The Thot
+ Tool](http://thot-tool.com/) is an asset management tool for a group of game
+ developers. Thot combines assets, both binary and text, with
+ workflow automation into a unified whole, and was built using
+ Boost [Boost.Thread](../doc/libs/release/libs/thread/index.html),
+ [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Regex](../doc/libs/release/libs/regex/index.html),
+ [Boost.MPL](../doc/libs/release/libs/mpl/index.html), and
+ [Boost.TypeTraits](../doc/libs/release/libs/type_traits/index.html).
+
+
+Paragent, Paragent Manage 2.1
+-----------------------------
+
+
+[Paragent
+ Manage](http://www.paragent.com/) is a Desktop Management Application that uses a
+ lightweight agent written in C++. Unlike traditional desktop
+ management solutions, Paragent Manage avoids the complexity and
+ cost of servers by using peer-to-peer communication between
+ agents and the administrative console. This allows real-time
+ inventory searching, alerting and software auditing in an
+ easy-to-deploy and maintain package.
+
+
+*"We have used Boost extensively throughout our agent,
+ including: [Boost.Thread](../doc/libs/release/libs/thread/index.html),
+ [Boost.SharedPointer](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Spirit](../doc/libs/release/libs/spirit/index.html),
+ [Boost.DateTime](../doc/libs/release/libs/date_time/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.MultiIndex](../doc/libs/release/libs/multi_index/index.html),
+ [Boost.FileSystem](../doc/libs/release/libs/filesystem/index.html).*
+
+
+*"Apart from some read\_write\_mutex issues we had, Boost
+ has been a seamless part of our development, and has allowed us
+ to develop and deploy a very complex, highly threaded
+ networking agent with a built-in lisp-like xml-based scripting
+ language all done in C++. Our entire development team would
+ like to thank everyone for their hard work on behalf of C++
+ coders everywhere."*
+
+
+think-cell, Boost PowerPoint efficiency
+---------------------------------------
+[think-cell](http://www.think-cell.com/)  
+ was founded in 2002 in Berlin and is today the leading vendor
+ of productivity software for professional PowerPoint users.
+ Its product suite covers the complete process of presentation creation -
+ from analysis and preparation of business data 
+ to the graphical rendering of qualitative and quantitative results.
+ Most international business consulting firms,
+ as well as a large number of the well-known industrial global leaders,
+ are among think-cell's customers.
+ 
+ Our presentation suite think-cell serves a single purpose – creating business presentations.
+ It is a complete set of cutting-edge productivity tools, each unrivaled in its scope of application.
+ 
+ think-cell chart is our leading PowerPoint add-in for creating professional business charts,
+ such as complex Waterfalls, Mekkos and Gantts, in a few minutes.
+ 
+ think-cell round is our one-of-a-kind Excel add-in for consistently rounding numbers,
+ even across complex calculations. 
+
+ think-cell layout is our patented PowerPoint add-in
+ for rapidly composing clean slide layouts from standard elements. 
+ 
+ Libraries used:
+ [Algorithm](../doc/libs/release/libs/algorithm/index.html),
+ [Assign](../doc/libs/release/libs/assign/index.html),
+ [Config](../doc/libs/release/libs/config/config.htm),
+ [Conversion](../doc/libs/release/libs/conversion/index.html),
+ [CRC](../doc/libs/release/libs/crc/index.html),
+ [Date Time](../doc/libs/release/libs/date_time/index.html),
+ [Format](../doc/libs/release/libs/format/index.html),
+ [Fusion](../doc/libs/release/libs/fusion/doc/html/index.html),
+ [Geometry](../doc/libs/release/libs/geometry/index.html),
+ [Integer](../doc/libs/release/libs/integer/index.html),
+ [Interprocess](../doc/libs/release/libs/interprocess/index.html),
+ [Intrusive](../doc/libs/release/libs/intrusive/index.html),
+ [Iostreams](../doc/libs/release/libs/iostreams/index.html),
+ [Iterator](../doc/libs/release/libs/iterator/index.html),
+ [Math Common Factor](../doc/libs/release/libs/math/doc/html/gcd_lcm.html),
+ [Math/Special Functions](../doc/libs/release/libs/math/doc/html/special.html),
+ [MPL](../doc/libs/release/libs/mpl/index.html),
+ [Multi-Array](../doc/libs/release/libs/multi_array/index.html),
+ [Multi-Index](../doc/libs/release/libs/multi_index/index.html),
+ [Numeric Conversion](../doc/libs/release/libs/numeric/conversion/index.html),
+ [Operators](../doc/libs/release/libs/utility/operators.htm),
+ [Optional](../doc/libs/release/libs/optional/index.html),
+ [Phoenix](../doc/libs/release/libs/phoenix/index.html),
+ [Preprocessor](../doc/libs/release/libs/preprocessor/index.html),
+ [Proto](../doc/libs/release/libs/proto/index.html),
+ [Range](../doc/libs/release/libs/range/index.html),
+ [Smart Ptr](../doc/libs/release/libs/smart_ptr/smart_ptr.htm),
+ [Spirit](../doc/libs/release/libs/spirit/index.html),
+ [String Algo](../doc/libs/release/libs/algorithm/string/index.html),
+ [Swap](../doc/libs/release/libs/utility/swap.html),
+ [Tribool](../doc/libs/release/doc/html/tribool.html),
+ [Tuple](../doc/libs/release/libs/tuple/index.html),
+ [Variant](../doc/libs/release/libs/variant/index.html)
+LW-WORKS Software, Clipboard Recorder
+-------------------------------------
+
+
+[Clipboard
+ Recorder](http://www.lw-works.com/clipboard-recorder) is an application that helps users to manage their
+ clipboard history and provides easy ways for users to access
+ their saved clipboard data.
+
+
+Libraries used: [Boost.SmartPointers](../doc/libs/release/libs/smart_ptr/index.html),
+ [Boost.Serialization](../doc/libs/release/libs/serialization/index.html),
+ [Boost.Asio](../doc/libs/release/libs/asio/index.html),
+ [Boost.StringAlgorithms](../doc/libs/release/libs/algorithm/string/index.html),
+ [Boost.Bind](../doc/libs/release/libs/bind/index.html),
+ [Boost.Thread](../doc/libs/release/libs/thread/index.html),
+ [Boost.Conversion](../doc/libs/release/libs/conversion/index.html),
+ Iostreams.
+
+
+
+
+
+
+
+
+

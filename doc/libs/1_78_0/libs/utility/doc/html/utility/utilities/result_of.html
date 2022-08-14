@@ -1,0 +1,475 @@
+---
+title: Result of
+copyright: 
+revised: 
+---
+
+
+Result of
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](operators.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/result_of.html)
+
+
+### 
+[Result of](result_of.html "Result of")
+[Introduction](result_of.html#utility.utilities.result_of.introduction)
+[Usage guidelines for `boost::result\_of`](result_of.html#utility.utilities.result_of.usage_guidelines_for_boost_resul)
+[Usage
+ guidelines for the TR1 result\_of protocol](result_of.html#utility.utilities.result_of.usage_guidelines_for_the_tr1_res)
+[Known differences between `boost::result\_of`
+ and `boost::tr1\_result\_of`](result_of.html#utility.utilities.result_of.known_differences_between_boost_)
+[Known differences between
+ `boost::result\_of`
+ and C++11 result\_of](result_of.html#utility.utilities.result_of.known_differences_between_boost0)
+[Reference](result_of.html#result_of.reference)
+[Acknowledgments](result_of.html#utility.utilities.result_of.acknowledgments)
+
+
+#### 
+[Introduction](result_of.html#utility.utilities.result_of.introduction "Introduction")
+ The class template [`result\_of`](../../boost/result_of.html "Struct template result_of")
+ helps determine the type of a call expression. For example, given an lvalue
+ `f` of type `F` and lvalues `t1`,`t2`, ..., `tN`
+ of types `T1`, `T2`, ..., `TN`,
+ respectively, the type [`result\_of`](../../boost/result_of.html "Struct template result_of")`<F(T1,
+T2,
+..., TN)>::type`
+ defines the result type of the expression `f(t1,
+t2,
+...,tN)`.
+ 
+ This implementation permits the type `F`
+ to be a function pointer, function reference, member function pointer,
+ or class type. By default, N may be any value between 0 and 16. To change
+ the upper limit, define the macro `BOOST\_RESULT\_OF\_NUM\_ARGS`
+ to the maximum value for N. Class template [`result\_of`](../../boost/result_of.html "Struct template result_of") resides in the header
+ [`<boost/utility/result\_of.hpp>`](../../../../../../boost/utility/result_of.hpp).
+ 
+ If your compiler's support for [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) is adequate, [`result\_of`](../../boost/result_of.html "Struct template result_of") automatically uses it
+ to deduce the type of the call expression, in which case [`result\_of`](../../boost/result_of.html "Struct template result_of")`<F(T1, T2, ..., TN)>::type` names the type [`decltype`](https://en.cppreference.com/w/cpp/language/decltype)`(boost::declval<F>()(boost::declval<T1>(), boost::declval<T2>(), ..., boost::declval<TN>()))`, as in the following example.
+ 
+```
+struct functor {
+    template<class T>
+    T operator()(T x)
+    {
+        return x;
+    }
+};
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(int)>::type type; // type is int
+
+```
+
+
+ You can test whether [`result\_of`](../../boost/result_of.html "Struct template result_of")
+ is using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) by checking if the macro
+ `BOOST\_RESULT\_OF\_USE\_DECLTYPE`
+ is defined after including `result\_of.hpp`.
+ You can also force [`result\_of`](../../boost/result_of.html "Struct template result_of")
+ to use [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) by defining `BOOST\_RESULT\_OF\_USE\_DECLTYPE` prior to
+ including `result\_of.hpp`.
+ 
+ If [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) is not used, then automatic
+ result type deduction of function objects is not possible. Instead, [`result\_of`](../../boost/result_of.html "Struct template result_of")
+ uses the following protocol to allow the programmer to specify a type.
+ When `F` is a class type
+ with a member type `result\_type`,
+ `result\_of<F(T1, T2, ..., TN)>::type` is `F::result\_type`.
+ When `F` does not contain
+ `result\_type`, `result\_of<F(T1, T2, ..., TN)>::type` is `F::result<F(T1,
+T2,
+..., TN)>::type`
+ when `N >
+0` or `void`
+ when `N =
+0`.
+ 
+ Note that it is the responsibility of the programmer to ensure that function
+ objects accurately advertise their result type via this protocol, as in
+ the following example.
+ 
+```
+struct functor {
+    template <class> struct result;
+
+    template<class F, class T>
+    struct result<F(T)> {
+        typedef T type;
+    };
+
+    template<class T>
+    T operator()(T x)
+    {
+        return x;
+    }
+};
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(int)>::type type; // type is int
+
+```
+
+
+ Since [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) is a language feature standardized
+ in C++11, if you are writing a function object to be used with [`result\_of`](../../boost/result_of.html "Struct template result_of"), for maximum portability,
+ you might consider following the above protocol even if your compiler has
+ proper [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) support.
+ 
+ If you wish to continue to use the protocol on compilers that support
+ [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), there are two options:
+ 
+
+
+* You can use [`boost::tr1\_result\_of`](../../boost/tr1_result_of.html "Struct template tr1_result_of"),
+ which is also defined in [`<boost/utility/result\_of.hpp>`](../../../../../boost/utility/result_of.hpp).
+* Alternatively, you can define the macro `BOOST\_RESULT\_OF\_USE\_TR1`,
+ which causes [`result\_of`](../../boost/result_of.html "Struct template result_of")
+ to use the protocol described above instead of [`decltype`](https://en.cppreference.com/w/cpp/language/decltype). If you choose to follow
+ the protocol, take care to ensure that the `result\_type`
+ and `result<>`
+ members accurately represent the return type of `operator()` given a call expression.
+
+
+ Additionally, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ provides a third mode of operation, which some users may find convenient.
+ When `BOOST\_RESULT\_OF\_USE\_TR1\_WITH\_DECLTYPE\_FALLBACK`
+ is defined, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ behaves as follows. If the function object has a member type `result\_type` or member template `result<>`,
+ then [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ will use the TR1 protocol.
+ 
+ Otherwise, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ will use [`decltype`](https://en.cppreference.com/w/cpp/language/decltype). Using TR1 with a [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) fallback may workaround
+ certain problems at the cost of portability. For example:
+ 
+
+
+* Deficient compiler: If your code requires [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") to work with incomplete
+ return types but your compiler's [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) implementation does
+ not support incomplete return types, then you can use the TR1 protocol
+ as a workaround. Support for incomplete return types was added late
+ in the C++11 standardization process (see [N3276](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3276.pdf))
+ and is not implemented by some compilers.
+* Deficient legacy code: If your existing TR1 function object advertises
+ a different type than the actual result type deduced by [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), then using TR1 with
+ a [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) fallback will allow
+ you to work with both your existing TR1 function objects and new C++11
+ function object. This situation could occur if your legacy function
+ objects misused the TR1 protocol. See the documentation on known [differences](result_of.html#sec:result_of_tr1_diff) between [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") and TR1.
+* This implementation of [`result\_of`](../../boost/result_of.html "Struct template result_of") requires class template
+ partial specialization, the ability to parse function types properly,
+ and support for SFINAE. If [`result\_of`](../../boost/result_of.html "Struct template result_of") is not supported
+ by your compiler, including the header [`<boost/utility/result\_of.hpp>`](../../../../../boost/utility/result_of.hpp) will define the macro
+ `BOOST\_NO\_RESULT\_OF`.
+
+
+ For additional information about [`result\_of`](../../boost/result_of.html "Struct template result_of"), see the C++ Library
+ Technical Report, [N1836](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1836.pdf),
+ or, for motivation and design rationale, the [`result\_of`](../../boost/result_of.html "Struct template result_of") [proposal](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1454.html).
+ 
+
+#### 
+Usage guidelines for [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ The following are general suggestions about when and how to use [`boost::result\_of`](../../boost/result_of.html "Struct template result_of").
+ 
+
+
+1. If you are targeting C++11 and are not concerned about portability
+ to non-compliant compilers or previous versions of the standard, then
+ use `[`std::result\_of`](https://en.cppreference.com/w/cpp/types/result_of)`. If `[`std::result\_of`](https://en.cppreference.com/w/cpp/types/result_of)` meets your
+ needs, then there's no reason to stop using it.
+2. If you are targeting C++11 but may port your code to legacy compilers
+ at some time in the future, then use [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") with [`decltype`](https://en.cppreference.com/w/cpp/language/decltype). When [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) is used [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") and `[`std::result\_of`](https://en.cppreference.com/w/cpp/types/result_of)` are usually
+ interchangeable. See the documentation on known [differences](result_of.html#sec:result_of_cxx11_diff)
+ between [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ and C++11 [`std::result\_of`](https://en.cppreference.com/w/cpp/types/result_of).
+3. If compiler portability is required, use [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") with the TR1 protocol
+
+
+ Regardless of how you configure [`boost::result\_of`](../../boost/result_of.html "Struct template result_of"), it is important to
+ bear in mind that the return type of a function may change depending on
+ its arguments, and additionally, the return type of a member function may
+ change depending on the cv-qualification of the object. [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") must be passed the appropriately
+ cv-qualified types in order to deduce the corresponding return type.
+ 
+ For example:
+ 
+```
+struct functor {
+    int& operator()(int);
+    int const& operator()(int) const;
+
+    float& operator()(float&);
+    float const& operator()(float const&);
+};
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<
+    functor(int)
+>::type type1; // type1 is int &
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<
+    const functor(int)
+>::type type2; // type2 is int const &
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<
+    functor(float&)
+>::type type3; // type3 is float &
+
+typedef [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<
+    functor(float const&)
+>::type type4; // type4 is float const &
+
+```
+#### 
+[Usage
+ guidelines for the TR1 result\_of protocol](result_of.html#utility.utilities.result_of.usage_guidelines_for_the_tr1_res "Usage guidelines for the TR1 result_of protocol")
+ On compliant C++11 compilers, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") can use [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) to deduce the type of any
+ call expression, including calls to function objects. However, on pre-C++11
+ compilers or on compilers without adequate decltype support, additional
+ scaffolding is needed from function objects as described above. The following
+ are suggestions about how to use the TR1 protocol.
+ 
+
+
+* When the return type does not depend on the argument types or the cv-qualification
+ of the function object, simply define `result\_type`.
+ There is no need to use the `result`
+ template unless the return type varies.</li>
+* Use the protocol specified type when defining function prototypes.
+ This can help ensure the actual return type does not get out of sync
+ with the protocol specification. For example:
+
+
+```
+struct functor {
+    typedef int result\_type;
+    result\_type operator()(int);
+};
+
+```
+
+* Always specify the `result`
+ specialization near the corresponding `operator()` overload. This can make it easier
+ to keep the specializations in sync with the overloads. For example:
+
+
+```
+struct functor {
+    template<class> struct result;
+
+    template<class F>
+    struct result<F(int)> {
+        typedef int& type;
+    };
+    result<functor(int)>::type operator()(int);
+
+    template<class F>
+    struct result<const F(int)> {
+        typedef int const& type;
+    };
+    result<const functor(int)>::type operator()(int) const;
+};
+
+```
+
+* Use type transformations to simplify the `result`
+ template specialization. For example, the following uses [Boost.TypeTraits](../../../type_traits/doc/html/index.html)
+ to specialize the `result`
+ template for a single `operator()` that can be called on both a const
+ and non-const function object with either an lvalue or rvalue argument.
+
+
+```
+struct functor {
+    template<class> struct result;
+
+    template<class F, class T>
+    struct result<F(T)>
+        : boost::remove\_cv<
+              typename boost::remove\_reference<T>::type
+          >
+    {};
+
+    template<class T>
+    T operator()(T const&amp; x) const;
+};
+
+```
+#### 
+Known differences between [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ and [`boost::tr1\_result\_of`](../../boost/tr1_result_of.html "Struct template tr1_result_of")
+ When using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") ignores the TR1 protocol
+ and instead deduces the return type of function objects directly via [`decltype`](https://en.cppreference.com/w/cpp/language/decltype). In most situations, users
+ will not notice a difference, so long as they use the protocol correctly.
+ The following are situations in which the type deduced by [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") is known to differ depending
+ on whether [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) or the TR1 protocol is
+ used.
+ 
+ TR1 protocol misusage: When using the TR1 protocol, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") cannot detect whether
+ the actual type of a call to a function object is the same as the type
+ specified by the protocol, which allows for the possibility of inadvertent
+ mismatches between the specified type and the actual type. When using
+ [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), these subtle bugs may
+ result in compilation errors. For example:
+ 
+```
+struct functor {
+   typedef short result\_type;
+   int operator()(short);
+};
+
+#ifdef BOOST\_RESULT\_OF\_USE\_DECLTYPE
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<[`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(short)>::type, int>::value
+));
+
+#else
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<[`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(short)>::type, short>::value
+));
+
+#endif
+
+```
+
+
+ Note that the user can force [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") to use the TR1 protocol
+ even on platforms that support [`decltype`](https://en.cppreference.com/w/cpp/language/decltype) by defining `BOOST\_RESULT\_OF\_USE\_TR1`.
+ 
+ Nullary function objects: When using the TR1 protocol, [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") cannot always deduce
+ the type of calls to nullary function objects, in which case the type defaults
+ to void. When using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") always gives the actual
+ type of the call expression. For example:
+ 
+```
+struct functor {
+   template<class> struct result {
+       typedef int type;
+   };
+   int operator()();
+};
+
+#ifdef BOOST\_RESULT\_OF\_USE\_DECLTYPE
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<[`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor()>::type, int>::value
+));
+
+#else
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<[`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor()>::type, void>::value
+));
+
+#endif
+
+```
+
+
+ Note that there are some workarounds for the nullary function problem.
+ So long as the return type does not vary, `result\_type`
+ can always be used to specify the return type regardless of arity. If the
+ return type does vary, then the user can specialize [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") itself for nullary calls.
+ 
+ Non-class prvalues and cv-qualification: When using the TR1 protocol,
+ [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ will report the cv-qualified type specified by `result\_type`
+ or the `result` template
+ regardless of the actual cv-qualification of the call expression. When
+ using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") will report the actual
+ type of the call expression, which is not cv-qualified when the expression
+ is a non-class prvalue. For example:
+ 
+```
+struct functor {
+   template<class> struct result;
+   template<class F, class T> struct result<F(const T)> {
+       typedef const T type;
+   };
+
+   const short operator()(const short);
+   int const & operator()(int const &);
+};
+
+// Non-prvalue call expressions work the same with or without decltype.
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<
+       [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(int const &)>::type,
+       int const &
+::value
+));
+
+// Non-class prvalue call expressions are not actually cv-qualified,
+// but only the decltype-based result\_of reports this accurately.
+
+#ifdef BOOST\_RESULT\_OF\_USE\_DECLTYPE
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<
+       [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(const short)>::type,
+       short
+::value
+));
+
+#else
+
+BOOST\_STATIC\_ASSERT((
+   boost::is\_same<
+       [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")<functor(const short)>::type,
+       const short
+::value
+));
+
+#endif
+
+```
+#### 
+Known differences between
+ [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ and C++11 result\_of
+ When using [`decltype`](https://en.cppreference.com/w/cpp/language/decltype), [`boost::result\_of`](../../boost/result_of.html "Struct template result_of") implements most of the
+ C++11 [`std::result\_of`](https://en.cppreference.com/w/cpp/types/result_of) specification. One
+ known exception is that [`boost::result\_of`](../../boost/result_of.html "Struct template result_of")
+ does not implement the requirements regarding pointers to member data.
+ 
+
+#### 
+Reference
+##### 
+Header <[boost/utility/result\_of.hpp](../../../../../../boost/utility/result_of.hpp)>
+```
+namespace boost {
+  template<typename F> struct [result\_of](../../boost/result_of.html "Struct template result_of");
+  template<typename F> struct [tr1\_result\_of](../../boost/tr1_result_of.html "Struct template tr1_result_of");
+}
+```
+
+#### 
+[Acknowledgments](result_of.html#utility.utilities.result_of.acknowledgments "Acknowledgments")
+ Created by Doug Gregor. Contributions from Daniel Walker, Eric Niebler,
+ Michel Morin and others.
+ 
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](operators.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/result_of.html)

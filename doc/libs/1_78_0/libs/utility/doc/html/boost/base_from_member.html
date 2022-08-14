@@ -1,0 +1,70 @@
+---
+title: Class template base_from_member
+copyright: 
+revised: 
+---
+
+
+Class template base\_from\_member
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../index.html) | [Libraries](../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/base_from_member.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/base_from_member.html#header.boost.utility.base_from_member_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](base_fro_idm35151229100080.html)
+
+Class template base\_from\_member
+---------------------------------
+
+
+boost::base\_from\_member
+Synopsis
+--------
+```
+// In header: <[boost/utility/base\_from\_member.hpp](../utility/utilities/base_from_member.html#header.boost.utility.base_from_member_hpp "Header <boost/utility/base_from_member.hpp>")>
+
+template<typename MemberType, int UniqueID = 0> 
+class [base\_from\_member](base_from_member.html "Class template base_from_member") {
+public:
+  // [construct/copy/destruct](base_from_member.html#boost.base_from_memberconstruct-copy-destruct)
+  template<typename ... T, 
+           typename EnableIf = typename ::boost::detail::enable\_if\_unrelated<[base\_from\_member](base_from_member.html "Class template base_from_member"), T...>::type> 
+    explicit [base\_from\_member](base_from_member.html#idm35151229103152-bb)(T &&...) noexcept(noexcept((::new((void \*) 0) MemberType(static\_cast< T && >(x)...)))));
+};
+```
+
+
+Description
+-----------
+### 
+`base_from_member` 
+ public
+ construct/copy/destruct
+
+
+1. ```
+template<typename ... T, 
+         typename EnableIf = typename ::boost::detail::enable\_if\_unrelated<[base\_from\_member](base_from_member.html "Class template base_from_member"), T...>::type> 
+  explicit base\_from\_member(T &&... x) noexcept(noexcept((::new((void \*) 0) MemberType(static\_cast< T && >(x)...)))));
+```
+### Specializations
+
+
+* [Class template base\_from\_member<MemberType &, UniqueID>](base_fro_idm35151229100080.html "Class template base_from_member<MemberType &, UniqueID>")
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/base_from_member.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/base_from_member.html#header.boost.utility.base_from_member_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](base_fro_idm35151229100080.html)

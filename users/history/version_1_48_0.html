@@ -1,0 +1,400 @@
+---
+title: Version 1.48.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.48.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.48.0
+==============
+
+Version 1.48.0
+--------------
+
+
+November 15th, 2011 15:47 GMT
+
+
+[Documentation](/doc/libs/1_48_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_48\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.48.0/boost_1_48_0.tar.bz2) |
+| [boost\_1\_48\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.48.0/boost_1_48_0.tar.gz) |
+| windows | [boost\_1\_48\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.48.0/boost_1_48_0.7z) |
+| [boost\_1\_48\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.48.0/boost_1_48_0.zip) |
+
+
+### Patches
+
+
+* [Locale
+ Patch](http://cppcms.com/files/locale/boost_locale_utf.patch) - Fixes a bug which causes `boost::locale::utf::utf\_traits`
+ to accept some invalid UTF-8 sequences, which is a possible security flaw.
+
+### New Libraries
+
+
+* [Container](/libs/container/index.html):
+ Standard
+ library containers and extensions, from Ion Gaztañaga.
+* [Locale](/libs/locale/index.html):
+ Provide localization
+ and Unicode handling tools for C++, from Artyom Beilis.
+* [Move](/doc/html/move.html):
+ Portable move semantics
+ for C++03 and C++11 compilers, from Ion Gaztañaga.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/index.html):
+
+	+ Implemented various performance improvements, including:
+	 
+		- Using thread-local operation queues in single-threaded use
+		 cases (i.e. when `concurrency\_hint`
+		 is 1) to eliminate a lock/unlock pair.
+		- Allowing some `epoll\_reactor`
+		 speculative operations to be performed without holding the
+		 lock.
+		- Improving locality of reference by performing an `epoll\_reactor`'s I/O operation
+		 immediately before the corresponding handler is called. Also
+		 improves scalability across CPUs.
+		- Specialising asynchronous read and write operations for buffer
+		 sequences that are arrays (`boost::array`
+		 or `std::array`) of exactly two buffers.
+	+ Fixed compile error in regex overload of `async\_read\_until`
+	 ([#5688](https://svn.boost.org/trac/boost/ticket/5688)).
+	+ Fixed Windows-specific compile error by explicitly specifying the
+	 `signal()`
+	 function from the global namespace ([#5722](https://svn.boost.org/trac/boost/ticket/5722)).
+	+ Changed `deadline\_timer`
+	 implementation to not read clock unless the timer heap is non-empty.
+	+ Changed SSL buffer sizes to be large enough to hold a complete TLS
+	 record ([#5854](https://svn.boost.org/trac/boost/ticket/5854)).
+	+ Fixed synchronous `null\_buffers`
+	 operations so that they obey the user's non-blocking setting ([#5756](https://svn.boost.org/trac/boost/ticket/5756)).
+	+ Changed to set `fd\_set`
+	 size at runtime when using Windows.
+	+ Disabled MSVC warning due to const qualifier being applied to function
+	 type.
+	+ Fixed crash that occurs when using Intel C++ compiler ([#5763](https://svn.boost.org/trac/boost/ticket/5763)).
+	+ Changed OpenSSL initialisation to support all available algorithms.
+	+ Fixed SSL error mapping when session is gracefully shut down.
+	+ Added some latency test programs.
+	+ Clarified that a read operation ends when the buffer is full ([#5999](https://svn.boost.org/trac/boost/ticket/5999)).
+	+ Fixed exception safety issue in `epoll\_reactor`
+	 initialisation ([#6006](https://svn.boost.org/trac/boost/ticket/6006)).
+	+ Made number of strand implementations configurable via `BOOST\_ASIO\_STRAND\_IMPLEMENTATIONS`
+	 macro.
+	+ Added support for `BOOST\_ASIO\_ENABLE\_SEQUENTIAL\_STRAND\_ALLOCATION`
+	 flag which switches strand allocation to use a round-robin approach
+	 rather than hashing.
+	+ Fixed potential strand starvation issue that can occur when `strand.post()`
+	 is used.
+* [Chrono](/libs/chrono/index.html):
+
+	+ [#5979](http://svn.boost.org/trac/boost/ticket/5979)
+	 Added chrono rounding utilities as defined by Howard Hinnant [here](http://home.roadrunner.com/~hinnant/duration_io/chrono_util.html).
+	+ [#5978](http://svn.boost.org/trac/boost/ticket/5978)
+	 Add BOOST\_CHRONO\_HAS\_PROCESS\_CLOCKS to know if process clocks are
+	 available.
+	+ [#5998](http://svn.boost.org/trac/boost/ticket/5998)
+	 Make possible to disable hybrid error handling.
+	+ [#5906](http://svn.boost.org/trac/boost/ticket/5906)
+	 Take in account the constexpr as defined in the standard.
+	+ [#5907](http://svn.boost.org/trac/boost/ticket/5907)
+	 Take in account noexcept for compilers supporting it.
+	+ Fixed some bugs.
+	+ See the [History](/doc/html/chrono/appendices.html#chrono.appendices.history)
+	 for more details.
+* [Config](/libs/config/index.html):
+
+	+ Add `BOOST\_NO\_DECLTYPE\_N3276`
+	 config macro. (See [N3276](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3276.pdf).)
+* [Fusion](/libs/fusion/index.html):
+
+	+ Make `single\_view`
+	 a random access fusion sequence.
+	+ Remove bogus compile-time asserts from `fusion::distance`.
+	+ Cleaner implementation of segmented Fusion.
+* [Geometry](/libs/geometry):
+
+	+ Bugfixes:
+	 
+		- Robustness issue, in some circumstances the union failed to
+		 output. Fixed.
+		- Robustness issue, in some circumstances the calculated intersection
+		 point was outside the segment. Fixed.
+		- Concept issue, cartesian intersect didn't understand segments
+		 other than the provided one. Fixed.
+		- Sometimes self-intersections in linestrings were missed. Fixed.
+		- The fusion coordinate system was not registered correctly.
+		 Fixed.
+	+ Solved tickets:
+	 
+		- [#5726](https://svn.boost.org/trac/boost/ticket/5726)
+		 (Segment intersection algorithm still assumes 'first', 'second'
+		 members)
+		- [#5744](https://svn.boost.org/trac/boost/ticket/5744)
+		 (mistake fusion adapt example)
+		- [#5748](https://svn.boost.org/trac/boost/ticket/5748)
+		 (need include <boost/foreach.hpp>)
+		- [#5954](https://svn.boost.org/trac/boost/ticket/5954)
+		 (distance\_pythagoras skips sqrt() step)
+	+ Improvements on algorithms:
+	 
+		- Checking self-intersections is now not done automatically,
+		 this can blast performance.
+		- Besides that, checking self-intersections is made faster.
+		- Intersections now avoid outputting duplicate points. So they
+		 output the minimal set.
+	+ Additional algorithms:
+	 
+		- covered\_by: within is defined as "within, not on boundary".
+		 covered\_by is "within or on boundary"
+	+ Additional functionality:
+	 
+		- within: strategies can now be specified for within<point,
+		 box> and within<box, box>
+		- convert: a much broader range of conversions is supported
+		- assign: idem, (currently partly) synonym for convert (but reversed
+		 arguments)
+	+ Additional coordinate types:
+	 
+		- Basic support for Boost.Rational
+* [Graph](/libs/graph/):
+
+	+ Fixed bugs [#5185](https://svn.boost.org/trac/boost/ticket/5185),
+	 [#5506](https://svn.boost.org/trac/boost/ticket/5506),
+	 [#5813](https://svn.boost.org/trac/boost/ticket/5813)
+	 and [#5919](https://svn.boost.org/trac/boost/ticket/5919).
+	+ Various other bug fixes not in Trac.
+	+ Changed edge\_descriptor type for reverse\_graph to a new data type
+	 to avoid ambiguities with the edge\_descriptor of the underlying graph.
+* [Interprocess](/libs/interprocess/index.html):
+
+	+ Fixed bugs [#2796](https://svn.boost.org/trac/boost/ticket/2796),
+	 [#4031](https://svn.boost.org/trac/boost/ticket/4031),
+	 [#4251](https://svn.boost.org/trac/boost/ticket/4251),
+	 [#4452](https://svn.boost.org/trac/boost/ticket/4452),
+	 [#4895](https://svn.boost.org/trac/boost/ticket/4895),
+	 [#5077](https://svn.boost.org/trac/boost/ticket/5077),
+	 [#5120](https://svn.boost.org/trac/boost/ticket/5120),
+	 [#5123](https://svn.boost.org/trac/boost/ticket/5123),
+	 [#5230](https://svn.boost.org/trac/boost/ticket/5230),
+	 [#5197](https://svn.boost.org/trac/boost/ticket/5197),
+	 [#5287](https://svn.boost.org/trac/boost/ticket/5287),
+	 [#5294](https://svn.boost.org/trac/boost/ticket/5294),
+	 [#5306](https://svn.boost.org/trac/boost/ticket/5306),
+	 [#5308](https://svn.boost.org/trac/boost/ticket/5308),
+	 [#5392](https://svn.boost.org/trac/boost/ticket/5392),
+	 [#5409](https://svn.boost.org/trac/boost/ticket/5409),
+	+ Added support to customize offset\_ptr and allow creating custom managed
+	 segments that might be shared between 32 and 64 bit processes.
+	+ Shared memory in windows has again filesystem lifetime: kernel bootstamp
+	 and WMI use to get a reliable timestamp was causing a lot of trouble.
+* [Intrusive](/libs/intrusive/index.html):
+
+	+ Fixed bugs [#4797](https://svn.boost.org/trac/boost/ticket/4797),
+	 [#5165](https://svn.boost.org/trac/boost/ticket/5165),
+	 [#5183](https://svn.boost.org/trac/boost/ticket/5183),
+	 [#5191](https://svn.boost.org/trac/boost/ticket/5191).
+* [Lexical cast](/libs/conversion/lexical_cast.htm):
+
+	+ Added code to work with Inf and NaN values on any platform ([#5689](https://svn.boost.org/trac/boost/ticket/5689)).
+	+ New Quickbook documentation ([#5723](https://svn.boost.org/trac/boost/ticket/5723)).
+	+ Better performance and less memory usage for many combinations of
+	 Source and Target types.
+	+ Better performance for C locale.
+* [Math](/libs/math/index.html):
+
+	+ Added new series evaluation methods to the cyclic Bessel I, J, K
+	 and Y functions. Also taken great care to avoid spurious over and
+	 underflow of these functions. Fixes issue [#5560](https://svn.boost.org/trac/boost/ticket/5560).
+	+ Added an example of using Inverse Chi-Squared distribution for Bayesian
+	 statistics, provided by Thomas Mang.
+	+ Added tests to use improved version of lexical\_cast which handles
+	 C99 nonfinites without using global facets.
+	+ Corrected wrong out-of-bound uniform distribution CDF complement
+	 values [#5733](https://svn.boost.org/trac/boost/ticket/5733).
+	+ Enabled long double support on OpenBSD (issue [#6014](https://svn.boost.org/trac/boost/ticket/6014)).
+	+ Changed nextafter and related functions to behave in the same way
+	 as other implementations - so that nextafter(+INF, 0) is a finite
+	 value (issue [#5832](https://svn.boost.org/trac/boost/ticket/5832)).
+	+ Changed tuple include configuration to fix issue when using in conjunction
+	 with Boost.Tr1 (issue [#5934](https://svn.boost.org/trac/boost/ticket/5934)).
+	+ Changed class eps\_tolerance to behave correctly when both ends of
+	 the range are zero (issue [#6001](https://svn.boost.org/trac/boost/ticket/6001)).
+	+ Fixed missing include guards on prime.hpp (issue [#5927](https://svn.boost.org/trac/boost/ticket/5927)).
+	+ Removed unused/undocumented constants from constants.hpp (issue
+	 [#5982](https://svn.boost.org/trac/boost/ticket/5982)).
+	+ Fixed missing std:: prefix in nonfinite\_num\_facets.hpp (issue [#5914](https://svn.boost.org/trac/boost/ticket/5914)).
+	+ Minor patches for Cray compiler compatibility.
+* [MSM](/libs/msm/):
+
+	+ eUML: added easier event reprocessing: process(event\_) and reprocess()
+	+ Rewrite of internal transition tables. There were a few bugs (failing
+	 recursivity in internal transition tables of sub-sub machines) and
+	 a missing feature (unused internal transition table of the main state
+	 machine).
+	+ Bugfixes
+	 
+		- Reverted favor\_compile\_time policy to Boost 1.46 state
+		- none event now is convertible from any other event
+		- eUML and pseudo exit states
+		- Fixed not working Flag\_AND
+		- Fixed rare bugs causing multiple processing of the same event
+		 in a submachine whose transition table contains this event
+		 and a base event of it.
+		- gcc warnings about unused variables
+	+ Breaking change: the new internal transition table feature causes
+	 a minor breaking change. In a submachine, the "Fsm" template
+	 parameter for guards / actions of an internal table declared using
+	 internal\_transition\_table now is the submachine, not the higher-level
+	 state machine. Internal transitions declared using internal rows
+	 in the higher-level state machine keep their behavior (the "Fsm"
+	 parameter is the higher-level state machine). To sum up, the internal
+	 transition "Fsm" parameter is the closest state machine
+	 containing this transition.
+* [Numeric.Conversion](/libs/numeric/conversion/index.html):
+
+	+ Added numeric\_cast\_traits; see '[numeric\_cast\_traits](/doc/libs/1_48_0/libs/numeric/conversion/doc/html/boost_numericconversion/type_requirements_and_user_defined_types_support.html#boost_numericconversion.type_requirements_and_user_defined_types_support.udts_with_numeric_cast)'
+	 for details.
+* [Proto](/libs/proto/index.html):
+
+	+ **Breaking Change:** Reduce numbers
+	 of operator overloads by using rvalue references on compilers that
+	 support them. Any user code that defines additional operator overloads
+	 on Proto expressions could potentially be rendered ambiguous by this
+	 change. The solution is to use a grammar to disable Proto's operators
+	 that are made ambiguous by any user-defined operators.
+	+ Move definitions of Proto tag types into an ADL-blocking namespace.
+	+ Add second template parameter to `proto::siwtch\_`
+	 to control dispatching to cases.
+	+ Allow dependent domains to be specified with `BOOST\_PROTO\_EXTENDS`
+	 and `BOOST\_PROTO\_BASIC\_EXTENDS`.
+* [Regex](/libs/regex/):
+
+	+ Fixed issues: [#698](https://svn.boost.org/trac/boost/ticket/698),
+	 [#5835](https://svn.boost.org/trac/boost/ticket/5835),
+	 [#5958](https://svn.boost.org/trac/boost/ticket/5958),
+	 [#5736](https://svn.boost.org/trac/boost/ticket/5736).
+* [Spirit](/libs/spirit/index.html):
+
+	+ Spirit V2.5.1, see the '[What's
+	 New](/doc/libs/1_48_0/libs/spirit/doc/html/spirit/what_s_new/spirit_2_5_1.html)' section for details.
+* [TypeTraits](/libs/type_traits/):
+
+	+ Extension to support [operator
+	 detection](/libs/type_traits/doc/html/boost_typetraits/category/value_traits/operators.html).
+* [Unordered](/libs/unordered/):
+
+	+ Improved support for the C++11 standard - breaking change to equality
+	 and emplace.
+	+ Use Boost.Move to implement move semantics.
+	+ See the [change
+	 log](/doc/html/unordered/changes.html#unordered.changes.boost_1_48_0___major_update) for full details.
+* [Wave](/libs/wave/index.html):
+
+	+ See the [Changelog](/libs/wave/ChangeLog) for details.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ LLVM Clang 2.8
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.4.3, 4.5.1, 4.5.2, 4.6
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.5.2
+	+ Intel 11.1
+* OS X:
+ 
+	+ Intel 11.1
+	+ GCC: 4.2.1, 4.4.4
+	+ GCC, C++0x mode: 4.4.4
+* Windows:
+ 
+	+ Visual C++ 8.0, 9.0, 10.0
+	+ GCC, mingw: 4.4.0, 4.4.7, 4.5.4, 4.6.1
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 32 and 64 bit.
+* QNX:
+ 
+	+ QCC 4.4.2
+	+ QCC, C++0x mode: 4.4.2, 4.6.1
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang from subversion, with libc++ and GNU libstdc++
+	+ LLVM Clang 2.8 x
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.4.4, 4.5.2, 4.5.4, 4.6.1, 4.6.2
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.4.4, 4.5.2
+	+ pgCC: 11.2 x
+	+ Intel: 10.1, 11.1, 12.0
+	+ PathScale: 4.0.8
+	+ Visual Age 10.1
+* OS X:
+ 
+	+ Clang from subversion, with libc++ and GNU libstdc++.
+	+ Intel 11.1.
+	+ GCC: 4.2.1, 4.4.4.
+	+ GCC, C++0x mode: 4.4.4.
+* Windows:
+ 
+	+ Visual C++ 8.0, 9.0, 10.0
+	+ Visual C++ with STLport: 9.0
+	+ Visual C++, Windows Mobile 5, with STLport: 9.0
+	+ GCC, mingw: 4.4.0, 4.4.7, 4.5.2, 4.5.4, 4.6.1
+	+ GCC, C++0x mode, mingw: 4.5.2
+	+ GCC, mingw 64-bit: 4.7.0
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition, V11.1.0.0
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 32 and 64 bit.
+* Solaris:
+ 
+	+ Sun 5.10
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

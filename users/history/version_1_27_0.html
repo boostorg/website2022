@@ -1,0 +1,80 @@
+---
+title: Version 1.27.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.27.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.27.0
+==============
+
+Version 1.27.0
+--------------
+
+
+February 5th, 2002 12:00 GMT
+
+Downloads| Platform | File |
+| unix | [boost\_1\_27\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.27.0/boost_1_27_0.tar.bz2) |
+| [boost\_1\_27\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.27.0/boost_1_27_0.tar.gz) |
+| windows | [boost\_1\_27\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.27.0/boost_1_27_0.zip) |
+
+* [Python Library](/libs/python/doc/index.html): Scott
+ Snyder contributed inplace operator support.
+* [Integer Library](/libs/integer/index.html): Daryle
+ Walker contributed enhancements to the [type
+ selection templates](/libs/integer/integer.htm), and added new compile-time [bit
+ mask](/libs/integer/doc/integer_mask.html), [binary logarithm](/libs/integer/doc/static_log2.html),
+ and [extrema](/libs/integer/doc/static_min_max.html) templates.
+* [Function Library](/libs/function/index.html): user
+ may request that `boost::function` objects store a reference to a
+ function object target instead of a copy, using [`ref`](/libs/bind/ref.html). Stateless objects are optimized
+ so that they require no dynamic storage.
+* [Quaternions](/doc/html/boost_math/quaternions.html): added
+ support for GCC 2.95.x.
+* [Octonions](/doc/html/boost_math/octonions.html): added
+ support for GCC 2.95.x.
+* [Smart Pointers Library](/libs/smart_ptr/index.html): Peter
+ Dimov contributed a new implementation that fixes some bugs and adds some
+ features including [thread
+ safety](/libs/smart_ptr/compatibility.htm#threadsafe) when manipulating the use count, [custom
+ delete functions](/libs/smart_ptr/shared_ptr.htm#constructors), a new [weak\_ptr](/libs/smart_ptr/weak_ptr.htm),
+ and shared\_static\_cast and shared\_dynamic\_cast.
+* [Preprocessor Library](/libs/preprocessor/doc/index.html):
+ changed
+ macro prefix from BOOST\_PREPROCESSOR to BOOST\_PP, added support for list
+ data structure manipulation, added examples, made library ANSI C friendly,
+ added generalized [repetition](/libs/preprocessor/doc/ref/for.html)
+ and [iteration](/libs/preprocessor/doc/ref/while.html)
+ primitives, improved reference manual.
+* [Threads Library](/libs/thread/doc/index.html): Mac
+ Carbon implementation contributed by Mac Murrett.
+* Minor fixes to many libraries.
+
+
+
+ 
+
+
+
+ 
+
+ 
+

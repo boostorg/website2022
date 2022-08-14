@@ -1,0 +1,393 @@
+---
+title: In-place Factory
+copyright: 
+revised: 
+---
+
+
+In-place Factory
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/compress_idm35151228634288.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/in_place_factory_base.html)
+
+
+### 
+[In-place
+ Factory](in_place_factory.html "In-place Factory")
+[Introduction](in_place_factory.html#utility.utilities.in_place_factory.introduction)
+[Framework](in_place_factory.html#utility.utilities.in_place_factory.framework)
+[Specification](in_place_factory.html#utility.utilities.in_place_factory.specification)
+[Container-side
+ Usage](in_place_factory.html#utility.utilities.in_place_factory.container_side_usage)
+[User-side
+ Usage](in_place_factory.html#utility.utilities.in_place_factory.user_side_usage)
+[Reference](in_place_factory.html#in_place_factory.reference)
+[Acknowledgments](in_place_factory.html#utility.utilities.in_place_factory.acknowledgments)
+
+
+#### 
+[Introduction](in_place_factory.html#utility.utilities.in_place_factory.introduction "Introduction")
+ Suppose we have a class
+ 
+```
+struct X
+{
+  X ( int, [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) ) ;
+};
+
+```
+
+
+ And a container for it which supports an empty state. That is, a container
+ which can contain zero objects:
+ 
+```
+struct C
+{
+   C() : contained\_(0) {}
+  ~C() { delete contained\_ ; }
+  X\* contained\_ ;
+};
+
+```
+
+
+ A container designed to support an empty state typically does not require
+ the contained type to be [*DefaultConstructible*](https://en.cppreference.com/w/cpp/named_req/DefaultConstructible),
+ but it typically requires it to be [*CopyConstructible*](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
+ as a mechanism to initialize the object to store:
+ 
+```
+struct C
+{
+   C() : contained\_(0) {}
+   C ( X const& v ) : contained\_ ( new X(v) ) {}
+  ~C() { delete contained\_ ; }
+  X\* contained\_ ;
+};
+
+```
+
+
+ There is a subtle problem with this: since the mechanism used to initialize
+ the stored object is copy construction, there must exist a previously constructed
+ source object to copy from. This object is likely to be temporary and serve
+ no purpose besides being the source:
+ 
+```
+void foo()
+{
+  // Temporary object created.
+  C c( X(123,"hello") ) ;
+}
+
+```
+
+
+ A solution to this problem is to support direct construction of the contained
+ object right in the container's storage.
+ 
+ In this scheme, the user supplies the arguments for the `X`
+ constructor directly to the container:
+ 
+```
+struct C
+{
+   C() : contained\_(0) {}
+   C ( X const& v ) : contained\_ ( new X(v) ) {}
+   C ( int a0, [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) a1 ) : contained\_ ( new X(a0,a1) ) {}
+  ~C() { delete contained\_ ; }
+  X\* contained\_ ;
+};
+
+```
+
+
+```
+void foo()
+{
+  // Wrapped object constructed in-place
+  // No temporary created.
+  C c(123,"hello");
+}
+
+```
+
+
+ Clearly, this solution does not scale well since the container must duplicate
+ all the constructor overloads from the contained type, or at least all
+ those which are to be supported directly in the container.
+ 
+
+#### 
+[Framework](in_place_factory.html#utility.utilities.in_place_factory.framework "Framework")
+ This library proposes a framework to allow some containers to directly
+ construct contained objects in-place without requiring the entire set of
+ constructor overloads from the contained type. It also allows the container
+ to remove the [*CopyConstructible*](https://en.cppreference.com/w/cpp/named_req/CopyConstructible)
+ requirement from the contained type since objects can be directly constructed
+ in-place without need of a copy.
+ 
+ The only requirement on the container is that it must provide proper storage.
+ That is, the container should be correctly aligned and sized. Naturally,
+ the container will typically support uninitialized storage to avoid the
+ in-place construction to override a fully-constructed object, as this would
+ defeat the purpose of in-place construction.
+ 
+ For this purpose, the framework provides two concepts called: InPlaceFactories
+ and TypedInPlaceFactories. Helpers to declare these classes are declared
+ in [`<boost/utility/in\_place\_factory.hpp>`](../../../../../../boost/utility/in_place_factory.hpp) and [`<boost/utility/typed\_in\_place\_factory.hpp>`](../../../../../../boost/utility/typed_in_place_factory.hpp).
+ 
+ Essentially, these classes hold a sequence of actual parameters and a method
+ to construct an object in place using these parameters. Each member of
+ the family differs only in the number and type of the parameter list. The
+ first family takes the type of the object to construct directly in method
+ provided for that purpose, whereas the second family incorporates that
+ type in the factory class itself. From the container point of view, using
+ the framework amounts to calling the factory's method to contruct the object
+ in place. From the user point of view, it amounts to creating the right
+ factory object to hold the parameters and pass it to the container.
+ 
+ The following simplified example shows the basic idea. A complete example
+ follows the formal specification of the framework:
+ 
+```
+struct C
+{
+   template <class InPlaceFactory>
+   C ( InPlaceFactory const& aFactory )
+    :
+    contained\_ ( uninitialized\_storage() )
+   {
+     aFactory.template apply<X>(contained\_);
+   }
+
+  ~C()
+  {
+    contained\_ -> X::~X();
+    delete[] contained\_ ;
+  }
+
+  char\* uninitialized\_storage() { return new char[sizeof(X)] ; }
+
+  char\* contained\_ ;
+};
+
+void foo()
+{
+  C c( in\_place(123,"hello") ) ;
+}
+
+```
+#### 
+[Specification](in_place_factory.html#utility.utilities.in_place_factory.specification "Specification")
+ The following is the first member of the family of `InPlaceFactory`
+ classes, along with its corresponding helper template function. The rest
+ of the family varies only in the number and type of template and constructor
+ parameters.
+ 
+```
+namespace boost {
+
+struct [`in\_place\_factory\_base`](../../boost/in_place_factory_base.html "Class in_place_factory_base") {};
+
+template<class A0>
+class in\_place\_factory : public [`in\_place\_factory\_base`](../../boost/in_place_factory_base.html "Class in_place_factory_base")
+{
+  public:
+    in\_place\_factory ( A0 const& a0 ) : m\_a0(a0) {}
+
+    template< class T >
+    void apply ( void\* address ) const
+    {
+      new (address) T(m\_a0);
+    }
+
+  private:
+      A0 const& m\_a0 ;
+};
+
+template<class A0>
+in\_place\_factory<A0> in\_place ( A0 const& a0 )
+{
+  return in\_place\_factory<A0>(a0);
+}
+
+}
+
+```
+
+
+ Similarly, the following is the first member of the family of `typed\_in\_place\_factory` classes, along
+ with its corresponding helper template function. The rest of the family
+ varies only in the number and type of template and constructor parameters.
+ 
+```
+namespace boost {
+
+struct [`typed\_in\_place\_factory\_base`](in_place_factory.html#boost.typed_in_place_factory_base) {};
+
+template<class T, class A0>
+class typed\_in\_place\_factory : public [`typed\_in\_place\_factory\_base`](in_place_factory.html#boost.typed_in_place_factory_base)
+{
+  public:
+    typed\_in\_place\_factory ( A0 const& a0 ) : m\_a0(a0) {}
+
+    void apply ( void\* address ) const
+    {
+      new (address) T(m\_a0);
+    }
+
+  private:
+    A0 const& m\_a0 ;
+};
+
+template<class T, class A0>
+typed\_in\_place\_factory<A0> in\_place ( A0 const& a0 )
+{
+  return typed\_in\_place\_factory<T,A0>(a0);
+}
+}
+
+```
+
+
+ As you can see, the `in\_place\_factory`
+ and `typed\_in\_place\_factory`
+ template classes vary only in the way they specify the target type: in
+ the first family, the type is given as a template argument to the apply
+ member function while in the second it is given directly as part of the
+ factory class.
+ 
+ When the container holds a unique non-polymorphic type, such as the case
+ of [Boost.Optional](../../../../../../libs/optional/index.html),
+ it knows the exact dynamic-type of the contained object and can pass it
+ to the `apply()`
+ method of a non-typed factory. In this case, end users can use an `in\_place\_factory` instance which can be
+ constructed without the type of the object to construct.
+ 
+ However, if the container holds heterogeneous or polymorphic objects, such
+ as the case of [Boost.Variant](../../../../../../libs/variant/index.html),
+ the dynamic-type of the object to be constructed must be known by the factory.
+ In this case, end users must use a `typed\_in\_place\_factory`
+ instead.
+ 
+
+#### 
+[Container-side
+ Usage](in_place_factory.html#utility.utilities.in_place_factory.container_side_usage "Container-side Usage")
+ As shown in the introductory simplified example, the container class must
+ contain methods that accept an instance of these factories and pass the
+ object's storage to the factory's apply method.
+ 
+ However, the type of the factory class cannot be completely specified in
+ the container class because that would defeat the whole purpose of the
+ factories which is to allow the container to accept a variadic argument
+ list for the constructor of its contained object.
+ 
+ The correct function overload must be based on the only distinctive and
+ common characteristic of all the classes in each family: the base class.
+ 
+ Depending on the container class, you can use `enable\_if`
+ to generate the right overload, or use the following dispatch technique,
+ which is used in the [Boost.Optional](../../../../../../libs/optional/index.html)
+ class:
+ 
+```
+struct C
+{
+   C() : contained\_(0) {}
+   C ( X const& v ) : contained\_ ( new X(v) ) {}
+
+   template <class Expr>
+   C ( Expr const& expr )
+    :
+    contained\_ ( uninitialized\_storage() )
+   {
+    construct(expr,&expr);
+   }
+
+  ~C() { delete contained\_ ; }
+
+  template<class InPlaceFactory>
+  void construct ( InPlaceFactory const& aFactory, boost::[`in\_place\_factory\_base`](../../boost/in_place_factory_base.html "Class in_place_factory_base")\* )
+  {
+    aFactory.template apply<X>(contained\_);
+  }
+
+  template<class TypedInPlaceFactory>
+  void construct ( TypedInPlaceFactory const& aFactory, boost::[`typed\_in\_place\_factory\_base`](in_place_factory.html#boost.typed_in_place_factory_base)\* )
+  {
+    aFactory.apply(contained\_);
+  }
+
+  X\* uninitialized\_storage() { return static\_cast<X\*>(new char[sizeof(X)]) ; }
+
+  X\* contained\_ ;
+};
+
+```
+#### 
+[User-side
+ Usage](in_place_factory.html#utility.utilities.in_place_factory.user_side_usage "User-side Usage")
+ End users pass to the container an instance of a factory object holding
+ the actual parameters needed to construct the contained object directly
+ within the container. For this, the helper template function `in\_place` is used.
+ 
+ The call `in\_place(a0,a1,a2,...,an)` constructs
+ a (non-typed) `in\_place\_factory`
+ instance with the given argument list.
+ 
+ The call `in\_place<T>(a0,a1,a2,...,an)` constructs
+ a `typed\_in\_place\_factory`
+ instance with the given argument list for the type `T`.
+ 
+```
+void foo()
+{
+  C a( in\_place(123, "hello") ) ;    // in\_place\_factory passed
+  C b( in\_place<X>(456, "world") ) ; // typed\_in\_place\_factory passed
+}
+
+```
+#### 
+Reference
+##### 
+Header <[boost/utility/in\_place\_factory.hpp](../../../../../../boost/utility/in_place_factory.hpp)>
+```
+namespace boost {
+  class [in\_place\_factory\_base](../../boost/in_place_factory_base.html "Class in_place_factory_base");
+}
+```
+##### 
+Header <[boost/utility/typed\_in\_place\_factory.hpp](../../../../../../boost/utility/typed_in_place_factory.hpp)>
+```
+namespace boost {
+  class [typed\_in\_place\_factory\_base](../../boost/typed_in_idm35151228676656.html "Class typed_in_place_factory_base");
+}
+```
+
+#### 
+[Acknowledgments](in_place_factory.html#utility.utilities.in_place_factory.acknowledgments "Acknowledgments")
+ Copyright Fernando Luis Cacciola Carballal, 2004
+ 
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/compress_idm35151228634288.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/in_place_factory_base.html)

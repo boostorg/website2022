@@ -1,0 +1,289 @@
+---
+title: Version 1.43.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.43.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.43.0
+==============
+
+Version 1.43.0
+--------------
+
+
+May 6th, 2010 12:00 GMT
+
+
+[Documentation](/doc/libs/1_43_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_43\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.43.0/boost_1_43_0.tar.bz2) |
+| [boost\_1\_43\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.43.0/boost_1_43_0.tar.gz) |
+| windows | [boost\_1\_43\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.43.0/boost_1_43_0.7z) |
+| [boost\_1\_43\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.43.0/boost_1_43_0.zip) |
+
+
+### New Libraries
+
+
+* [Functional/factory](/libs/functional/factory/index.html):
+ Function
+ objects for dynamic and by-value construction, from Tobias Schwinger.
+* [Functional/forward](/libs/functional/forward/index.html):
+ Function
+ object adapters to address the forwarding problem, from Tobias Schwinger.
+
+### Major Updates
+
+
+* [Range](/libs/range/index.html):
+ Boost.Range has
+ undergone extensive updates that it include all of the features from the
+ recently reviewed Boost.RangeEx, from Neil Groves.
+ 
+	+ Range-based version of the full STL iterator based algorithms.
+	+ Range adaptors which can be combined with range-based algorithms
+	 for unprecedented expressiveness and efficiency.
+	+ New functions: irange, istream\_range, join, combine.
+
+### Updated Libraries
+
+
+* [Accumulators](/libs/accumulators/index.html):
+
+	+ Avoid premature template evaluation in operator overload return types.
+* [Array](/libs/array/index.html):
+
+	+ Added support for SunCC compiler.
+	+ Added 'fill' member function.
+	+ Changed exception code to use boost::throw\_exception.
+* [Asio](/libs/asio/index.html):
+
+	+ Improved performance.
+	+ Reduced compile times.
+	+ Reduced the size of generated code.
+	+ Extended the guarantee that background threads don't call user code
+	 to all asynchronous operations ([#3923](https://svn.boost.org/trac/boost/ticket/3923)).
+	+ Changed to use edge-triggered epoll on Linux.
+	+ Changed to use `timerfd`
+	 for dispatching timers on Linux, when available.
+	+ Changed to use one-shot notifications with kqueue on Mac OS X and
+	 BSD platforms.
+	+ Added a bitmask type `ip::resolver\_query\_base::flags`
+	 as per the TR2 proposal. This type prevents implicit conversion from
+	 `int` to `flags`, allowing the compiler to
+	 catch cases where users incorrectly pass a numeric port number as
+	 the service name.
+	+ Added `#define NOMINMAX` for all Windows compilers.
+	 Users can define `BOOST\_ASIO\_NO\_NOMINMAX`
+	 to suppress this definition ([#3901](https://svn.boost.org/trac/boost/ticket/3901)).
+	+ Fixed a bug where 0-byte asynchronous reads were incorrectly passing
+	 an `error::eof` result to the completion handler
+	 ([#4023](https://svn.boost.org/trac/boost/ticket/4023)).
+	+ Changed the `io\_control()` member functions to always call
+	 `ioctl` on the underlying
+	 descriptor when modifying blocking mode ([#3307](https://svn.boost.org/trac/boost/ticket/3307)).
+	+ Changed the resolver implementation to longer require the typedefs
+	 `InternetProtocol::resolver\_query`
+	 and `InternetProtocol::resolver\_iterator`,
+	 as neither typedef is part of the documented `InternetProtocol`
+	 requirements. The corresponding typedefs in the `ip::tcp`,
+	 `ip::udp` and `ip::icmp`
+	 classes have been deprecated.
+	+ Fixed out-of-band handling for reactors not based on `select()`.
+	+ Added new `BOOST\_ASIO\_DISABLE\_THREADS`
+	 macro that allows Asio's threading support to be independently disabled.
+	+ Minor documentation improvements.
+* [Fusion](/libs/fusion/index.html):
+
+	+ Added new macros for adapting or defining custom types. See the
+	 [Changelog](/libs/fusion/doc/html/fusion/change_log.html)
+	 for details.
+* [Iostreams](/libs/iostreams/index.html):
+
+	+ Minor fixes ([#2505](https://svn.boost.org/trac/boost/ticket/2505),
+	 [#3839](https://svn.boost.org/trac/boost/ticket/3839),
+	 [#3953](https://svn.boost.org/trac/boost/ticket/3953),
+	 [#3723](https://svn.boost.org/trac/boost/ticket/3723),
+	 [#3969](https://svn.boost.org/trac/boost/ticket/3969),
+	 [#4135](https://svn.boost.org/trac/boost/ticket/4135)).
+* [Multi-index Containers](/libs/multi_index/doc/index.html):
+
+	+ [Serialization
+	 of non default constructible values](/libs/serialization/doc/serialization.html#constructors) is now properly supported
+	 through user-provided facilities `save\_construct\_data`
+	 and `load\_construct\_data`.
+	 `multi\_index\_container`
+	 serialization [class
+	 version](/libs/serialization/doc/tutorial.html#versioning) has been bumped from 1 to 2.
+* [Proto](/libs/proto/index.html):
+
+	+ Minor change in behavior: non-const expression self-assignment creates
+	 an assign node. See Proto's [Release
+	 Notes](/doc/html/proto/appendices.html#boost_proto.appendices.release_notes.boost_1_43) for details.
+	+ Minor change to recommended expression extension mechanism: use
+	 `BOOST\_PROTO\_EXTENDS\_USING\_ASSIGN()`. See Proto's [Release
+	 Notes](/doc/html/proto/appendices.html#boost_proto.appendices.release_notes.boost_1_43) for details.
+	+ Fix error in invocation of callable monomorphic function objects
+	 in Proto transforms.
+	+ Fix misc const correctness issues, work around fusion bug.
+	+ Add non-const function call overloads to proto terminals.
+	+ Add a default constructor to `proto::literal<>`.
+	+ Do not use deprecated config macros.
+	+ Add `proto::assert\_matches()`
+	 function and friends to <boost/proto/debug.hpp>.
+	+ `functional::make\_expr<>`
+	 and `functional::unpack\_expr<>`
+	 return const-qualified rvalues.
+	+ Add documentation for Expr and Domain concepts.
+* [Random](/libs/random/index.html):
+
+	+ Put the implementation of random\_device in a compiled lib, and added
+	 Windows support.
+	+ Rewrote the documentation using Quickbook/Doxygen/Boostbook and brought
+	 it up to date.
+* [Spirit](/libs/spirit/index.html):
+ Spirit V2.3,
+ see the '[What's
+ New](/doc/libs/1_43_0/libs/spirit/doc/html/spirit/what_s_new/spirit_2_3.html)' section for details.
+* [Thread](/libs/thread/index.html):
+
+	+ Uses `boost::throw\_exception` for all exceptions
+	 except `thread\_interrupted`
+	+ Added fix for issue 2742
+	+ Optimizations to mutex locks and `call\_once`
+* [Unordered](/libs/unordered/index.html):
+
+	+ `erase\_return\_void`
+	 is now `quick\_erase`
+	 ([#3966](http://svn.boost.org/trac/boost/ticket/3966)).
+* [Uuid](/libs/uuid/index.html):
+
+	+ Split generators into separate files.
+	+ Fixed bug in basic\_random\_generator ([#3971](https://svn.boost.org/trac/boost/ticket/3971)).
+	+ Updated documentation.
+* [Wave](/libs/wave/index.html):
+ See the [Changelog](/libs/wave/ChangeLog)
+ for details.
+* [Xpressive](/libs/xpressive/index.html):
+
+	+ Add missing include to <boost/xpressive/regex\_error.hpp>.
+
+### Build System
+
+
+* When cross-compiling to GNU targets, static libraries are properly created.
+ Previously, using such libraries resulted in Archive has no index
+ error.
+* The naming of DLL and import libraries with gcc compiler on Windows, both
+ mingw and cygwin, now matches default conventions of those environments.
+ Previously, the naming scheme was the same as for other Windows compilers.
+
+### Updated Tools
+
+
+* [Quickbook](/tools/quickbook/index.html):
+
+	+ Unicode escape characters.
+	+ Support the UTF-8 byte order mark.
+	+ Disallow `[` in simple
+	 markup. Fixes some errors with mismatched punctuation.
+	+ Add a command line flag (`-D`) to define macros at the command
+	 line.
+	+ Improved post-processor output.
+	+ Check that `[section]` and `[endsect]`
+	 tags are balanced in templates.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* OS X:
+ 
+	+ GCC 4.0.1 on Intel Leopard.
+* Linux:
+ 
+	+ GCC 4.4.1 on Ubuntu Linux.
+	+ GCC 4.4 on 64-bit Suse.
+* Windows:
+ 
+	+ Visual C++ 8.0 SP1 and 9.0 SP1 on Windows XP.
+	+ GCC 4.3.3, using Mingw
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 32 and 64 bit.
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Intel 10.1, 11.1 on 32 bit Red Hat Enterprise Linux.
+	+ Intel 10.1, 11.0, 11.1 on 64 bit Red Hat Enterprise Linux.
+	+ GCC 3.4.6, 4.2.4, 4.3.4, 4.4.3 on Red Hat Enterprise Linux.
+	+ GCC 4.3.4, 4.4.3 with C++0x extensions on Red Hat Enterprise Linux.
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.2 on Red Hat Enterprise
+	 Linux.
+* OS X:
+ 
+	+ Intel C++ Compiler 10.1, 11.0, 11.1 on Leopard.
+	+ GCC 4.0.1 on Intel Leopard.
+	+ Clang from subversion.
+* Windows:
+ 
+	+ Visual C++ 8,0, 9,0 on 32-bit XP.
+	+ Visual C++ 9.0 using STLport 5.2 on XP and Windows Mobile 5.0.
+	+ Visual C++ 10.0 on XP.
+	+ Visual C++ 10.0 on 64-bit Windows 7.
+	+ Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.1 (2010).
+	+ Intel C++ 11.1, with a Visual C++ 9.0 backend, on Vista 32-bit.
+	+ GCC 4.3.3 on Mingw.
+	+ GCC 4.4.3 on Mingw, with and without C++0x extensions.
+	+ GCC 4.5 on Mingw.
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition, V10.1.0.0, on AIX Version 5.3.0.40.
+* FreeBSD:
+ 
+	+ GCC 4.2.1 on FreeBSD 7.2, 64 bit.
+	+ GCC 4.2.1 on FreeBSD 8.0, 32 bit.
+* Solaris:
+ 
+	+ Sun C++ 5.10 on Solaris 5.10.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

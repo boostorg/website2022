@@ -1,0 +1,766 @@
+---
+title: Call Traits
+copyright: 
+revised: 
+---
+
+
+Call Traits
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../BOOST_BINARY_LITERAL_D.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/call_traits.html)
+
+
+### 
+[Call Traits](call_traits.html "Call Traits")
+[Introduction](call_traits.html#utility.utilities.call_traits.introduction)
+[Copy
+ constructibility](call_traits.html#utility.utilities.call_traits.copy_constructibility)
+[Examples](call_traits.html#utility.utilities.call_traits.examples)
+[Rationale](call_traits.html#utility.utilities.call_traits.rationale)
+[Reference](call_traits.html#call_traits.reference)
+
+
+#### 
+[Introduction](call_traits.html#utility.utilities.call_traits.introduction "Introduction")
+ All of the contents of [`<boost/call\_traits.hpp>`](../../../../../../boost/call_traits.hpp) are defined inside `namespace boost`.
+ 
+ The template class [`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits") encapsulates the "best"
+ method to pass a parameter of some type `T`
+ to or from a function, and consists of a collection of `typedef`s
+ defined as in the table below. The purpose of [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") is to ensure that
+ problems like ["references to references"](call_traits.html#sec:refs)
+ never occur, and that parameters are passed in the most efficient manner
+ possible, as in the [examples](call_traits.html#sec:examples). In each
+ case, if your existing practice is to use the type defined on the left,
+ then replace it with the [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") defined type on the
+ right.
+ 
+ Note that for compilers that do not support either partial specialization
+ or member templates, no benefit will occur from using [`call\_traits`](../../boost/call_traits.html "Struct template call_traits"): the [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") defined types will
+ always be the same as the existing practice in this case. In addition if
+ only member templates and not partial template specialisation is support
+ by the compiler (for example Visual C++ 6) then [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") cannot be used with
+ array types, although it can still be used to solve the reference to reference
+ problem.
+ 
+**Table 1.2. [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ types**
+
+
+
+| 
+ Existing practice
+  | 
+[`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ equivalent
+  | 
+ Description
+  | 
+ Notes
+  |
+| --- | --- | --- | --- |
+| 
+`T`
+
+
+ (return by value)
+  | 
+[`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::value\_type`
+ | 
+ Defines a type that represents the "value" of type
+ `T`.
+ 
+
+ Use this for functions that return by value, or possibly for
+ stored values of type `T`.
+  | 
+ 2
+  |
+| 
+`T&`
+
+
+ (return value)
+  | 
+[`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::reference`
+ | 
+ Defines a type that represents a reference to type `T`.
+ 
+
+ Use for functions that would normally return a `T&`.
+  | 
+ 1
+  |
+| 
+`const T&`
+
+
+ (return value)
+  | 
+[`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::const\_reference`
+ | 
+ Defines a type that represents a constant reference to type
+ `T`.
+ 
+
+ Use for functions that would normally return a `const T&`.
+  | 
+ 1
+  |
+| 
+`const T&`
+
+
+ (function parameter)
+  | 
+[`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::param\_type`
+ | 
+ Defines a type that represents the "best" way to pass
+ a parameter of type `T`
+ to a function.
+  | 
+ 1,3
+  |
+  
+
+ Notes:
+ 
+
+
+1. If `T` is already reference
+ type, then [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ is defined such that ["references to references"](call_traits.html#sec:refs)
+ do not occur (requires partial specialization).
+2. If `T` is an array type,
+ then [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ defines `value\_type`
+ as a "constant pointer to type" rather than an "array
+ of type" (requires partial specialization). Note that if you are
+ using `value\_type` as
+ a stored value then this will result in storing a "constant pointer
+ to an array" rather than the array itself. This may or may not
+ be a good thing depending upon what you actually need (in other words
+ take care!).
+3. If `T` is a small built
+ in type or a pointer, then `param\_type`
+ is defined as `T const`,
+ instead of `T const&`. This can improve the ability
+ of the compiler to optimize loops in the body of the function if they
+ depend upon the passed parameter, the semantics of the passed parameter
+ is otherwise unchanged (requires partial specialization).
+#### 
+[Copy
+ constructibility](call_traits.html#utility.utilities.call_traits.copy_constructibility "Copy constructibility")
+ The following table defines which [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") types can always be
+ copy-constructed from which other types:
+ 
+**Table 1.3. Which [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ types can always be copy-constructed from which other types**
+
+
+|  | 
+ To `T`
+ | 
+ To `value\_type`
+ | 
+ To `reference`
+ | 
+ To `const\_reference`
+ | 
+ To `param\_type`
+ |
+| --- | --- | --- | --- | --- | --- |
+| 
+ From `T`
+ | 
+ iff `T` is copy
+ constructible
+  | 
+ iff `T` is copy
+ constructible
+  | 
+ Yes
+  | 
+ Yes
+  | 
+ Yes
+  |
+| 
+ From `value\_type`
+ | 
+ iff `T` is copy
+ constructible
+  | 
+ iff `T` is copy
+ constructible
+  | 
+ No
+  | 
+ No
+  | 
+ Yes
+  |
+| 
+ From `reference`
+ | 
+ iff `T` is copy
+ constructible
+  | 
+ iff `T` is copy
+ constructible
+  | 
+ Yes
+  | 
+ Yes
+  | 
+ Yes
+  |
+| 
+ From `const\_reference`
+ | 
+ iff `T` is copy
+ constructible
+  | 
+ No
+  | 
+ No
+  | 
+ Yes
+  | 
+ Yes
+  |
+| 
+ From `param\_type`
+ | 
+ iff `T` is copy
+ constructible
+  | 
+ iff `T` is copy
+ constructible
+  | 
+ No
+  | 
+ No
+  | 
+ Yes
+  |
+  
+
+ If `T` is an assignable type
+ the following assignments are possible:
+ 
+**Table 1.4. Which [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ types are assignable from which other types**
+
+
+|  | 
+ To `T`
+ | 
+ To `value\_type`
+ | 
+ To `reference`
+ | 
+ To `const\_reference`
+ | 
+ To `param\_type`
+ |
+| --- | --- | --- | --- | --- | --- |
+| 
+ From `T`
+ | 
+ Yes
+  | 
+ Yes
+  | 
+ -
+  | 
+ -
+  | 
+ -
+  |
+| 
+ From `value\_type`
+ | 
+ Yes
+  | 
+ Yes
+  | 
+ -
+  | 
+ -
+  | 
+ -
+  |
+| 
+ From `reference`
+ | 
+ Yes
+  | 
+ Yes
+  | 
+ -
+  | 
+ -
+  | 
+ -
+  |
+| 
+ From `const\_reference`
+ | 
+ Yes
+  | 
+ Yes
+  | 
+ -
+  | 
+ -
+  | 
+ -
+  |
+| 
+ From `param\_type`
+ | 
+ Yes
+  | 
+ Yes
+  | 
+ -
+  | 
+ -
+  | 
+ -
+  |
+  
+#### 
+[Examples](call_traits.html#utility.utilities.call_traits.examples "Examples")
+ The following table shows the effect that [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") has on various types.
+ 
+**Table 1.5. Examples of [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ types**
+
+
+|  | 
+[`call\_traits`](../../boost/call_traits.html "Struct template call_traits")::`value\_type`
+ | 
+[`call\_traits`](../../boost/call_traits.html "Struct template call_traits")::`reference`
+ | 
+[`call\_traits`](../../boost/call_traits.html "Struct template call_traits")::`const\_reference`
+ | 
+[`call\_traits`](../../boost/call_traits.html "Struct template call_traits")::`param\_type`
+ | 
+ Applies to:
+  |
+| --- | --- | --- | --- | --- | --- |
+| 
+ From `my\_class`
+ | 
+`my\_class`
+ | 
+`my\_class&`
+ | 
+`const my\_class&`
+ | 
+`my\_class const&`
+ | 
+ All user-defined types
+  |
+| 
+ From `int`
+ | 
+`int`
+ | 
+`int&`
+ | 
+`const int&`
+ | 
+`int const`
+ | 
+ All small built-in types
+  |
+| 
+ From `int\*`
+ | 
+`int\*`
+ | 
+`int\*&`
+ | 
+`int\*
+const &`
+ | 
+`int\*
+const`
+ | 
+ All pointer types
+  |
+| 
+ From `int&`
+ | 
+`int&`
+ | 
+`int&`
+ | 
+`const int&`
+ | 
+`int&`
+ | 
+ All reference types
+  |
+| 
+ From `const int&`
+ | 
+`const int&`
+ | 
+`const int&`
+ | 
+`const int&`
+ | 
+`const int&`
+ | 
+ All constant reference types
+  |
+| 
+ From `int[3]`
+ | 
+`const int\*`
+ | 
+`int(&)[3]`
+ | 
+`const int(&)[3]`
+ | 
+`const int\* const`
+ | 
+ All array types
+  |
+| 
+ From `const int[3]`
+ | 
+`const int\*`
+ | 
+`const int(&)[3]`
+ | 
+`const int(&)[3]`
+ | 
+`const int\* const`
+ | 
+ All constant array types
+  |
+  
+
+ The table assumes the compiler supports partial specialization: if it does
+ not then all types behave in the same way as the entry for "`my\_class`", and [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") can not be used with
+ reference or array types.
+ 
+##### 
+[Example
+ 1:](call_traits.html#utility.utilities.call_traits.examples.example_1 "Example 1:")
+ The following class is a trivial class that stores some type `T` by value (see the [`call\_traits\_test.cpp`](../../../../../test/call_traits_test.cpp) file). The aim is to illustrate
+ how each of the available [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") `typedef`s
+ may be used:
+ 
+```
+template <class T>
+struct contained
+{
+   // define our typedefs first, arrays are stored by value
+   // so value\_type is not the same as result\_type:
+   typedef typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::param\_type       param\_type;
+   typedef typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::reference        reference;
+   typedef typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::const\_reference  const\_reference;
+   typedef T                                                value\_type;
+   typedef typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::value\_type       result\_type;
+
+   // stored value:
+   value\_type v\_;
+
+   // constructors:
+   contained() {}
+   contained(param\_type p) : v\_(p){}
+   // return byval:
+   result\_type value() { return v\_; }
+   // return by\_ref:
+   reference get() { return v\_; }
+   const\_reference const\_get()const { return v\_; }
+   // pass value:
+   void call(param\_type p){}
+
+};
+
+```
+##### 
+[Example
+ 2 (the reference to reference problem):](call_traits.html#utility.utilities.call_traits.examples.example_2_the_reference_to_refer "Example 2 (the reference to reference problem):")
+ Consider the definition of [`std::binder1st`](https://en.cppreference.com/w/cpp/utility/functional/binder12):
+ 
+```
+template <class Operation>
+class binder1st :
+   public [`std::unary\_function`](https://en.cppreference.com/w/cpp/utility/functional/unary_function)<typename Operation::second\_argument\_type, typename Operation::result\_type>
+{
+protected:
+   Operation op;
+   typename Operation::first\_argument\_type value;
+public:
+   binder1st(const Operation& x, const typename Operation::first\_argument\_type& y);
+   typename Operation::result\_type operator()(const typename Operation::second\_argument\_type& x) const;
+};
+
+```
+
+
+ Now consider what happens in the relatively common case that the functor
+ takes its second argument as a reference, that implies that `Operation::second\_argument\_type` is a reference
+ type, `operator()`
+ will now end up taking a reference to a reference as an argument, and
+ that is not currently legal. The solution here is to modify `operator()`
+ to use [`call\_traits`](../../boost/call_traits.html "Struct template call_traits"):
+ 
+```
+typename Operation::result\_type operator()(typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<typename Operation::second\_argument\_type>::param\_type x) const;
+
+```
+
+
+ Now in the case that `Operation::second\_argument\_type`
+ is a reference type, the argument is passed as a reference, and the no
+ "reference to reference" occurs.
+ 
+
+##### 
+[Example
+ 3 (the `make\_pair` problem):](call_traits.html#utility.utilities.call_traits.examples.example_3_the_make_pair_problem "Example 3 (the make_pair problem):")
+ If we pass the name of an array as one (or both) arguments to `[`std::make\_pair`](https://en.cppreference.com/w/cpp/utility/pair/make_pair)`, then template
+ argument deduction deduces the passed parameter as "const reference
+ to array of `T`",
+ this also applies to string literals (which are really array literals).
+ Consequently instead of returning a pair of pointers, it tries to return
+ a pair of arrays, and since an array type is not copy-constructible the
+ code fails to compile. One solution is to explicitly cast the arguments
+ to [`std::make\_pair`](https://en.cppreference.com/w/cpp/utility/pair/make_pair) to pointers, but
+ [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ provides a better automatic solution that works safely even in generic
+ code where the cast might do the wrong thing:
+ 
+```
+template <class T1, class T2>
+[`std::pair`](https://en.cppreference.com/w/cpp/utility/pair)<
+   typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T1>::value\_type,
+   typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T2>::value\_type>
+      make\_pair(const T1& t1, const T2& t2)
+{
+   return [`std::pair`](https://en.cppreference.com/w/cpp/utility/pair)<
+      typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T1>::value\_type,
+      typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T2>::value\_type>(t1, t2);
+}
+
+```
+
+
+ Here, the deduced argument types will be automatically degraded to pointers
+ if the deduced types are arrays, similar situations occur in the standard
+ binders and adapters: in principle in any function that "wraps"
+ a temporary whose type is deduced. Note that the function arguments to
+ [`std::make\_pair`](https://en.cppreference.com/w/cpp/utility/pair/make_pair) are not expressed
+ in terms of [`call\_traits`](../../boost/call_traits.html "Struct template call_traits"):
+ doing so would prevent template argument deduction from functioning.
+ 
+
+##### 
+[Example
+ 4 (optimising fill):](call_traits.html#utility.utilities.call_traits.examples.example_4_optimising_fill "Example 4 (optimising fill):")
+ The [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ template will "optimize" the passing of a small built-in type
+ as a function parameter. This mainly has an effect when the parameter
+ is used within a loop body.
+ 
+ In the following example (see [`fill\_example.cpp`](../../../../../../libs/type_traits/examples/fill_example.cpp)), a version of [`std::fill`](https://en.cppreference.com/w/cpp/algorithm/fill) is optimized in two ways:
+ if the type passed is a single byte built-in type then [`std::memset`](https://en.cppreference.com/w/cpp/string/byte/memset) is used to effect the
+ fill, otherwise a conventional C++ implementation is used, but with the
+ passed parameter "optimized" using [`call\_traits`](../../boost/call_traits.html "Struct template call_traits"):
+ 
+```
+template <bool opt>
+struct filler
+{
+   template <typename I, typename T>
+   static void do\_fill(I first, I last, typename [`boost::call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::param\_type val)
+   {
+      while(first != last)
+      {
+         \*first = val;
+         ++first;
+      }
+   }
+};
+
+template <>
+struct filler<true>
+{
+   template <typename I, typename T>
+   static void do\_fill(I first, I last, T val)
+   {
+      [`std::memset`](https://en.cppreference.com/w/cpp/string/byte/memset)(first, val, last-first);
+   }
+};
+
+template <class I, class T>
+inline void fill(I first, I last, const T& val)
+{
+   enum { can\_opt = boost::is\_pointer<I>::value
+                   && boost::is\_arithmetic<T>::value
+                   && (sizeof(T) == 1) };
+   typedef filler<can\_opt> filler\_t;
+   filler\_t::template do\_fill<I,T>(first, last, val);
+}
+
+```
+
+
+ The reason that this is "optimal" for small built-in types
+ is that with the value passed as `T
+const` instead of `const T&` the compiler is able to tell both
+ that the value is constant and that it is free of aliases. With this
+ information the compiler is able to cache the passed value in a register,
+ unroll the loop, or use explicitly parallel instructions: if any of these
+ are supported. Exactly how much mileage you will get from this depends
+ upon your compiler - we could really use some accurate benchmarking software
+ as part of boost for cases like this.
+ 
+ Note that the function arguments to fill are not expressed in terms of
+ [`call\_traits`](../../boost/call_traits.html "Struct template call_traits"):
+ doing so would prevent template argument deduction from functioning.
+ Instead fill acts as a "thin wrapper" that is there to perform
+ template argument deduction, the compiler will optimise away the call
+ to fill all together, replacing it with the call to `filler<>::do\_fill`,
+ which does use [`call\_traits`](../../boost/call_traits.html "Struct template call_traits").
+ 
+
+
+#### 
+[Rationale](call_traits.html#utility.utilities.call_traits.rationale "Rationale")
+ The following notes are intended to briefly describe the rationale behind
+ choices made in [`call\_traits`](../../boost/call_traits.html "Struct template call_traits").
+ 
+ All user-defined types follow "existing practice" and need no
+ comment.
+ 
+ Small built-in types, what the standard calls [fundamental
+ types](https://en.cppreference.com/w/cpp/language/types), differ from existing practice only in the `param\_type` `typedef`.
+ In this case passing `T const` is compatible with existing practice,
+ but may improve performance in some cases (see [Example
+ 4](call_traits.html#sec:example4)). In any case this should never be any worse than existing practice.
+ 
+ Pointers follow the same rationale as small built-in types.
+ 
+ For reference types the rationale follows [Example
+ 2](call_traits.html#sec:refs) - references to references are not allowed, so the [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") members must be defined
+ such that these problems do not occur. There is a proposal to modify the
+ language such that "a reference to a reference is a reference"
+ (issue #106, submitted by Bjarne Stroustrup). [`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::value\_type`
+ and [`call\_traits<T>`](../../boost/call_traits.html "Struct template call_traits")`::param\_type` both provide the same effect
+ as that proposal, without the need for a language change. In other words,
+ it's a workaround.
+ 
+ For array types, a function that takes an array as an argument will degrade
+ the array type to a pointer type: this means that the type of the actual
+ parameter is different from its declared type, something that can cause
+ endless problems in template code that relies on the declared type of a
+ parameter.
+ 
+ For example:
+ 
+```
+template <class T>
+struct A
+{
+   void foo(T t);
+};
+
+```
+
+
+ In this case if we instantiate `A<int[2]>`
+ then the declared type of the parameter passed to member function `foo` is `int[2]`,
+ but its actual type is `const int\*`. If
+ we try to use the type `T`
+ within the function body, then there is a strong likelihood that our code
+ will not compile:
+ 
+```
+template <class T>
+void A<T>::foo(T t)
+{
+   T dup(t); // doesn't compile for case that T is an array.
+}
+
+```
+
+
+ By using [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ the degradation from array to pointer is explicit, and the type of the
+ parameter is the same as it's declared type:
+ 
+```
+template <class T>
+struct A
+{
+   void foo(typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::value\_type t);
+};
+
+template <class T>
+void A<T>::foo(typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::value\_type t)
+{
+   typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<T>::value\_type dup(t); // OK even if T is an array type.
+}
+
+```
+
+
+ For `value\_type` (return
+ by value), again only a pointer may be returned, not a copy of the whole
+ array, and again [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ makes the degradation explicit. The `value\_type`
+ member is useful whenever an array must be explicitly degraded to a pointer
+ - [Example 3](call_traits.html#sec:example3) provides the test case.
+ 
+ Footnote: the array specialisation for [`call\_traits`](../../boost/call_traits.html "Struct template call_traits") is the least well
+ understood of all the [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")
+ specialisations. If the given semantics cause specific problems for you,
+ or does not solve a particular array-related problem, then I would be interested
+ to hear about it. Most people though will probably never need to use this
+ specialisation.
+ 
+
+#### 
+Reference
+##### 
+Header <[boost/detail/call\_traits.hpp](../../../../../../boost/detail/call_traits.hpp)>
+```
+namespace boost {
+  template<typename T> struct [call\_traits](../../boost/call_traits.html "Struct template call_traits");
+
+  template<typename T, std::size\_t N> struct [call\_traits](../../boost/call_tra_idm35151228613424.html "Struct template call_traits<const T[N]>")<const T[N]>;
+  template<typename T> struct [call\_traits](../../boost/call_tra_idm35151228608944.html "Struct template call_traits<T &>")<T &>;
+  template<typename T, std::size\_t N> struct [call\_traits](../../boost/call_tra_idm35151228605104.html "Struct template call_traits<T[N]>")<T[N]>;
+}
+```
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../BOOST_BINARY_LITERAL_D.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/call_traits.html)

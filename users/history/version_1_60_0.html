@@ -1,0 +1,608 @@
+---
+title: Version 1.60.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.60.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.60.0
+==============
+
+Version 1.60.0
+--------------
+
+
+December 17th, 2015 15:52 GMT
+
+
+[Documentation](/doc/libs/1_60_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_60\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2) |
+| [boost\_1\_60\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.gz) |
+| windows | [boost\_1\_60\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.7z) |
+| [boost\_1\_60\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.zip) |
+
+
+### New Libraries
+
+
+* [VMD](/libs/vmd/):
+ Variadic Macro Data library,
+ from Edward Diener.
+
+### Updated Libraries
+
+
+* [Atomic](/libs/atomic/):
+
+	+ Enforced proper alignment of `atomic<>` storage. This should fix
+	 possible issues on platforms that support atomic operations on data
+	 units larger than the native word size. This may also change binary
+	 layout of user's data structures that have `atomic<>` members.
+	+ Fixed compilation for PowerPC with IBM XL C++ compiler. Corrected
+	 memory barriers in PowerPC assembler.
+	+ Fixed compilation with MSVC-8 for ARM.
+	+ Fixed compilation with gcc 4.4 for x86-64, when 128-bit atomic operations
+	 were used. ([#10994](https://svn.boost.org/trac/boost/ticket/10994))
+	+ Optimized some gcc assembler blocks for x86/x86-64 to reduce the
+	 number of used registers. This may require binutils 2.10 or later.
+* [Chrono - 2.0.5](/libs/chrono/):
+
+	+ *Fixes:*
+	
+		- [#10778](http://svn.boost.org/trac/boost/ticket/10778)
+		 VC14 CTP4 Atomic don't compile with boost::chrono durations
+		 which are not TriviallyCopyable
+		- [#10840](http://svn.boost.org/trac/boost/ticket/10840)
+		 Missing std:: qualifier for puts call in test\_7868.cpp
+		- [#10851](http://svn.boost.org/trac/boost/ticket/10851)
+		 Missing std:: qualifier for puts call in time\_point\_output.cpp
+		- [#10893](http://svn.boost.org/trac/boost/ticket/10893)
+		 Minor doc typo in Boost.Chrono
+		- [#10992](http://svn.boost.org/trac/boost/ticket/10992)
+		 Chrono IO state savers inconsistent with Boost.IO state savers
+		- [#10995](http://svn.boost.org/trac/boost/ticket/10995)
+		 duration\_put::put\_value truncates fractional part
+		- [#11006](http://svn.boost.org/trac/boost/ticket/11006)
+		 Impossible to instantiate time\_fmt\_io\_saver due to several
+		 errors.
+		- [#11012](http://svn.boost.org/trac/boost/ticket/11012)
+		 chrono\_io v2 fail to compile with boost::chrono::duration<
+		 boost::rational<int> >
+* [Container](/libs/container/):
+
+	+ Implemented Polymorphic
+	 Memory Resources.
+	+ Add more BOOST\_ASSERT checks to test preconditions in some operations
+	 (like `pop\_back`,
+	 `pop\_front`, `back`, `front`,
+	 etc.)
+	+ Added C++11 `back`/`front` operations to `basic_string`.
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #11627: *"small\_vector<T,n>::swap() appears
+		 to be broken"*](https://svn.boost.org/trac/boost/ticket/11627).
+		- [Trac
+		 #11628: *"small\_vector<int,n> iterates
+		 over elements in destructor"*](https://svn.boost.org/trac/boost/ticket/11628).
+		- [Trac
+		 #11697: *"Wrong initialization order in tuple
+		 copy-constructor"*](https://svn.boost.org/trac/boost/ticket/11697).
+		- [Trac
+		 #11698: *"Missing return statement in static\_storage\_allocator"*](https://svn.boost.org/trac/boost/ticket/11698).
+		- [GitHub
+		 #29: *Doc fixes for flap\_map complexity requirements*](https://github.com/boostorg/container/pull/29).
+		- [GitHub
+		 #31: *DL\_SIZE\_IMPL also dereference addr*](https://github.com/boostorg/container/pull/31).
+* [Context](/libs/context/):
+
+	+ [#11603](https://svn.boost.org/trac/boost/ticket/11603) typo in PPC32/MACH-O asm
+	+ support for CYGWIN
+* [Core](/libs/core/):
+
+	+ In symbol demangling tools, added support for gabi++ ABI implementation
+	 used in Android NDK.
+	+ Added a new `enable\_if\_has\_type`
+	 tool for performing SFINAE checks for presence of a nested type.
+* [Filesystem](/libs/filesystem/):
+
+	+ *New Features:*
+	
+		- Added functions [`lexically\_normal`](/libs/filesystem/doc/reference.html#lex-normal),
+		 [`lexically\_relative`](/libs/filesystem/doc/reference.html#lex-relative),
+		 [`relative`](/libs/filesystem/doc/reference.html#op-relative), and [`weakly\_canonical`](/libs/filesystem/doc/reference.html#weakly_canonical).
+		 Many thanks to Jamie Allsop for his help and perseverance.
+		 Resolves tickets [#1976](https://svn.boost.org/trac/boost/ticket/1976),
+		 [#5897](https://svn.boost.org/trac/boost/ticket/5897),
+		 [#6249](https://svn.boost.org/trac/boost/ticket/6249).
+		- Class `path`
+		 added types [`reverse\_iterator`](/libs/filesystem/doc/reference.html#path-iterators)
+		 and [`const\_reverse\_iterator`](/libs/filesystem/doc/reference.html#path-iterators),
+		 and added functions [`rbegin()`](/libs/filesystem/doc/reference.html#path-iterators),
+		 and [`rend()`](/libs/filesystem/doc/reference.html#path-iterators).
+		- C++11 `noexcept`
+		 supplied as specified in the Filesystem TS if supported by
+		 the compiler.
+		- C++11 move constructors and move assignments supplied as specified
+		 in the Filesystem TS if supported by the compiler. Resolves
+		 [#10291](https://svn.boost.org/trac/boost/ticket/10291).
+		- Existing functions whose names changed in the Filesystem TS
+		 are now supported under both the old and new names.
+		- Added [`size()`](/libs/filesystem/doc/reference.html#path-size)
+		 function to class `path`.
+		 Resolves [#6874](https://svn.boost.org/trac/boost/ticket/6874),
+		 Path should have a `size()` member function.
+	+ *Tickets:*
+	
+		- Fix [#11733](https://svn.boost.org/trac/boost/ticket/11733),
+		 Missing unistd.h include in boost/libs/filesystem/src/unique\_path.cpp,
+		 by apply a patch from Idar Tollefsen.
+		- Fix [#5706](https://svn.boost.org/trac/boost/ticket/5706),
+		 unique\_path Fails on Windows for Temporary User Profiles, by
+		 applying [pull
+		 request #15](https://github.com/boostorg/filesystem/pull/15) from Sebastian Redl to fix a race condition
+		 in `unique\_path`.
+		- Fix [#10591](https://svn.boost.org/trac/boost/ticket/10591),
+		 boost::filesystem does not build on iOS 8, by applying a patch
+		 submitted by Daniel Seither.
+		- Fix [#9454](https://svn.boost.org/trac/boost/ticket/9454),
+		 Boost Filesystem [library build] not compiling when BOOST\_FILESYSTEM\_NO\_DEPRECATED
+		 is defined, by applying a patch submitted by Makesim.
+		- Fix [#11447](https://svn.boost.org/trac/boost/ticket/11447),
+		 `\_\_OpenBSD\_\_`
+		 macro name misspelled, by applying a patch submitted by Jasper
+		 Lievisse Adriaanse.
+		- Fix [#11288](https://svn.boost.org/trac/boost/ticket/11288),
+		 A patch to avoid redundant string allocations, by applying
+		 a patch submitted by Yevhen Ivannikov.
+		- Resolve [#11175](https://svn.boost.org/trac/boost/ticket/11175),
+		 out-of-date documentation causing users to incorrectly expect
+		 that the library could be used with exceptions disabled.
+		- Resolve [#11166](https://svn.boost.org/trac/boost/ticket/11166),
+		 by mitigating (i.e. reducing the likelihood of) a possible
+		 external file system race in `remove()`.
+		- Fix [#7258](https://svn.boost.org/trac/boost/ticket/7258),
+		 `create\_directories`
+		 returns false if the path ends with a slash. Also fix related
+		 issues if path contains dot or dot-dot elements, and added
+		 test cases to the test suite.
+		- Resolve [#10766](https://svn.boost.org/trac/boost/ticket/10766),
+		 `parent\_path()` with redundant separator
+		 returns wrong value, by adding examples and notes to the reference
+		 documentation to show why the returned value is in fact correct,
+		 and to provide rationale for that behavior. See [path.itr](/libs/filesystem/doc/reference.html#path-iterators),
+		 and [path.decompose](/libs/filesystem/doc/reference.html#path-decomposition)
+		`parent\_path()` and `filename()` sections of the reference
+		 docs.
+		- Close [#7607](https://svn.boost.org/trac/boost/ticket/7607),
+		 path should not infer an invisible "." at the end
+		 of a path that ends with a slash, as resolved by [#7258](https://svn.boost.org/trac/boost/ticket/7258)
+		 and [#10766](https://svn.boost.org/trac/boost/ticket/10766).
+		- Close [#11061](https://svn.boost.org/trac/boost/ticket/11061),
+		 [#11062](https://svn.boost.org/trac/boost/ticket/11062),
+		 Impossible to traverse the path of the reverse iterator, as
+		 effectively resolved by the addition of the class `path` reverse iteration feature.
+		 The reference documentation has also been updated with a [note](/libs/filesystem/doc/reference.html#path-iterators)
+		 warning about the limitations of class `path`
+		 iterators.
+	+ *Other fixes:*
+	
+		- Clear several spurious GCC warnings.
+		- Fix bug in `file\_status`
+		 and `recursive\_directory\_iterator`:
+		 C++ turns an explicit constructor with all arguments except
+		 first defaulted into non-explicit single argument constructor.
+		- Apply Reference docs editorial cleanups: Use same style sheet
+		 as the rest of the documentation. Tweak tab font size. Fix
+		 excessively long lines in tables, synopsis.
+		- Minor fixes, including pull requests from Jonathan Wakely and
+		 Marcel Raad.
+* [Flyweight](/libs/flyweight/index.html):
+
+	+ Maintenance fixes.
+* [Fusion](/libs/fusion/):
+
+	+ All of fusion containers and generators now support C++11 variadic
+	 templates. ([pull-request
+	 89](https://github.com/boostorg/fusion/pull/89), [pull-request
+	 97](https://github.com/boostorg/fusion/pull/97), [pull-request
+	 100](https://github.com/boostorg/fusion/pull/100))
+	 
+		- **Special notice for `fusion::vector`**
+		
+			* Due to implementation limitation, numbered form (i.e.
+			 `fusion::vectorN`)
+			 is provided via C++11 aliasing templates and deprecated
+			 in C++11 or later. In this case, you should check `BOOST\_FUSION\_HAS\_VARIADIC\_VECTOR`
+			 macro and switch usage because some partial specialization
+			 would become compile error (e.g. [pull-request
+			 for Spirit](https://github.com/boostorg/spirit/pull/158/files#diff-250ce096dee927d2b7eb5a4e24afb8cd)).
+	+ `fusion::nview` now support C++11 variadic
+	 templates. ([pull-request
+	 90](https://github.com/boostorg/fusion/pull/90))
+	+ `fusion::fold` is now SFINAE-friendly. ([pull-request 102](https://github.com/boostorg/fusion/pull/102))
+	+ *Bug fixes:*
+	
+		- The generic fusion sequence convert to a deque fails with a
+		 compiler error. ([#11572](https://svn.boost.org/trac/boost/ticket/11572))
+		- (doc) Return type of functions incorrect. ([#3358](https://svn.boost.org/trac/boost/ticket/3358))
+* [Geometry](/libs/geometry/):
+
+	+ *Solved tickets:*
+	
+		- [#10803](https://svn.boost.org/trac/boost/ticket/10803)
+		 Union algorithm returning invalid geometry
+		- [#11522](https://svn.boost.org/trac/boost/ticket/11522)
+		 Namespace clash in buffer for traits::detail
+		- [#11533](https://svn.boost.org/trac/boost/ticket/11533)
+		 Assert failure in rtree caused by a bug in remove() if min
+		 elements number is 1
+		- [#11607](https://svn.boost.org/trac/boost/ticket/11607)
+		 Private geometry::exception::what()
+		- [#11709](https://svn.boost.org/trac/boost/ticket/11709)
+		 is\_simple segfault
+		- [#11710](https://svn.boost.org/trac/boost/ticket/11710)
+		 is\_simple - empty geometry logic
+		- [#11711](https://svn.boost.org/trac/boost/ticket/11711)
+		 is\_simple and is\_valid - Points that are NaN or Infinity
+	+ *Bugfixes:*
+	
+		- Fix colocations of touching interior ring / exterior ring,
+		 where it also touches another polygon
+		- Fix removing values from an empty rtree - no effect and 0 returned
+		 instead of assertion failure
+		- Fix segfault in centroid for multi geometries containing empty
+		 single geometries (thanks to Jiri Drbalek)
+		- Fix liang\_barsky strategy for integral coordinates (thanks
+		 to Dane Springmeyer)
+* [Interprocess](/libs/interprocess/):
+
+	+ Improved `offset_ptr`
+	 performance and removed any undefined behaviour. No special cases
+	 needed for different compilers.
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #11699 (*"Forward declarations of std templates
+		 causes stack corruption under Visual Studio 2015"*)](https://svn.boost.org/trac/boost/ticket/11699).
+* [Intrusive](/libs/intrusive/):
+
+	+ Advanced lookup
+	 and insertions in ordered associative containers now support
+	 comparison functions that are not required to offer the same strict
+	 weak ordering as `key\_compare`,
+	 the container must be partitioned in regards to the passed comparison
+	 object.
+	+ Fixed bugs:
+	 
+		- [Boost
+		 Trac #11701: *Regression in boost::intrusive::set::equal\_range*](https://svn.boost.org/trac/boost/ticket/11701)
+		- [Boost
+		 Trac #11765: *sgtree.hpp:830: bad if test ?*](https://svn.boost.org/trac/boost/ticket/11765)
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Fixed usage of `lexical\_cast`
+	 with move only types [#11570](https://svn.boost.org/trac/boost/ticket/11570)
+	+ Fixed crash when `BOOST\_LCAST\_NO\_COMPILE\_TIME\_PRECISION`
+	 is defined [#11669](https://svn.boost.org/trac/boost/ticket/11669)
+	+ Suppress some of the warning reported in [#11570](https://svn.boost.org/trac/boost/ticket/11570) and [#4946](https://svn.boost.org/trac/boost/ticket/4946)
+* [Locale](/libs/locale):
+
+	+ Implemented generic codecvt facet and add general purpose utf8\_codecvt
+	 facet
+	+ Added posix locale support for FreeBSD 10.0 and above
+	+ Fixed issues [#10017](https://svn.boost.org/trac/boost/ticket/10017) (sun redefinition on SunOS), [#11163](https://svn.boost.org/trac/boost/ticket/11163) (set\_default\_messages\_domain
+	 incorrect behavior), [#11673](https://svn.boost.org/trac/boost/ticket/11673) build issues
+	+ Some warning cleanup
+	+ Fixed tests for latest ICU versions
+	+ Added workaround for `libc++` issues
+	+ Added new defines `BOOST\_LOCALE\_ENABLE\_CHAR16\_T`
+	 and `BOOST\_LOCALE\_ENABLE\_CHAR32\_T`
+	 to enable C++11 `char16\_t`
+	 and `char32\_t` instead
+	 of deprecated ones
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- On Windows, the configuration macro `BOOST\_LOG\_USE\_WINNT6\_API`
+		 is no longer used by the library. The target Windows version
+		 should be configured by defining macro `BOOST\_USE\_WINAPI\_VERSION`.
+	+ Bug fixes:
+	 
+		- Fixed compilation for Android using Google NDK. ([#11559](https://svn.boost.org/trac/boost/ticket/11559))
+		- Fixed compilation of some logging statements, where the first
+		 object to be put into stream is not directly supported by
+		 `formatting\_ostream`.
+		 ([#11549](https://svn.boost.org/trac/boost/ticket/11549))
+		- Added a workaround for Solaris Studio 12.4, which should fix
+		 the compilation of `formatting\_ostream`.
+		 ([#11545](https://svn.boost.org/trac/boost/ticket/11545))
+		- Fixed compilation when native `wchar\_t`
+		 type is disabled. ([#11541](https://svn.boost.org/trac/boost/ticket/11541))
+		- Fixed exporting symbols from the `boost\_log\_setup`
+		 library on POSIX-like systems.
+		- Fixed compilation of character decorators.
+		- Added a workaround for incorrect file name generation in text
+		 file sink backend, when the file name contains date/time placeholders.
+		 ([#11691](https://svn.boost.org/trac/boost/ticket/11691))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Move](/libs/move/):
+
+	+ Fixed bug [Trac
+	 #11615: *"Boost.Move should use the qualified name
+	 for std::size\_t in type\_traits.hpp"*](https://svn.boost.org/trac/boost/ticket/11615),
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ Fixed an interoperability problem with [Qt](http://www.qt.io/)
+	 due to the optional definition of a macro with name `foreach` in this framework.
+	+ Maintenance fixes.
+* [odeint](/libs/numeric/odeint):
+
+	+ New features:
+	 
+		- Added functionality to throw an exception if too many ODE steps
+		 are performed.
+		- Added possibility to limit maximal step size in adaptive methods.
+	+ several Bug fixes, see https://github.com/headmyshoulder/odeint-v2/issues
+* [Optional](/libs/optional/):
+
+	+ Changed the implementation of `boost::none`
+	 again. Now it is a const object with internal linkage (as any other
+	 tag). This fixes [#11203](https://svn.boost.org/trac/boost/ticket/11203).
+* [Predef](/libs/predef/):
+
+	+ Add detection of SIMD hardware.
+	+ See [history](/libs/predef/doc/html/predef/history.html#predef.history.1_4)
+	 for more details.
+* [Test](/libs/test/):
+
+	+ Boost.test v3.1 see the '[Change
+	 log](/doc/libs/1_60_0/libs/test/doc/html/boost_test/change_log.html)' section for details.
+	+ New features
+	 
+		- Improved Command Line Interface
+		- Improved dataset API
+	+ Bug fixes
+	 
+		- [#3384](https://svn.boost.org/trac/boost/ticket/3384), [#3897](https://svn.boost.org/trac/boost/ticket/3897), [#6032](https://svn.boost.org/trac/boost/ticket/6032), [#6859](https://svn.boost.org/trac/boost/ticket/6859), [#7257](https://svn.boost.org/trac/boost/ticket/7257)
+		- [#9228](https://svn.boost.org/trac/boost/ticket/9228), [#10317](https://svn.boost.org/trac/boost/ticket/10317), [#11279](https://svn.boost.org/trac/boost/ticket/11279), [#11478](https://svn.boost.org/trac/boost/ticket/11478)
+		- [#11571](https://svn.boost.org/trac/boost/ticket/11571), [#11623](https://svn.boost.org/trac/boost/ticket/11623), [#11624](https://svn.boost.org/trac/boost/ticket/11624), [#11625](https://svn.boost.org/trac/boost/ticket/11625)
+* [Thread - 4.6.0](/libs/thread/):
+*New
+ Experimental Features:*
+
+	+ [#11231](http://svn.boost.org/trac/boost/ticket/11231)
+	 Allow to set continuation future's destructor behavior to non-blocking
+	+ [#11424](http://svn.boost.org/trac/boost/ticket/11424)
+	 Provide shared\_timed\_mutex as an alternative name for shared\_mutex
+	 and deprecate the use of shared\_mutex as a timed mutex
+	+ [#11734](http://svn.boost.org/trac/boost/ticket/11734)
+	 future::then(Cont) should be able to execute the contination on undetermined
+	 thread
+	+ [#11736](http://svn.boost.org/trac/boost/ticket/11736)
+	 Allow to use launch::executor on future::then(launch::executor, cont)
+	+ [#11737](http://svn.boost.org/trac/boost/ticket/11737)
+	 Add a launch::inherit policy that can be used on ::then() to use
+	 the policy of the parent future *Fixed Bugs:*
+	+ [#3926](http://svn.boost.org/trac/boost/ticket/3926)
+	 thread\_specific\_ptr + dlopen library causes a SIGSEGV.
+	+ [#6377](http://svn.boost.org/trac/boost/ticket/6377)
+	 Condition variable blocks when changing time
+	+ [#6787](http://svn.boost.org/trac/boost/ticket/6787)
+	 boost::thread::sleep() hangs if system time is rolled back
+	+ [#7665](http://svn.boost.org/trac/boost/ticket/7665)
+	 this\_thread::sleep\_for no longer uses steady\_clock in thread
+	+ [#7720](http://svn.boost.org/trac/boost/ticket/7720)
+	 exception lock\_error while intensive locking/unlocking of mutex
+	+ [#9309](http://svn.boost.org/trac/boost/ticket/9309)
+	 test\_latch fails often on clang-darwin-tot11
+	+ [#10788](http://svn.boost.org/trac/boost/ticket/10788)
+	 GetLogicalProcessor isn't available for Windows platform less or
+	 equals to 0x0502
+	+ [#11090](http://svn.boost.org/trac/boost/ticket/11090)
+	 ex\_future\_unwrap- ThreadSanitizer: lock-order-inversion (potential
+	 deadlock)
+	+ [#11158](http://svn.boost.org/trac/boost/ticket/11158)
+	 Pthread thread deadlock when faketime used
+	+ [#11174](http://svn.boost.org/trac/boost/ticket/11174)
+	 boost::condition\_variable::timed\_wait with predicate unexpectedly
+	 wakes up while should wait infinite
+	+ [#11185](http://svn.boost.org/trac/boost/ticket/11185)
+	 Incorrect URL redirection
+	+ [#11192](http://svn.boost.org/trac/boost/ticket/11192)
+	 boost::future<>::then() with an executor doesn't compile when
+	 the callback returns a future
+	+ [#11250](http://svn.boost.org/trac/boost/ticket/11250)
+	 future made from make\_exceptional fails on assertion in destructor
+	+ [#11256](http://svn.boost.org/trac/boost/ticket/11256)
+	 future<>::is\_ready() == false in continuation function
+	+ [#11261](http://svn.boost.org/trac/boost/ticket/11261)
+	 bad use of scoped threads in basic\_thread\_pool
+	+ [#11262](http://svn.boost.org/trac/boost/ticket/11262)
+	 bad use of direct pointer in shared\_state\_nullary\_task
+	+ [#11263](http://svn.boost.org/trac/boost/ticket/11263)
+	 lock already locked lock
+	+ [#11266](http://svn.boost.org/trac/boost/ticket/11266)
+	 boost::packaged\_task has invalid variadic signature
+	+ [#11302](http://svn.boost.org/trac/boost/ticket/11302)
+	 boost thread doesn't build with BOOST\_THREAD\_PATCH.
+	+ [#11322](http://svn.boost.org/trac/boost/ticket/11322)
+	 sleep\_for() nanoseconds overload will always return too early on
+	 windows
+	+ [#11329](http://svn.boost.org/trac/boost/ticket/11329)
+	 using declarative for GetProcessHeap, .... fails
+	+ [#11368](http://svn.boost.org/trac/boost/ticket/11368)
+	 boost thread's usage of CreateWaitableTimer wakes PC from sleep (doh)
+	+ [#11377](http://svn.boost.org/trac/boost/ticket/11377)
+	 Boost condition variable always waits for system clock deadline
+	+ [#11435](http://svn.boost.org/trac/boost/ticket/11435)
+	 gcc compiler warning in future.hpp
+	+ [#11555](http://svn.boost.org/trac/boost/ticket/11555)
+	 devector.hpp assumes allocator\_traits\_type is always present
+	+ [#11562](http://svn.boost.org/trac/boost/ticket/11562)
+	 Timer (using steady\_clock) expires after computer time is set forward
+	 on Ubuntu 64-bit
+	+ [#11672](http://svn.boost.org/trac/boost/ticket/11672)
+	 Thread: Should use unique\_ptr, not auto\_ptr
+	+ [#11688](http://svn.boost.org/trac/boost/ticket/11688)
+	 thread::try\_join\_until: Avoid busy wait if system clock changes
+	+ [#11716](http://svn.boost.org/trac/boost/ticket/11672)
+	 ::then(f) should inherit the parent Executor
+* [UUID](/libs/uuid/):
+
+	+ Added a workaround for MSVC codegen bug that could cause crashes
+	 when comparing UUIDs.
+	+ Added detection of AVX being enabled with MSVC compiler switches.
+
+### News
+### Notes for
+ Windows users
+ This release of Boost will by default compile for Windows Vista/Windows Server
+ 2008, if the compiler supports a recent enough Windows SDK, and for Windows
+ XP otherwise. Binaries compiled with default options may not run on the older
+ Windows versions.
+ 
+ It is still possible to explicitly specify target Windows version by defining
+ `BOOST\_USE\_WINAPI\_VERSION`
+ to a numeric version of Windows API. For example, building Boost for Windows
+ XP can be done with the following command:
+ 
+```
+    b2 release define=BOOST\_USE\_WINAPI\_VERSION=0x0501
+
+```
+
+
+ The list of Windows API version numbers can be seen on [this](https://msdn.microsoft.com/en-us/library/6sehtctf.aspx)
+ page.
+ 
+ This change only concerns libraries that use the common Windows API abstraction
+ layer. Currently, these libraries are: Boost.Chrono, Boost.Dll, Boost.Log,
+ Boost.UUID. This will also affect all dependent libraries.
+ 
+
+### Release
+ of Hana postponed
+ Due to time constraints, the release of [Hana](https://github.com/boostorg/hana)
+ will be postponed to a later release of Boost. This will also allow some
+ known issues to be addressed properly before releasing the library officially
+ as a part of Boost. More information can be found on the [mailing
+ list](http://article.gmane.org/gmane.comp.lib.boost.devel/263964).
+ 
+
+### Release
+ of Boost.DLL library postponed
+ In order to provide superior support of uncommon toolsets and platforms,
+ the release of Boost.DLL was postponed to a later release of Boost. This
+ also allows to test better a recently added ability to copy construct and
+ copy assign instances of `boost::dll::shared\_library` and provide examples on
+ importing functions with non default calling conventions. Latest version
+ and developer documentation of the library could be found at [GitHub
+ repo](https://github.com/boostorg/dll).
+ 
+
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.4, 3.6
+	+ Clang, C++14: 3.7
+	+ GCC: 4.4.7, 4.8.4, 4.9.3, 5.1.0, 5.2.1
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 4.9.3
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5
+	+ GCC, C++11, mingw: 4.6.4, 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7
+	+ GCC: 4.9.0, 5.2.0
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.4, 12.5
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.1, 3.2, 3.3, 3.4.2, 3.6.0, 3.8.0
+	+ Clang, C++14: 3.7.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.4, 4.7.3, 4.8.1, 4.9.3, 5.1.0, 6.0.0
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 4.9.3, 5.2.1
+	+ IBM XL C++: 13.1.2.0
+	+ Intel: 16.0
+* OS X:
+ 
+	+ Clang: 7.0.0
+	+ GCC: 5.2.0
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5
+	+ GCC, C++11, mingw: 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7
+	+ GCC: 4.9.0, 5.2.0
+* FreeBSD:
+ 
+	+ Clang, C++11: 3.4.1, 3.7.0
+	+ GCC, C++11: 4.8.5, 5.2.0, 6.0.0
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.4, 12.5
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

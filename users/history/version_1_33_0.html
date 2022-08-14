@@ -1,0 +1,244 @@
+---
+title: Version 1.33.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.33.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.33.0
+==============
+
+Version 1.33.0
+--------------
+
+
+August 11th, 2005 12:00 GMT
+
+Downloads| Platform | File |
+| unix | [boost\_1\_33\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.33.0/boost_1_33_0.tar.bz2) |
+| [boost\_1\_33\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.33.0/boost_1_33_0.tar.gz) |
+| windows | [boost\_1\_33\_0.exe](http://sourceforge.net/projects/boost/files/boost/1.33.0/boost_1_33_0.exe) |
+| [boost\_1\_33\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.33.0/boost_1_33_0.zip) |
+
+
+### New Libraries
+
+
+* [Iostreams
+ Library](/doc/libs/1_33_1/libs/iostreams/doc/index.html):
+ Framework for defining streams, stream buffers and i/o
+ filters, from Jonathan Turkanis.
+* [Functional/Hash
+ Library](/doc/libs/1_33_1/libs/functional/hash/index.html): A TR1 hash function object that can be extended to hash
+ user defined types, from Daniel James.
+* [Parameter
+ Library](/doc/libs/1_33_1/libs/parameter/doc/html/index.html):
+ Write functions that accept arguments by name: especially
+ useful when a function has more than one argument with a useful default
+ value, since named arguments can be passed in any order.
+* [Pointer
+ Container Library](/doc/libs/1_33_1/libs/ptr_container/index.html):
+ Containers for storing heap-allocated polymorphic
+ objects to ease OO-programming, from Thorsten Ottosen.
+* [Wave](/doc/libs/1_33_1/libs/wave/index.html): Standards
+ conformant implementation of the mandated C99/C++ preprocessor functionality
+ packed behind an easy to use iterator interface, from Hartmut Kaiser.
+
+### Updated Libraries
+
+
+* [Any Library](/doc/libs/1_33_1/doc/html/any.html): `any\_cast` has been enhanced to allow direct
+ access to `any`'s held value.
+* [Assignment
+ Library](/doc/libs/1_33_1/libs/assign/doc/index.html): Support for [Pointer
+ Container Library](/doc/libs/1_33_1/libs/ptr_container/index.html) and new efficient functions `ref\_list\_of()` and `cref\_list\_of()` for generating anonymous ranges.
+* [Bind Library](/doc/libs/1_33_1/libs/bind/bind.html): Bind
+ expressions now support [comparisons
+ and negation](/doc/libs/1_33_1/libs/bind/bind.html#operators). Example: `bind(&X::name, \_1) < bind(&X::name, \_2)`.
+* [Date-Time
+ Library](/doc/libs/1_33_1/doc/html/date_time.html):
+
+	+ Added [local
+	 time and time zone classes](/doc/libs/1_33_1/doc/html/date_time/local_time.html).
+	+ Added [format-based
+	 Input/Output facets](/doc/libs/1_33_1/doc/html/date_time/date_time_io.html).
+	+ For a complete list of changes, see the library [change
+	 history](/doc/libs/1_33_1/doc/html/date_time/details.html#date_time.changes).
+* [Graph Library](/doc/libs/1_33_1/libs/graph/doc/index.html): Introduced
+ several new algorithms and improved existing algorithms:
+ 
+	+ [Experimental
+	 Python bindings](/doc/libs/1_33_1/libs/graph/doc/python.html), from Doug Gregor and Indiana University.
+	+ [`floyd warshall
+	all pairs
+	shortest paths`](/doc/libs/1_33_1/libs/graph/doc/floyd_warshall_shortest.html),
+	 from Lauren Foutz and Scott Hill.
+	+ [`astar search`](/doc/libs/1_33_1/libs/graph/doc/astar_search.html),
+	 from Kristopher Beevers and Jufeng Peng.
+	+ [`fruchterman reingold
+	force directed
+	layout`](/doc/libs/1_33_1/libs/graph/doc/fruchterman_reingold.html), from Doug
+	 Gregor and Indiana University.
+	+ [`biconnected components`
+	 and `articulation points`](/doc/libs/1_33_1/libs/graph/doc/biconnected_components.html), from Jeremy Siek,
+	 Janusz Piwowarski, and Doug Gregor.
+	+ [`sequential vertex
+	coloring`](/doc/libs/1_33_1/libs/graph/doc/sequential_vertex_coloring.html) has been
+	 updated, tested, and documented.
+	+ [`gursoy atun
+	layout`](/doc/libs/1_33_1/libs/graph/doc/gursoy_atun_layout.html), from Jeremiah
+	 Willcock and Doug Gregor of Indiana University.
+	+ [`king ordering`](/doc/libs/1_33_1/libs/graph/doc/king_ordering.html),
+	 from D. Kevin McGrath of Indiana University.
+	+ [`cuthill mckee
+	ordering`](/doc/libs/1_33_1/libs/graph/doc/cuthill_mckee_ordering.html) has been
+	 recast as an invocation of `breadth
+	first search`
+	 and now supports graphs with multiple components.
+	+ [`dijkstra shortest
+	paths`](/doc/libs/1_33_1/libs/graph/doc/dijkstra_shortest_paths.html) now uses
+	 a relaxed heap [[61](/doc/libs/1_33_1/libs/graph/doc/bibliography.html#driscoll88)]
+	 as its priority queue, improving its complexity to O(V log V) and
+	 improving real-world performance for larger graphs.
+	+ [`read graphviz`](/doc/libs/1_33_1/libs/graph/doc/read_graphviz.html)
+	 now has a new, Spirit-based parser that works for all graph types
+	 and supports arbitrary properties on the graph, from Ron Garcia.
+	 The old, Bison-based GraphViz reader has been deprecated and will
+	 be removed in a future Boost release. [`write graphviz`](/doc/libs/1_33_1/libs/graph/doc/write-graphviz.html)
+	 also supports dynamic properties.
+	+ [`subgraph`](/doc/libs/1_33_1/libs/graph/doc/subgraph.html): `get\_property` now refers to the
+	 subgraph property, not the root graph's property.
+	+ See the [history](/doc/libs/1_33_1/libs/graph/doc/history.html#by-version)
+	 for additional changes and bug fixes.
+* [Multi-index
+ Containers Library](/doc/libs/1_33_1/libs/multi_index/doc/index.html):
+
+	+ New [hashed
+	 indices](/doc/libs/1_33_1/libs/multi_index/doc/tutorial/indices.html#hashed_indices).
+	+ Added [serialization
+	 support](/doc/libs/1_33_1/libs/multi_index/doc/tutorial/creation.html#serialization).
+	+ For a complete list of changes, see the library [release
+	 notes](/doc/libs/1_33_1/libs/multi_index/doc/release_notes.html).
+* [Program
+ Options Library](/doc/libs/1_33_1/libs/program_options/doc/index.html):
+
+	+ Option descriptions are now printed with word wrapping.
+	+ Command line parser can bypass unregistered options, instread of
+	 throwing.
+	+ Removed support for "implicit" (optional) values.
+	+ New customization method 'command\_line\_parser::extra\_style\_parser'.
+	 Unlike 'additional\_parser', allows the user to parse several tokens
+	 and return a vector of options, not just a single option.
+	+ Work with disabled exceptions.
+* [Property
+ Map Library](/doc/libs/1_33_1/libs/property_map/property_map.html): Introduced the [`dynamic properties`](/doc/libs/1_33_1/libs/property_map/doc/dynamic_property_map.html)
+ class, which provides dynamically-typed access to a set of property maps.
+* [Boost.Python](/doc/libs/1_33_1/libs/python/doc/index.html):
+
+	+ Added support for docstrings on nonstatic properties.
+	+ We now export the client-provided docstrings for `init<optional<> >`
+	 and *XXX*`\_FUNCTION\_OVERLOADS()` for only the last overload.
+	+ Support for Embedded VC++ 4 and GCC-3.3 on MacOS added
+	+ Introduced better support for rvalue from-python conversions of shared\_ptr.
+	+ Support for exposing `vector<T\*>` with the indexing suite.
+	+ updated visual studio project build file.
+	+ Added search feature to the index page.
+* [Random Number
+ Library](/doc/libs/1_33_1/libs/random/index.html):
+ Improved initialization for `mersenne\_twister`,
+ algorithm by Makoto Matsumoto and Takuji Nishimura, implemented for Boost
+ by Jens Maurer.
+
+
+Note: All test vectors for `mersenne\_twister`s
+ constructed or seeded without parameters or with a single `unsigned int`
+ parameter become invalid.
+* [Range Library](/doc/libs/1_33_1/libs/range/index.html): Minor
+ addition of convenience functions to `iterator
+range` like `front(), back()` and `operator[]()`.
+* [Regex Library](/doc/libs/1_33_1/libs/regex/index.html):
+
+	+ Rewritten front end parser now supports (?imsx-imsx) constructs,
+	 plus lookbehind assertions and conditional expressions.
+	+ Thin wrapper classes improve integration with MFC/ATL code.
+	+ Full (optional) Unicode support via the ICU library. Refer to the
+	 [regex history
+	 page](/doc/libs/1_33_1/libs/regex/doc/history.html) for more information on these and other small changes.
+* [Serialization
+ Library](/doc/libs/1_33_1/libs/serialization/doc/index.html):
+
+	+ DLL version.
+	+ Auto-linking.
+	+ Serialization of variants.
+	+ Improved serialization of shared pointers.
+* [Signals Library](/doc/libs/1_33_1/doc/html/signals.html): added
+ slot blocking/unblocking, from Frantz Maerten. Huge improvements to signal
+ invocation performance from Robert Zeh.
+
+### Supported Compilers
+ Boost is tested on a wide range of compilers and platforms. Since Boost libraries
+ rely on modern C++ features not available in all compilers, not all Boost libraries
+ will work with every compiler. The following compilers and platforms have been
+ extensively tested with Boost, although many other compilers and platforms
+ will work as well. For more information, see the [regression
+ test results](https://www.boost.org/regression/release/user/).
+ 
+
+
+* [Apple GCC](http://developer.apple.com/) 3.x on Mac OS
+ X.
+* [Borland C++](http://www.codegear.com/products/cppbuilder)
+ 5.6.4 on Windows.
+* [GNU C++](http://gcc.gnu.org) 2.95.3 (with and without
+ STLport), 3.2.x., 3.3.x, 3.4.x, 4.0.x on Windows, Linux and Solaris.
+* [Intel
+ C++](http://www.intel.com/cd/software/products/asmo-na/eng/compilers/index.htm) 8.1, 9.0 on Windows, Linux.
+* [Metrowerks CodeWarrior](http://www.metrowerks.com) 8.3,
+ 9.4, 9.5 on Mac OS X and Windows.
+* [Microsoft Visual C++](http://msdn.microsoft.com/visualc/)
+ 6.0 (sp5, with and without STLport), 7.0, 7.1, 8.0 beta. Note: due to intermittent
+ problems with Visual C++ 8.0 beta, and the presence of a variety of pre-release
+ compiler builds, we are unable to guarantee compatibility until the final
+ compiler is released.
+
+### Acknowledgements
+![[]](/gfx/boost_1_33_0.jpg)[Douglas Gregor](/users/people/doug_gregor.html)
+ managed this release.
+ 
+ A great number of people contributed their time and expertise to make this
+ release possible. Special thanks go to Aleksey Gurtovoy and Misha Bergal, who
+ managed to keep the regression testing system working throughout the release
+ process; David Abrahams, Beman Dawes, Aleksey Gurtovoy, Rene Rivera and Jonathan
+ Turkanis for greatly improving the quality of this release; Rene Rivera for
+ the new Boost web page design; and Zoltan "cad" Juhasz for the new
+ Boost logo.
+ 
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+

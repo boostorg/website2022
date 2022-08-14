@@ -1,0 +1,260 @@
+---
+title: Version 1.41.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.41.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.41.0
+==============
+
+Version 1.41.0
+--------------
+
+
+November 17th, 2009 17:00 GMT
+
+
+[Documentation](/doc/libs/1_41_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_41\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.41.0/boost_1_41_0.tar.bz2) |
+| [boost\_1\_41\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.41.0/boost_1_41_0.tar.gz) |
+| windows | [boost\_1\_41\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.41.0/boost_1_41_0.7z) |
+| [boost\_1\_41\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.41.0/boost_1_41_0.zip) |
+
+
+### New Libraries
+
+
+* [Property Tree](/libs/property_tree/index.html): A
+ tree data structure especially suited to storing configuration data, from
+ Marcin Kalicinski and Sebastian Redl.
+
+### Updated Libraries
+
+
+* [DateTime](/libs/date_time/index.html):
+
+	+ The default format for time durations is now "`%-%O:%M:%S%F`"
+	 instead of "`%-%H:%M:%S%F`" that was used previously.
+	 In order to retain the old behavior, the format string has to be
+	 specified explicitly during the time IO facet construction ([#1861](https://svn.boost.org/trac/boost/ticket/1861)).
+	+ Gregorian dates now use 32-bit integer type internally on 64-bit
+	 platforms ([#3308](https://svn.boost.org/trac/boost/ticket/3308)).
+	+ See the [full
+	 changelog](/doc/html/date_time/details.html#date_time.changes) for more detail.
+* [Filesystem](/libs/filesystem/index.html):
+
+	+ Bug fixes: ([#3385](https://svn.boost.org/trac/boost/ticket/3385)).
+	 ([#3528](https://svn.boost.org/trac/boost/ticket/3528)).
+	 ([#3509](https://svn.boost.org/trac/boost/ticket/3509)).
+* [Iostreams](/libs/iostreams/index.html):
+ Some old
+ unreleased developments. There are still several open issues that should
+ be fixed in the next version.
+ 
+	+ Add a grep filter ([#1627](https://svn.boost.org/trac/boost/ticket/1627)).
+	+ Support archives with multiple members ([#1896](https://svn.boost.org/trac/boost/ticket/1896)).
+	+ Make `tee` work with
+	 input streams ([#791](https://svn.boost.org/trac/boost/ticket/791)).
+	+ Improved filesystem interoperability.
+	+ Several warnings fixed or suppressed (including [#1618](https://svn.boost.org/trac/boost/ticket/1618),
+	 [#1875](https://svn.boost.org/trac/boost/ticket/1875),
+	 [#2779](https://svn.boost.org/trac/boost/ticket/2779)).
+	+ Various other fixes (including [#1580](https://svn.boost.org/trac/boost/ticket/1580),
+	 [#1671](https://svn.boost.org/trac/boost/ticket/1671)).
+* [Math](/libs/math/index.html):
+ Substantially improved
+ the performance of the incomplete gamma function and it's inverse: this
+ enhances the performance of the gamma, poisson, chi-squared and non-central
+ chi-squared distributions.
+* [Multi-index Containers](/libs/multi_index/doc/index.html):
+ Maintenance
+ fixes. Consult the library [release
+ notes](/libs/multi_index/doc/release_notes.html#boost_1_41) for further information.
+* [Proto](/libs/proto/index.html):
+
+	+ Clean up some MSVC warnings and errors in /Za (disable Microsoft
+	 extensions) mode.
+	+ Fixes for c++0x mode on various compilers.
+* [Python](/libs/python/index.html):
+ Boost.Python
+ now supports Python 3 (Haoyu Bai's Google Summer of Code project, mentored
+ by Stefan Seefeld).
+* [Regex](/libs/regex/index.html):
+ Added support
+ for many Perl 5.10 syntax elements including named sub-expressions, branch
+ resets and recursive regular expressions.
+* [Spirit](/libs/spirit/index.html): This is the
+ initial official release of the new Spirit V2.1, a completely new library
+ for parsing, lexing, and output generation. Note: this release is not backwards
+ compatible with earlier versions. Known issue: `qi::symbol::find`
+ will match a symbol that starts with the string you're searching for. This
+ will be fixed in the next version.
+* [System](/libs/system/index.html):
+
+	+ Bug fix: ([#3559](https://svn.boost.org/trac/boost/ticket/3559)).
+* [Thread](/libs/thread/index.html):
+
+	+ Support for futures, promises and packaged tasks added
+	+ `boost::thread\_specific\_ptr` is now faster
+	 when there are lots of thread-specific objects
+	+ Some Boost.Thread facilities are now header-only
+* [Unordered](/libs/unordered/index.html):
+ Major
+ update:
+ 
+	+ Replaced a lot of the macro based implementation with a cleaner template
+	 based implementation.
+	+ Reduced memory use.
+	+ Full details in [the
+	 changelog](/doc/html/unordered/changes.html#unordered.changes.boost_1_41_1).
+* [Utility](/libs/utility/index.html):
+ A "const"
+ issue of `value\_initialized`
+ is fixed: Its `data()`
+ member function and its conversion operator are replaced by overloads for
+ const and non-const access ([#2548](https://svn.boost.org/trac/boost/ticket/2548)).
+* [Wave](/libs/wave/index.html):
+ See the [changelog](/libs/wave/ChangeLog)
+ for details.
+* [Xpressive](/libs/xpressive/index.html):
+
+	+ Fix infinite loop with some uses of \Q...\E quotemeta
+	 ([#3586](https://svn.boost.org/trac/boost/ticket/3586)).
+	+ Eliminate unreachable code warnings on MSVC
+	+ Clean up some MSVC warnings and errors in /Za ("disable Microsoft
+	 extensions") mode.
+	+ Fixes for c++0x mode on various compilers.
+
+### Build System
+ A bug preventing "fat" 32-bit + 64-bit builds on OSX has been fixed.
+ 
+
+### Boost.CMake moved
+ The cmake version of boost has moved; the Boost.CMmake release will be separate
+ and will lag the main release slightly, but will also be capable of producing
+ patch releases as necessary.
+ 
+ More information on the [Boost
+ CMake wiki page](https:://svn.boost.org/trac/boost/wiki/CMake).
+ 
+
+### Updated Tools
+
+
+* [Quickbook 1.5](/tools/quickbook/index.html):
+ These
+ changes require your document to use the `[quickbook 1.5]` tag:
+ 
+	+ More intuitive syntax and variable lookup for template calls ([#1174](https://svn.boost.org/trac/boost/ticket/1174),
+	 [#2034](https://svn.boost.org/trac/boost/ticket/2034),
+	 [#2036](https://svn.boost.org/trac/boost/ticket/2036)).
+	+ Image attributes ([#1157](https://svn.boost.org/trac/boost/ticket/1157))
+	+ Table Ids ([#1194](https://svn.boost.org/trac/boost/ticket/1194))
+	+ Better handling of whitespace in `section`
+	 syntax. ([#2712](https://svn.boost.org/trac/boost/ticket/2712))
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* OS X:
+ 
+	+ GCC 4.0.1 on Intel Tiger and Leopard.
+	+ GCC 4.0.1 on PowerPC Tiger.
+* Linux:
+ 
+	+ GCC 4.4.1 on Ubuntu Linux.
+	+ GCC 4.4 on Debian
+* Windows:
+ 
+	+ Visual C++ 7.1 SP1, 8.0 SP1 and 9.0 SP1 on Windows XP.
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Intel 10.1 on Red Hat Enterprise Linux.
+	+ Intel 10.1 on 64-bit Red Hat Enterprise Linux.
+	+ Intel 10.1 on Suse Linux on 64 bit Itanium.
+	+ Intel 11.0 on 32 bit Red Hat Enterprise Linux.
+	+ Intel 11.0 on 64 bit Red Hat Enterprise Linux.
+	+ Intel 11.1 on 64 bit Red Hat Enterprise Linux.
+	+ Intel 11.1 on 64 bit Linux Redhat 5.1 Server.
+	+ GCC 3.4.3, GCC 4.2.4, GCC 4.3.3 and GCC 4.4.1 on Red Hat Enterprise
+	 Linux.
+	+ GCC 4.3.3 and GCC 4.4.1 with C++0x extensions on Red Hat Enterprise
+	 Linux.
+	+ GCC 4.3.3 on 64-bit Redhat Server 5.1.
+	+ GCC 4.3.3 on 64 bit Linux.
+	+ GCC 4.3.4 on Debian unstable.
+	+ GCC 4.3.2 on 64 bit Gentoo.
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.2 on Red Hat Enterprise
+	 Linux.
+	+ Sun 5.9 on Red Hat Enterprise Linux.
+* OS X:
+ 
+	+ Intel C++ Compiler 11.1 on Leopard.
+	+ Intel C++ Compiler 10.1, 11.0.
+	+ GCC 4.0.1 on Intel Tiger.
+	+ GCC 4.0.1 on PowerPC Tiger.
+* Windows:
+ 
+	+ Visual C++ 7.1, 8,0, 9,0 on XP.
+	+ Visual C++ 9.0 on 32-bit Vista.
+	+ Visual C++ 9.0 on AMD 64-bit Vista.
+	+ Visual C++ 9.0 using STLport 5.2 on XP and Windows Mobile 5.0.
+	+ Visual C++ 10.0 beta 1 with [a
+	 patch for the program options lib](http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=457199).
+	+ Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.0 (2010).
+	+ Intel C++ 11.1, with a Visual C++ 9.0 backend, on Vista 32-bit.
+	+ GCC 4.4.1 on Mingw, with and without C++0x extensions.
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition for AIX, V10.1.0.0, on AIX Version
+	 5.3.0.40.
+* FreeBSD:
+ 
+	+ GCC 4.2.1 on FreeBSD 7.0.
+* Solaris:
+ 
+	+ Sun C++ 5.10 on Solaris 5.10.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), and Daniel
+ James managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

@@ -1,0 +1,940 @@
+---
+title: Version 1.56.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.56.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.56.0
+==============
+
+Version 1.56.0
+--------------
+
+
+August 7th, 2014 16:08 GMT
+
+
+[Documentation](/doc/libs/1_56_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_56\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.tar.bz2) |
+| [boost\_1\_56\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.tar.gz) |
+| windows | [boost\_1\_56\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.7z) |
+| [boost\_1\_56\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.zip) |
+
+
+### Other Downloads
+
+
+* [Windows
+ binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.56.0/)
+
+### Modularization
+ Boost version control has migrated to a system using git submodules. This shouldn't
+ make too much of a difference to users, although the directory structure is
+ now a bit different.
+ 
+ Parts of some libraries have been moved into different modules, and several
+ new modules have been extracted from existing code. All header paths should
+ remain the same. The new modules are:
+ 
+
+
+* [Assert](/libs/assert/):
+ Customizable assert macros.
+ Maintained by Peter Dimov.
+* [Core](/libs/core/):
+ Core utilities used by other
+ libraries, with minimal dependencies. Maintained by Peter Dimov, Glen Fernandes
+ and Andrey Semashev.
+* [Lexical\_Cast](/libs/lexical_cast/):
+ General literal
+ text conversions, such as an int represented a string, or vice-versa, from
+ Kevlin Henney.
+* [Throw\_Exception](/libs/throw_exception/):
+ A common
+ infrastructure for throwing exceptions from Boost libraries, from Emil
+ Dotchevski.
+* Winapi:
+ Windows API declarations without <windows.h>, for internal
+ Boost use.
+
+### New Libraries
+
+
+* [Align](/libs/align/):
+ Memory alignment functions,
+ allocators, and adaptors, from Glen Fernandes.
+* [Type\_Index](/libs/type_index/):
+ Runtime/Compile
+ time copyable type info, from Antony Polukhin.
+
+### Updated Libraries
+
+
+* [Acumulators](/libs/accumulators/):
+
+	+ New accumulators `rolling\_variance`
+	 and `rolling\_moment`
+* [Any](/libs/any/):
+
+	+ Fixed rvalue references related issues ([#9215](https://svn.boost.org/trac/boost/ticket/9215), [#9462](https://svn.boost.org/trac/boost/ticket/9462)).
+	+ Dropped support of antique compilers.
+* [Asio](/libs/asio/):
+
+	+ Fixed `asio::spawn()`
+	 to work correctly with new Boost.Coroutine interface ([#9442](https://svn.boost.org/trac/boost/ticket/9442),
+	 [#9928](https://svn.boost.org/trac/boost/ticket/9928)).
+	+ Ensured that incomplete `asio::spawn()` coroutines are correctly unwound
+	 when cleaned up by the `io\_service`
+	 destructor ([#9731](https://svn.boost.org/trac/boost/ticket/9731)).
+	+ Fixed delegation of continuation hook for handlers produced by `io\_service::wrap()`
+	 and `strand::wrap()`
+	 ([#9741](https://svn.boost.org/trac/boost/ticket/9741)).
+	+ Changed the Windows I/O completion port backend to use `ConnectEx`, if available, for connection-oriented
+	 IP sockets.
+	+ Changed the `io\_service`
+	 backend for non-Windows (and non-IOCP Windows) platforms to use a
+	 single condition variable per `io\_service`
+	 instance. This addresses a potential race condition when `run\_one()`
+	 is used from multiple threads.
+	+ Prevented integer overflow when computing timeouts based on some
+	 `boost::chrono` and `std::chrono`
+	 clocks ([#9662](https://svn.boost.org/trac/boost/ticket/9662), [#9778](https://svn.boost.org/trac/boost/ticket/9778)).
+	+ Made further changes to `EV\_CLEAR`
+	 handling in the kqueue backend, to address other cases where the
+	 `close()`
+	 system call may hang on Mac OS X.
+	+ Fixed infinite recursion in implementation of `resolver\_query\_base::flags::operator~` ([#9548](https://svn.boost.org/trac/boost/ticket/9548)).
+	+ Made the `select` reactor
+	 more efficient on Windows for large numbers of sockets ([#9528](https://svn.boost.org/trac/boost/ticket/9528)).
+	+ Fixed a Windows-specific type-aliasing issue reported by gcc
+	 ([#9550](https://svn.boost.org/trac/boost/ticket/9550)).
+	+ Prevented execution of compile-time-only buffer test to avoid triggering
+	 an address sanitiser warning ([#8295](https://svn.boost.org/trac/boost/ticket/8295)).
+	+ Disabled the `GetQueuedCompletionStatus`
+	 timeout workaround on recent versions of Windows.
+	+ Added support for string-based scope IDs when using link-local multicast
+	 addresses.
+	+ Changed IPv6 multicast group join to use the address's scope ID as
+	 the interface, if an interface is not explicitly specified.
+	+ Fixed multicast test failure on Mac OS X and the BSDs by using a
+	 link-local multicast address.
+	+ Worked around a gcc problem to do with anonymous
+	 enums ([#10042](https://svn.boost.org/trac/boost/ticket/10042)).
+	+ Reverted the Windows `HANDLE`
+	 backend change to ignore `ERROR\_MORE\_DATA`.
+	 Instead, the error will be propagated as with any other (i.e. in
+	 an `error\_code` or
+	 thrown as a `system\_error`),
+	 and the number of bytes transferred will be returned. For code that
+	 needs to handle partial messages, the `error\_code`
+	 overload should be used ([#10034](https://svn.boost.org/trac/boost/ticket/10034)).
+	+ Fixed an off-by-one error in the `signal\_set`
+	 implementation's signal number check ([#9324](https://svn.boost.org/trac/boost/ticket/9324)).
+	+ Changed to use SSE2 intrinsics rather than inline assembly, to allow
+	 the Cray compiler to work.
+	+ Stopped using certain Winsock functions that are marked as deprecated
+	 in the latest Visual C++ and Windows SDK.
+	+ Added a workaround for building the unit tests with gcc
+	 on AIX.
+	+ Various minor documentation improvements ([#8295](https://svn.boost.org/trac/boost/ticket/8295), [#9605](https://svn.boost.org/trac/boost/ticket/9605), [#9771](https://svn.boost.org/trac/boost/ticket/9771)).
+* [Assign](/libs/assign/):
+
+	+ Resolve some C++11 ambiguities ([#3073](https://svn.boost.org/trac/boost/ticket/3073)).
+* [Atomic](/libs/atomic/):
+
+	+ The library has been redesigned. Besides internal refactoring, various
+	 bugs were fixed, including incorrect values of feature test macros
+	 and integer overflow handling.
+	+ Changed values of the `memory\_order`
+	 enumeration. The concrete values are not part of the interface, but
+	 this change may potentially break ABI, if the enum is used in user's
+	 interfaces.
+	+ Implemented support for 128-bit atomic operations on Windows x64
+	 with MSVC. The library assumes presence of the `cmpxchg16b`
+	 instruction in the target CPUs. Some early AMD CPUs don't support
+	 this instruction. To target those define the `BOOST\_ATOMIC\_NO\_CMPXCHG16B`
+	 macro.
+	+ Implemented experimental support for Windows ARM target with MSVC.
+	+ Implemented experimental support for DEC Alpha target with GCC.
+	+ Improved support for ARMv6 and later with GCC. Implemented all atomic
+	 operations as assembler blocks instead of CAS-based loops. 64-bit
+	 operations are supported with ARMv7.
+	+ Implemented optional support for the `BOOST\_ATOMIC\_FLAG\_INIT`
+	 macro and static initialization of `atomic\_flag`.
+	 ([#8158](https://svn.boost.org/trac/boost/ticket/8158))
+	+ Fixed compilation for SPARCv9 target. ([#9446](https://svn.boost.org/trac/boost/ticket/9446))
+	+ Fixed compilation for PowerPC target. ([#9447](https://svn.boost.org/trac/boost/ticket/9447))
+	+ Fixed several compatibility problems with Clang on x86 and x86-64.
+	 ([#9610](https://svn.boost.org/trac/boost/ticket/9610), [#9842](https://svn.boost.org/trac/boost/ticket/9842))
+	+ Removed specialized code for Windows on IA64 platform.
+* [Circular Buffer](/libs/circular_buffer/):
+
+	+ [#9970](https://svn.boost.org/trac/boost/ticket/9970),[#9334](https://svn.boost.org/trac/boost/ticket/9334) Support for the C++11 allocator model.
+	+ Dropped support of antique compilers.
+* [Concept Check](/libs/concept_check/):
+
+	+ Fewer warnings (includes [#5012](https://svn.boost.org/trac/boost/ticket/5012)).
+* [Container](/libs/container/):
+
+	+ Added DlMalloc-based Extended Allocators.
+	+ Improved configurability of tree-based ordered associative containers.
+	 AVL, Scapegoat and Splay trees are now available to implement `set`, `multiset`,
+	 `map` and `multimap`.
+	+ Fixed bugs:
+	 
+		- [#9338:
+		 *"VS2005 compiler errors in swap() definition
+		 after including container/memory\_util.hpp"*](https://svn.boost.org/trac/boost/ticket/9338).
+		- [#9637:
+		 *"Boost.Container vector::resize() performance
+		 issue"*](https://svn.boost.org/trac/boost/ticket/9637).
+		- [#9648:
+		 *"string construction optimization - char\_traits::copy
+		 could be used ..."*](https://svn.boost.org/trac/boost/ticket/9648).
+		- [#9801:
+		 *"I can no longer create and iterator\_range from
+		 a stable\_vector"*](https://svn.boost.org/trac/boost/ticket/9801).
+		- [#9915:
+		 *"Documentation issues regarding vector constructors
+		 and resize methods - value/default initialization"*](https://svn.boost.org/trac/boost/ticket/9915).
+		- [#9916:
+		 *"Allocator propagation incorrect in the assignment
+		 operator of most"*](https://svn.boost.org/trac/boost/ticket/9916).
+		- [#9931:
+		 *"flat\_map::insert(ordered\_unique\_range\_t...)
+		 fails with move\_iterators"*](https://svn.boost.org/trac/boost/ticket/9931).
+		- [#9955:
+		 *"Using memcpy with overlapped buffers in vector"*](https://svn.boost.org/trac/boost/ticket/9955).
+* [Context](/libs/context/):
+
+	+ fcontext\_t is opaque pointer to context-data
+	+ changed signature of make\_fcontext()
+	+ [#8826](https://svn.boost.org/trac/boost/ticket/8826) no executable stack
+	+ [#9437](https://svn.boost.org/trac/boost/ticket/9437) catch exceptions on iOS and Windows Phone 8
+	+ [#9445](https://svn.boost.org/trac/boost/ticket/9445) support for x32 ABIs
+	+ [#9522](https://svn.boost.org/trac/boost/ticket/9522) support for powerpc\_64le
+	+ [#9743](https://svn.boost.org/trac/boost/ticket/9743) bugfix for powerpc\_64 le/be
+	+ [#9774](https://svn.boost.org/trac/boost/ticket/9774) bugfix for x86 on Mac OS X + clang
+* [Coroutine](/libs/coroutine/):
+
+	+ support of symmetric coroutines
+	+ [#9355](https://svn.boost.org/trac/boost/ticket/9355) fix race condition in protected\_stack\_allocator
+	+ [#9551](https://svn.boost.org/trac/boost/ticket/9551) list of supported architectures
+	+ [#9734](https://svn.boost.org/trac/boost/ticket/9734) wrong check of mmap() return value
+	+ [#9735](https://svn.boost.org/trac/boost/ticket/9735) no memset() for protected\_stack\_allocator
+	+ [#9760](https://svn.boost.org/trac/boost/ticket/9760) coroutine iterator need const operator==
+	+ [#10070](https://svn.boost.org/trac/boost/ticket/10070) mmap() return value
+	+ [#10157](https://svn.boost.org/trac/boost/ticket/10157) file descriptor not required in protected\_stack\_allocator
+* [Dynamic Bitset](/libs/dynamic_bitset/):
+
+	+ Support for C++11 move constructors
+	+ Warning fixes on MSVC 2013
+	+ Support for C++11 minimal allocators
+	+ Add noexcept specifications
+* [Chrono](/libs/chrono/):
+
+	+ [#6918](http://svn.boost.org/trac/boost/ticket/6918)
+	 Boost Chrono compilation failure on HP uX due to undefined pthread\_getcpuclockid
+	+ [#8006](http://svn.boost.org/trac/boost/ticket/8006)
+	 Boost::Chrono Assertion at startup - steady\_clock::now() - Windows
+	+ [#9337](http://svn.boost.org/trac/boost/ticket/9337)
+	 chrono::process\_cpu\_clock time points wrong by factor 1000 on Linux
+	+ [#9342](http://svn.boost.org/trac/boost/ticket/9342)
+	 Regression on process\_cpu\_clock::timepoint io on V2
+	+ [#9419](http://svn.boost.org/trac/boost/ticket/9419)
+	 boost::chrono::floor()/round() and negative durations is wrong
+	+ [#9698](http://svn.boost.org/trac/boost/ticket/9698)
+	 boost::chrono::thread\_clock not declared in OSX
+	+ [#9720](http://svn.boost.org/trac/boost/ticket/9720)
+	 boost::this\_thread::sleep\_for() sometimes returns immediately on
+	 win32
+	+ [#9859](http://svn.boost.org/trac/boost/ticket/9859)
+	 Remove references to gcc-mingw
+	+ [#9918](http://svn.boost.org/trac/boost/ticket/9918)
+	 chrono compilation error on Solaris, funciton timegm
+	+ [#9811](http://svn.boost.org/trac/boost/ticket/9811)
+	 boost/boost/chrono/duration.hpp:355:56: error: call to non-constexpr
+	 function 'static std::numeric\_limits<float>::\_Ty std::numeric\_limits<float>::max()'
+	 /home/zosun/input\_service/inputservices-core-service/other/boost/boost/chrono/duration.hpp:
+	 In static member function 'static constexpr double boost::chrono::detail::chrono\_numeric\_limits<double,
+	 true>::lowest()':
+	+ [#10069](http://svn.boost.org/trac/boost/ticket/10069)
+	 Overflow in chrono clocks on 32bit
+	+ [#10151](http://svn.boost.org/trac/boost/ticket/10151)
+	 timegm function not available on QNX
+* [Flyweight](/libs/flyweight/index.html):
+
+	+ In compilers with variadic template support, `boost::flyweight<T>` now provides a perfectly forwarding
+	 constructor to `T::T`
+	 (previously an emulation was used).
+	+ `flyweight` now replicates
+	 the initializer-list constructors and assignment operators of its
+	 underlying type.
+	+ Fixed intermodule static initialization problem (ticket [#9553](https://svn.boost.org/trac/boost/ticket/9553)).
+	+ Maintenance fixes.
+* [Fusion](/libs/fusion/):
+
+	+ Fusion is enabled for use on GPU
+* [Geometry](/libs/geometry/):
+
+	+ Additional functionality
+	 
+		- New algorithm buffer for inflating/deflating geometries (buffer
+		 itself already existed but that was only to enlarge a box)
+		- New algorithm remove\_spikes, algorithm to remove spikes from
+		 a ring, polygon or multi\_polygon.
+		- New algorithm point\_on\_surface, generating a point lying on
+		 the surface (interior) of the polygon
+		- New algorithm is\_simple, returning true if a geometry is simple
+		 according to the OGC standard
+		- New algorithm is\_valid, returning true if a geometry is valid
+		 according to the OGC standard
+		- New algorithm crosses for checking this spatial relation according
+		 to the OGC standard
+		- The set operation algorithms (difference, intersection, sym\_difference
+		 and union\_) now support as input pairs of pointlike or linear
+		 geometries
+		- The distance and comparable\_distance algorithms now support
+		 all pairs of geometry combinations
+		- The spatial relations which didn't support it (covered\_by,
+		 touches, within, etc.) now support as input linear and/or areal
+		 geometries
+		- The support for boost::variants as input geometries in various
+		 algorithms
+		- The rtree support for indexing segments
+		- The rtree nearest() predicate support for arbitrary geometries
+	+ Solved tickets
+	 
+		- [8310](https://svn.boost.org/trac/boost/ticket/8310)
+		 Wrong results with overlapping polygons (fixed using point\_on\_surface
+		 for disjoint)
+		- [8375](https://svn.boost.org/trac/boost/ticket/8375)
+		 sym\_difference of non-closed polygons returns closed polygon
+		- [8376](https://svn.boost.org/trac/boost/ticket/8376)
+		 difference of non-closed polygons returns closed polygon
+		- [9081](https://svn.boost.org/trac/boost/ticket/9081)
+		 Booleans create self-intersecting polygons from non-self-intersecting
+		 polygons
+		- [9245](https://svn.boost.org/trac/boost/ticket/9245)
+		 Check for process errors in make\_qbk.py
+		- [9563](https://svn.boost.org/trac/boost/ticket/9563)
+		 (Sym)difference not successful, fixed by rescaling to robust
+		 type
+		- [9628](https://svn.boost.org/trac/boost/ticket/9628)
+		 Wrong result of within() due to the winding strategy not working
+		 correctly for nearly-horizontal segments
+		- [9871](https://svn.boost.org/trac/boost/ticket/9871)
+		 Remove spike in polygon with only a spike
+		- [9947](https://svn.boost.org/trac/boost/ticket/9947)
+		 Missing info about WKT in documentation
+		- [9759](https://svn.boost.org/trac/boost/ticket/9759)
+		 Invalid results of R-tree knn queries for non-cartesian coordinate
+		 systems
+		- [10019](https://svn.boost.org/trac/boost/ticket/10019)
+		 Difference of Linestring and Box returns their intersection
+		- [10077](https://svn.boost.org/trac/boost/ticket/10077)
+		 Wrong types in concept checks in boost/geometry/arithmetic/arithmetic.hpp
+	+ Bug fixes
+	 
+		- intersects(polygon) could return a self-intersection-point
+		 for its closing point, fixed
+		- equals() could return invalid results for non-simple linear
+		 geometries according to the OGC standard, fixed
+		- touches() didn't work properly for CCW areal geomtries, fixed
+		- rtree nearest queries returned wrong elements for non-cartesian
+		 coordinate systems, fixed
+		- rtree crashed in some cases when used with Interprocess allocator,
+		 fixed
+* [Hash](/libs/functional/hash/):
+
+	+ Removed some Visual C++ 6 workarounds.
+	+ Ongoing work on improving `hash\_combine`,
+	 this changes the previously documented algorithm for the function.
+* [Interprocess](/libs/interprocess/):
+
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #9221 (*"message\_queue deadlock on linux"*)](https://svn.boost.org/trac/boost/ticket/9221).
+		- [Trac
+		 #9226 (*"On some computers, Common Appdata is
+		 empty in registry, so boost interprocess cannot work"*)](https://svn.boost.org/trac/boost/ticket/9226).
+		- [Trac
+		 #9284 (*"WaitForSingleObject(mutex) must handle
+		 WAIT\_ABANDONED"*)](https://svn.boost.org/trac/boost/ticket/9284).
+		- [Trac
+		 #9285 (*"CreateMutex returns NULL if fails"*)](https://svn.boost.org/trac/boost/ticket/9285).
+		- [Trac
+		 #9288 (*"timed\_wait does not check if it has
+		 expired"*)](https://svn.boost.org/trac/boost/ticket/9288).
+		- [Trac
+		 #9408 (*"Android does not support XSI\_SHARED\_MEMORY\_OBJECTS"*](https://svn.boost.org/trac/boost/ticket/9408)).
+		- [Trac
+		 #9729 (*"crash on managed\_external\_buffer object
+		 construction"*](https://svn.boost.org/trac/boost/ticket/9729)).
+		- [Trac
+		 #9767 (*"bootstamp generation causes error in
+		 case of corrupt Windows Event Log"*)](https://svn.boost.org/trac/boost/ticket/9767).
+		- [Trac
+		 #9835 (*"Boost Interprocess fails to compile
+		 with Android NDK GCC 4.8, -Werror=unused-variable"*)](https://svn.boost.org/trac/boost/ticket/9835).
+		- [Trac
+		 #9911 (*"get\_tmp\_base\_dir(...) failure"*)](https://svn.boost.org/trac/boost/ticket/9911).
+		- [Trac
+		 #9946 (*"ret\_ptr uninitialized in init\_atomic\_func,
+		 fini\_atomic\_func"*)](https://svn.boost.org/trac/boost/ticket/9946).
+		- [Trac
+		 #10011 (*"segment\_manager::find( unique\_instance\_t\*
+		 ) fails to compile"*)](https://svn.boost.org/trac/boost/ticket/10011).
+		- [Trac
+		 #10021 (*"Interprocess and BOOST\_USE\_WINDOWS\_H"*)](https://svn.boost.org/trac/boost/ticket/10021).
+		- [GitHub
+		 #2 (*"Provide support for the Cray C++ compiler.
+		 The Cray compiler defines \_\_GNUC\_\_"*)](https://github.com/boostorg/interprocess/pull/2).
+		- [GitHub
+		 #3 (*"Fix/mingw interprocess\_exception throw
+		 in file\_wrapper::priv\_open\_or\_create"*)](https://github.com/boostorg/interprocess/pull/3).
+	+ **ABI breaking**: [#9221](https://svn.boost.org/trac/boost/ticket/9221)
+	 showed that `BOOST\_INTERPROCESS\_MSG\_QUEUE\_CIRCULAR\_INDEX`
+	 option of message queue, was completely broken so an ABI break was
+	 necessary to have a working implementation.
+	+ Simplified, refactored and unified (timed\_)lock code based on try\_lock().
+	 There were several bugs when handling timeout expirations.
+	+ Changed the implementation of condition variables' destructors to
+	 allow POSIX semantics (the condition variable can be destroyed after
+	 all waiting threads have been woken up)..
+	+ Added `BOOST\_INTERPROCESS\_SHARED\_DIR\_PATH`
+	 option to define the shared directory used to place shared memory
+	 objects when implemented as memory mapped files.
+	+ Added support for `BOOST\_USE\_WINDOWS\_H`.
+	 When this macro is defined Interprocess does not declare used Windows
+	 API function and types, includes all needed windows SDK headers and
+	 uses types and functions declared by the Windows SDK.
+	+ Added `get\_size` to
+	 `windows\_shared\_memory`.
+* [Intrusive](/libs/intrusive/):
+
+	+ Improved Doxygen generated reference and updated and fixed forward-declaration
+	 header.
+	+ **ABI breaking**: Fixed ABI regression
+	 introduced in Boost 1.55 version, mainly noticeable on MSVC compilers.
+	+ **Source breaking**: Removed previously
+	 deprecated `xxx\_dont\_splay`
+	 functions from splay containers, `splay\_set\_base\_hook`
+	 and `splay\_set\_member\_hook`from
+	 splay containers and `bool
+	splay =
+	true` extra parameter in `splaytree\_algorithms` functions.
+	+ Fixed bugs:
+	 
+		- [#8468:
+		 Compile error on visual studio 2010/2012 using vector with
+		 custom allocator and aligned types](https://svn.boost.org/trac/boost/ticket/8468)
+		- [#9332:
+		 *"has\_member\_function\_callable\_with.hpp compile
+		 error on msvc-12.0"*](https://svn.boost.org/trac/boost/ticket/9332).
+		- [#9650:
+		 *"intrusive list with stateful value traits"*](https://svn.boost.org/trac/boost/ticket/9650).
+		- [#9746:
+		 Modern Sun CC compiler detects error in intrusive library header](https://svn.boost.org/trac/boost/ticket/9746)
+		- [#9940:
+		 bad bug in intrusive list with safe\_link (or auto\_unlink) hooks](https://svn.boost.org/trac/boost/ticket/9940)
+		- [#9948:
+		 remove use of const\_cast in intrusive containers](https://svn.boost.org/trac/boost/ticket/9948)
+		- [#9949:
+		 clear header node hooks upon intrusive container destruction](https://svn.boost.org/trac/boost/ticket/9949)
+		- [#9961:
+		 tests for hooks not derived frorm generic\_hook](https://svn.boost.org/trac/boost/ticket/9961)
+	+ Optimized tree rebalancing code to avoid redundant assignments.
+	+ Added 64 bit prime values for `suggested\_upper\_bucket\_count`/`suggested\_lower\_bucket\_count` in
+	 64 bit platforms.
+	+ Deleted workarounds for old SUN\_CC compilers, those are now unsupported
+	 as modern SunPro compilers are standard-corforming enough.
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Added the `try\_lexical\_convert`
+	 function, that retuns `false`
+	 in case of failed conversion and does not require output parameter
+	 to be Default Constructable ([#6700](https://svn.boost.org/trac/boost/ticket/6700)).
+	+ Fixed conversion of string values with leading zeroes to `bool` ([#9659](https://svn.boost.org/trac/boost/ticket/9659)).
+	+ Code was changed to produce a smaller binaries and simplify compiler's
+	 work ([#9046](https://svn.boost.org/trac/boost/ticket/9046)).
+	+ Boost.LexicalCast library was separated from the Boost.Conversion
+	 library.
+	+ Fixed some warnings ([#8991](https://svn.boost.org/trac/boost/ticket/8991)).
+* [Log](/libs/log/index.html):
+
+	+ General changes:
+	 
+		- For Windows targets, the library now compiles for Windows XP
+		 by default.
+		- Added indexing operators with `attribute\_name`
+		 arguments to `record`
+		 and `record\_view`.
+		- Added operators for non-const object output to `basic\_formatting\_ostream`.
+		 ([#9389](https://svn.boost.org/trac/boost/ticket/9389))
+		- Added support for putting function names and source file names
+		 of named scopes into the formatted strings. ([#9263](https://svn.boost.org/trac/boost/ticket/9263))
+		- Added support for incomplete and empty markers to the named
+		 scope formatter. ([#9123](https://svn.boost.org/trac/boost/ticket/9123))
+		- The default presentation for incomplete named scope lists has
+		 changed: trailing scope delimiter is omitted.
+		- Added a support header for `std::regex`.
+		- By default Boost.Log uses Boost.Regex internally as the regular
+		 expressions backend. The backend can be changed by defining
+		 configuration macros.
+	+ Bug fixes:
+	 
+		- Fixed `dump`
+		 manipulator output on AVX2-enabled CPUs (e.g. Intel Haswell).
+		- Fixed compilation of `get\_attribute`
+		 method of loggers.
+		- Fixed a possible race in `locked\_backend()` function implementation of
+		 synchronous and asynchronous sink frontends.
+		- Fixed a possible infinite block of the logging threads in the
+		 asynchronous sink enqueue methods when `block\_on\_overflow`
+		 strategy was used.
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/index.html):
+
+	+ **Breaking change**: moved a number
+	 of non-core headers that are predominantly used for internal maintenance
+	 into `libs/math/include\_private`. The headers effected
+	 are `boost/math/tools/test\_data.hpp`, `boost/math/tools/remez.hpp`,
+	 `boost/math/constants/generate.hpp`, `boost/math/tools/solve.hpp`,
+	 `boost/math/tools/test.hpp`. You can continue to use these
+	 headers by adding `libs/math/include\_private`
+	 to your compiler's include path.
+	+ **Breaking change**: A number of distributions
+	 and special functions were returning the maximum finite value rather
+	 than raising an overflow\_error, this has now been fixed, which means
+	 these functions now behave as documented. However, since the default
+	 behavior on raising an overflow\_error is to throw a `std::overflow\_error` exception, applications
+	 which have come to reply rely on these functions not throwing may
+	 experience exceptions where they did not before. The special functions
+	 involved are gamma\_p\_inva, gamma\_q\_inva, ibeta\_inva, ibetac\_inva,
+	 ibeta\_invb, ibetac\_invb, gamma\_p\_inv, gamma\_q\_inv. The distributions
+	 involved are pareto\_distrib, beta\_distrib, geometric\_distrib, negative\_binomial\_distrib,
+	 binomial\_distrib, chi\_squared\_distrib, gamma\_distrib, inverse\_chi\_squared\_distrib,
+	 inverse\_gamma\_distrib. See [#10111](https://svn.boost.org/trac/boost/ticket/10111).
+	+ Fix round and trunc functions so they can be used with integer arguments,
+	 see [#10066](https://svn.boost.org/trac/boost/ticket/10066).
+	+ Fix Halley iteration to handle zero derivative (with non-zero second
+	 derivative), see [#10046](https://svn.boost.org/trac/boost/ticket/10046).
+	+ Fix Geometric distribution use of Policies, see [#9833](https://svn.boost.org/trac/boost/ticket/9833).
+	+ Fix corner cases in the negative binomial distribution, see [#9834](https://svn.boost.org/trac/boost/ticket/9834).
+	+ Fix compilation failures on Mac OS.
+	+ Added bernoulli\_numbers, changed arbitrary precision tgamma/lgamma
+	 to use Sterling's approximation (from Nikhar Agrawal).
+	+ Added first derivatives of the Bessel functions: cyl\_bessel\_j\_prime,
+	 cyl\_neumann\_prime, cyl\_bessel\_i\_prime, cyl\_bessel\_k\_prime, sph\_bessel\_prime
+	 and sph\_neumann\_prime (from Anton Bikineev).
+	+ Fixed buggy Student's t example code, along with docs for testing
+	 sample means for equivalence.
+	+ Documented `max\_iter`
+	 parameter in root finding code better, see [#9225](https://svn.boost.org/trac/boost/ticket/9225).
+	+ Add option to explicitly enable/disable use of \_\_float128 in constants
+	 code, see [#9240](https://svn.boost.org/trac/boost/ticket/9240).
+	+ Cleaned up handling of negative values in Bessel I0 and I1 code (removed
+	 dead code), see [#9512](https://svn.boost.org/trac/boost/ticket/9512).
+	+ Fixed handling of very small values passed to tgamma and lgamma so
+	 they don't generate spurious overflows (thanks to Rocco Romeo).
+	+ [#9672 PDF
+	 and CDF of a Laplace distribution throwing domain\_error](https://svn.boost.org/trac/boost/ticket/9672) Random
+	 variate can now be infinite.
+	+ Fixed several corner cases in rising\_factorial, falling\_factorial
+	 and tgamma\_delta\_ratio with thanks to Rocco Romeo.
+	+ Removed constant `pow23\_four\_minus\_pi` whose value did not match the name (and was unused by Boost.Math),
+	 see [#9712](https://svn.boost.org/trac/boost/ticket/9712).
+* [Move](/libs/move/):
+
+	+ Added `BOOST_MOVE_RET`.
+	+ Fixed bug [#9482:
+	 *"MSVC macros not undefined in boost/move/detail/config\_end.hpp"*](https://svn.boost.org/trac/boost/ticket/9482),
+	 [#9045:
+	 *"Wrong macro name on docs"*](https://svn.boost.org/trac/boost/ticket/9045),
+	 [#8420:
+	 *"move's is\_convertible does not compile with aligned
+	 data"*](https://svn.boost.org/trac/boost/ticket/8420).
+* [MPL](/libs/mpl/):
+
+	+ `boost::mpl::for\_each` is enabled for use on
+	 GPU
+* [MultiArray](/libs/multi_array/index.html):
+
+	+ [#5664](https://svn.boost.org/trac/boost/ticket/5664) operator() checks for Collection concept but requires RandomAccessCollection
+	+ [#4874](https://svn.boost.org/trac/boost/ticket/4874) compile errors using Visual C++ 2010 in debug mode
+	+ [#3581](https://svn.boost.org/trac/boost/ticket/3581) MultiArray storage order example incorrect for fortran\_storage\_ordering
+	+ [#4032](https://svn.boost.org/trac/boost/ticket/4032) Move MultiArray concepts out of detail namespace
+	+ [#9212](https://svn.boost.org/trac/boost/ticket/9212) Broken links to C++ standard papers
+	+ [#8368](https://svn.boost.org/trac/boost/ticket/8368) GCC -Wundef warning about BOOST\_MULTI\_ARRAY\_NO\_GENERATORS
+	 in multi\_array
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ The `erase(iterator)`
+	 member function of hashed indices used to have poor performance under
+	 low load conditions due to the requirement that an iterator to the
+	 next element must be returned (see ticket [#4264](https://svn.boost.org/trac/boost/ticket/4264)). In accordance
+	 with the resolution of [LWG
+	 issue #579](http://lwg.github.io/issues/lwg-closed.html#579), this problem has been fixed while maintaining
+	 the interface of `erase`,
+	 at the expense of using one more word of memory per element. In fact,
+	 C++ complexity requirements on unordered associative containers have
+	 been improved for hashed indices so that
+	 
+		- deletion of a given element is unconditionally constant-time,
+		- worst-case performance is not `O(n)` but `O(ndist)`, where `ndist` is the number of
+		 non-equivalent elements in the index.
+	 Due to the fact that hashed indices rely on a new data structure,
+	 the internal representation of their iterators and local iterators
+	 have changed, which affects serialization: their corresponding serialization
+	 [class
+	 version](/libs/serialization/doc/tutorial.html#versioning) has been bumped from 0 to 1. Old archives involving
+	 hashed index (local) iterators can be loaded by Boost 1.56 version
+	 of Boost.MultiIndex, but not the other way around.
+	+ Hashed indices now provide `reserve`.
+	+ Hashed indices can now be checked for equality and inequality following
+	 the (suitably adapted) C++ standard specification in **[unord.req]**.
+	+ The public interface of Boost.MultiIndex provide `noexcept`
+	 specifications where appropriate (for compliant compilers).
+	+ Improved performance of failed insertions into a `multi\_index\_container`.
+	+ Much internal code aimed at supporting MSVC++ 7.0 and prior has been
+	 removed. Compilation times without this legacy code might be slightly
+	 faster.
+	+ Fixed a bug with insertion via iterators dereferencing to rvalues
+	 (ticket [#9665](https://svn.boost.org/trac/boost/ticket/9665)).
+	+ Made Boost.MultiIndex compatible with `BOOST\_BIND\_NO\_PLACEHOLDERS`
+	 (ticket [#9798](https://svn.boost.org/trac/boost/ticket/9798)).
+	+ Maintenance fixes.
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Change floating point to rational conversions to be implicit, see
+	 [10082](https://svn.boost.org/trac/boost/ticket/10082).
+	+ Fix definition of checked\_cpp\_rational typedef.
+	+ Fix bug in assignment from string in cpp\_int, see [9936](https://svn.boost.org/trac/boost/ticket/9936).
+	+ Added new cpp\_bin\_float backend for binary floating point.
+	+ Fix bug in assignment from string in cpp\_int, see [9936](https://svn.boost.org/trac/boost/ticket/9936).
+	+ Added MSVC-specific #include for compiler intrinsics, see [9336](https://svn.boost.org/trac/boost/ticket/9336).
+	+ Fixed various typos in docs, see [9432](https://svn.boost.org/trac/boost/ticket/9432).
+	+ Fixed gmp\_rational to allow move-copy from an already copied-from
+	 object, see [9497](https://svn.boost.org/trac/boost/ticket/9497).
+	+ Added list of values for numeric\_limits.
+* [Odeint](/libs/numeric/odeint/):
+
+	+ Added algebra and operations dispatcher for automatic detection of
+	 appropriate algebras and operations.
+	+ Added support for Eigen, Boost.Multiarray, Boost.Mpi, Boost.Compute,
+	 Blaze, and NT2.
+	+ Changed algebra interface to use algebra.norm\_inf function.
+	+ Added iterators for iterating through the solution of the ODEs, hence
+	 an alternative to the integrate functions.
+	+ Added the Velocity-Verlet method.
+	+ Minor bug fixes.
+* [Optional](/libs/optional/):
+
+	+ Added support for rvalue references. Now `optional<T>` works with moveable but non-copyable
+	 `T`'s.
+	+ Improved `swap` (now
+	 uses move operations).
+	+ Added function `emplace()`. This is the last of the requests
+	 from [#1841](https://svn.boost.org/trac/boost/ticket/1841).
+	+ `optional` is moveable,
+	 including conditional `noexcept`
+	 specifications, which make it `move\_if\_noexcept`-friendly.
+	+ Using explicit operator bool() on platforms that support it ([#4227](https://svn.boost.org/trac/boost/ticket/4227))
+	 (breaking change).
+	+ Forward declaration of `operator<<(ostream&, optional
+	const&)`
+	 to prevent inadvertent incorrect serialization of optional objects.
+	+ Removed depprecated function `reset()` from examples ([#9005](https://svn.boost.org/trac/boost/ticket/9005)).
+	+ Equality comparison with `boost::none`
+	 does not require that `T`
+	 be EqualityComparable.
+	+ Optional rvalue references are explicitly disallowed.
+	+ Binding temporaries to optional references is explicitly disallowed
+	 (breaking change).
+	+ More ways to access the contained value, functions `value()`,
+	 `value\_or()`,
+	 `value\_or\_eval()`.
+	+ Updated and reorganized documentation, added tutorial and quick guide
+	 sections.
+* [Predef](/libs/predef/):
+
+	+ Addition of `BOOST\_PLAT\_\*` platform definitions for MinGW and
+	 Windows platform variants.
+	+ Detection of ARM architecture for Windows compilers to target mobile
+	 devices of Windows 8.
+	+ Improved ARM detection for 64 bit ARM.
+	+ Added detection of iOS as an operating system.
+	+ Improved detection of endianess on some platforms.
+	+ Addition of exclusive plus emulated definitions for platform and
+	 compiler detection.
+* [Preprocessor](/libs/preprocessor/):
+
+	+ When using variadic macros tuple functionality was added to match
+	 all the array functionality.
+* [Program Options](/libs/program_options/):
+
+	+ Columns in the `--help`
+	 output are now aligned across all option groups ([#6114](https://svn.boost.org/trac/boost/ticket/6114)).
+	+ Option names with dashes are no longer truncated in error messages
+	 ([#8009](https://svn.boost.org/trac/boost/ticket/8009)).
+* [Regex](/libs/regex/index.html):
+
+	+ **Breaking change:** corrected behavior
+	 of `basic\_regex<>::mark\_count()`
+	 to match existing documentation, `basic\_regex<>::subexpression(n)` changed to match, see [#9227](https://svn.boost.org/trac/boost/ticket/9227)
+	+ Fixed issue [#8903](https://svn.boost.org/trac/boost/ticket/8903).
+	+ Fixed documentation typos from [#9283](https://svn.boost.org/trac/boost/ticket/9283).
+	+ Fixed bug in collation code that failed if the locale generated collation
+	 strings with embedded nul's, see [#9451](https://svn.boost.org/trac/boost/ticket/9451).
+	+ Apply patch for unusual thread usage (no statically initiallized
+	 mutexes), see [#9461](https://svn.boost.org/trac/boost/ticket/9461).
+	+ Added better checks for invalid UTF-8 sequences, see [#9473](https://svn.boost.org/trac/boost/ticket/9473).
+* [Smart Pointers](/libs/smart_ptr/):
+
+	+ Updated the overloads of [make\_shared](/libs/smart_ptr/make_shared_array.html)
+	 and [allocate\_shared](/libs/smart_ptr/make_shared_array.html)
+	 of array types (`T[]` or `T[N]`) to conform to the specification
+	 in C++ standard paper [N3939](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3939.html)
+	 and significantly reduced the spatial overhead of the internal bookkeeping
+	 structures.
+	+ Updated the implementations of make\_shared and allocate\_shared for
+	 scalar types and array types, respectively, to resolve C++ standard
+	 library defect report [#2070](http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-active.html#2070).
+* [Thread](/libs/thread/):
+
+	+ *New Experimental Features:*
+	
+		- [#7446](http://svn.boost.org/trac/boost/ticket/7446)
+		 Async: Add when\_any.
+		- [#7447](http://svn.boost.org/trac/boost/ticket/7447)
+		 Async: Add when\_all.
+		- [#7448](http://svn.boost.org/trac/boost/ticket/7448)
+		 Async: Add async taking a scheduler parameter.
+		- [#8274](http://svn.boost.org/trac/boost/ticket/8274)
+		 Synchro: Add concurrent queue
+		- [#8513](http://svn.boost.org/trac/boost/ticket/8513)
+		 Async: Add a basic thread\_pool executor.
+		- [#8518](http://svn.boost.org/trac/boost/ticket/8518)
+		 Synchro: Add a latch class.
+		- [#8516](http://svn.boost.org/trac/boost/ticket/8516)
+		 Async: Add future/shared\_future::then taking a scheduler as
+		 parameter.
+		- [#9058](http://svn.boost.org/trac/boost/ticket/9058)
+		 with\_lock\_guard function
+		- [#9571](http://svn.boost.org/trac/boost/ticket/9571)
+		 Add a dynamic executor and an executor adaptor
+	+ *Fixed Bugs:*
+	
+		- [#8070](http://svn.boost.org/trac/boost/ticket/8070)
+		 prefer GetTickCount64 over GetTickCount
+		- [#9333](http://svn.boost.org/trac/boost/ticket/9333)
+		 ex\_scoped\_thread compile fails on msvc-12.0
+		- [#9341](http://svn.boost.org/trac/boost/ticket/9341)
+		 compile error scoped\_thread(move semantics) intel-linux-14.0.1
+		- [#9366](http://svn.boost.org/trac/boost/ticket/9366)
+		 async(Executor, ...) fails to compile with msvc-10,11,12
+		- [#9402](http://svn.boost.org/trac/boost/ticket/9402)
+		 test\_excutor regression on msvc-10,11,12
+		- [#9404](http://svn.boost.org/trac/boost/ticket/9404)
+		 ex\_make\_future regression error
+		- [#9471](http://svn.boost.org/trac/boost/ticket/9471)
+		 Synchronization documentation nits
+		- [#9535](http://svn.boost.org/trac/boost/ticket/9535)
+		 Missing exception safety might result in crash
+		- [#9618](http://svn.boost.org/trac/boost/ticket/9618)
+		 try\_join\_for problem: program is not terminate.
+		- [#9625](http://svn.boost.org/trac/boost/ticket/9625)
+		 Please rewrite boost::thread::~thread() reference section
+		- [#9632](http://svn.boost.org/trac/boost/ticket/9632)
+		 public method start\_thread in boost::thread class
+		- [#9673](http://svn.boost.org/trac/boost/ticket/9673)
+		 thread compilation with MingW/gcc on Windows gives errors
+		- [#9708](http://svn.boost.org/trac/boost/ticket/9708)
+		 boost::condition\_variable::timed\_wait unexpectedly wakes up
+		 while should wait infinite
+		- [#9711](http://svn.boost.org/trac/boost/ticket/9711)
+		 future continuation called twice
+		- [#9867](http://svn.boost.org/trac/boost/ticket/9867)
+		 Remove references to gcc-mingw
+		- [#10008](http://svn.boost.org/trac/boost/ticket/10008)
+		 Boost Synchronization documentation typos (futures)
+		- [#10058](http://svn.boost.org/trac/boost/ticket/10058)
+		 Null pointer access in once
+		- [#10125](http://svn.boost.org/trac/boost/ticket/10125)
+		 call\_once: compile errors in variadic version with rvalue reference
+		 emulation
+		- [#10126](http://svn.boost.org/trac/boost/ticket/10126)
+		 call\_once: deprecate (Function, once\_flag&) overload
+		- [#10147](http://svn.boost.org/trac/boost/ticket/10147)
+		 pthread\_delay\_np() parameters different on AIX even with gcc
+		- [#10155](http://svn.boost.org/trac/boost/ticket/10155)
+		 thread::physical\_concurrency() always returns 0 on PowerPC
+		- [#10184](http://svn.boost.org/trac/boost/ticket/10184)
+		 Future: multiply defined symbols
+* [TR1](/libs/tr1/index.html):
+
+	+ This library is now deprecated.
+* [TTI](/libs/tti/):
+
+	+ Ticket [#9441](https://svn.boost.org/trac/boost/ticket/9441): Added better support for Sun Solaris Studio C++
+	 compiler.
+	+ Ticket [#9444](https://svn.boost.org/trac/boost/ticket/9444): Handle all situations where the enclosing class
+	 is not a class type.
+* [Unordered](/libs/unordered/):
+
+	+ Minor documentation and warning fixes ([#9377](https://svn.boost.org/trac/boost/ticket/9377), [#9719](https://svn.boost.org/trac/boost/ticket/9719)).
+	+ Always use prime number of buckets for integers. Fixes performance
+	 regression when inserting consecutive integers ([#9282](https://svn.boost.org/trac/boost/ticket/9282)).
+	+ Only construct elements using allocators, as specified in C++11 standard.
+* [Utility](/libs/utility/index.html):
+
+	+ Some components were moved to the new Boost.Core library.
+	+ `empty\_deleter` is
+	 deprecated in favor of `null\_deleter`
+	 from Boost.Core. `empty\_deleter`
+	 is an alias for `null\_deleter`,
+	 it will be removed in future releases.
+	+ `base\_from\_member`
+	 utility now supports lvalue reference member types. ([#7577](https://svn.boost.org/trac/boost/ticket/7577))
+* [UUID](/libs/uuid/index.html):
+
+	+ Added basic support for C++11 features.
+	+ Implemented SSE-optimized versions of some functions of `uuid`, including comparison operators
+	 and `swap`. The support
+	 for different versions of SSE is automatically detected at compile
+	 time for most compilers, but can also be explicitly enabled or disabled
+	 with [configuration
+	 macros](/libs/uuid/uuid.html#Configuration). ([#8509](https://svn.boost.org/trac/boost/ticket/8509))
+	+ Silenced some compiler warnings. ([#8495](https://svn.boost.org/trac/boost/ticket/8495), [#8697](https://svn.boost.org/trac/boost/ticket/8697))
+* [Variant](/libs/variant/):
+
+	+ **Breaking change:** Variant now uses
+	 variadic templates if they are supported by compiler. This leads
+	 to smaller binaries and better compilation times but in some cases
+	 may break metaprogramming functions, especially if [BOOST\_VARIANT\_ENUM\_PARAMS](/libs/variant/doc/html/variant/BOOST_VARIANT_ENUM_PARAMS.html)
+	 and [BOOST\_VARIANT\_ENUM\_SHIFTED\_PARAMS](/libs/variant/doc/html/variant/BOOST_VARIANT_ENUM_SHIFTED_PARAMS.html)
+	 are not used. Usage of variadic templates [may
+	 be disabled](/libs/variant/doc/html/variant/BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES.html).
+	+ [Added](/libs/variant/doc/html/variant/reference.html#header.boost.variant.polymorphic_get_hpp)
+	`polymorphic\_get` function
+	 [#9479](https://svn.boost.org/trac/boost/ticket/9479).
+	+ Move-only classes now can be returned by visitors.
+	+ Optimized variant::swap() and fixed ambiguity in `move\_swap`
+	[#2839](https://svn.boost.org/trac/boost/ticket/2839).
+	+ Added conditional noexcepts to move assignments, default and move
+	 constructors making `boost::variant`
+	`move\_if\_noexcept`-friendly
+	 ([#7911](https://svn.boost.org/trac/boost/ticket/7911)).
+	+ Exceptions are now visible across modules even with -fvisibility=hidden
+	 flags.
+	+ Dropped support of antique compilers.
+	+ Fixed some warnings ([#3020](https://svn.boost.org/trac/boost/ticket/3020)).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.4, 3.3, 3.2, 3.1, 3.0
+	+ Clang, C++98: 3.3.16
+	+ Clang, C++11, libc++: 3.4.2
+	+ Clang, C++1y: 3.3.16
+	+ GCC: 4.8.2, 4.8.1, 4.7.3, 4.6.4, 4.4.7
+	+ GCC, C++98: 4.9.0
+	+ GCC, C++11: 4.8.2
+	+ GCC, C++1y: 4.9.0
+	+ Intel: 13.1
+* OS X:
+ 
+	+ Apple Clang: 5.1
+	+ Apple Clang, C++11: 5.1
+	+ GCC: 4.2.1
+	+ Intel: 12.0
+* Windows:
+ 
+	+ GCC, mingw: 4.9.0, 4.8.2, 4.7.3, 4.7.2, 4.6.3, 4.5.4, 4.4.7
+	+ Visual C++: 12.0, 11.0, 10.0, 9.0
+* FreeBSD:
+ 
+	+ GCC: 4.2.1
+* QNX:
+ 
+	+ QCC: 4.4.2
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.4, 3.3, 3.2, 3.1, 3.0
+	+ Clang, C++98: 3.3.16
+	+ Clang, C++11, libc++: 3.4.2
+	+ Clang, C++1y: 3.3.16
+	+ Clang, C++14, libc++: trunk
+	+ GCC: 4.8.2, 4.8.1, 4.7.3, 4.6.4, 4.4.7
+	+ GCC, C++98: 4.9.0
+	+ GCC, C++11: 4.9.0, 4.8.2
+	+ GCC, C++1y: 4.9.0
+	+ Intel: 13.1, 13.0, 12.1, 11.1
+* OS X:
+ 
+	+ Apple Clang: 5.1
+	+ Apple Clang, C++11:
+	+ Clang: trunk
+	+ Clang, C++11: trunk
+	+ GCC: 4.2.1
+	+ Intel: 12.0
+* Windows:
+ 
+	+ GCC, mingw: 4.9.0, 4.8.2, 4.7.2, 4.6.3, 4.5.4, 4.4.7
+	+ Visual C++: 12.0, 11.0, 10.0, 9.0
+* FreeBSD:
+ 
+	+ GCC: 4.2.1
+* QNX:
+ 
+	+ QCC, ARM: 4.4.2
+	+ QCC, x86: 4.4.2
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

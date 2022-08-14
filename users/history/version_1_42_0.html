@@ -1,0 +1,292 @@
+---
+title: Version 1.42.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.42.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.42.0
+==============
+
+Version 1.42.0
+--------------
+
+
+February 2nd, 2010 14:00 GMT
+
+
+[Documentation](/doc/libs/1_42_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_42\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.42.0/boost_1_42_0.tar.bz2) |
+| [boost\_1\_42\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.42.0/boost_1_42_0.tar.gz) |
+| windows | [boost\_1\_42\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.42.0/boost_1_42_0.7z) |
+| [boost\_1\_42\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.42.0/boost_1_42_0.zip) |
+
+
+### New Libraries
+
+
+* [Uuid](/libs/uuid/index.html):
+ A universally unique
+ identifier, from Andy Tompkins.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/index.html):
+
+	+ Added a new HTTP Server 4 example illustrating the use of stackless
+	 coroutines with Asio.
+	+ Changed handler allocation and invocation to use `boost::addressof`
+	 to get the address of handler objects, rather than applying `operator&`
+	 directly ([#2977](https://svn.boost.org/trac/boost/ticket/2977)).
+	+ Restricted MSVC buffer debugging workaround to 2008, as it causes
+	 a crash with 2010 beta 2 ([#3796](https://svn.boost.org/trac/boost/ticket/3796),
+	 [#3822](https://svn.boost.org/trac/boost/ticket/3822)).
+	+ Fixed a problem with the lifetime of handler memory, where Windows
+	 needs the `OVERLAPPED`
+	 structure to be valid until both the initiating function call has
+	 returned and the completion packet has been delivered.
+	+ Don't block signals while performing system calls, but instead restart
+	 the calls if they are interrupted.
+	+ Documented the guarantee made by strand objects with respect to order
+	 of handler invocation.
+	+ Changed strands to use a pool of implementations, to make copying
+	 of strands cheaper.
+	+ Ensured that kqueue support is enabled for BSD platforms ([#3626](https://svn.boost.org/trac/boost/ticket/3626)).
+	+ Added a `boost\_` prefix
+	 to the `extern "C"`
+	 thread entry point function ([#3809](https://svn.boost.org/trac/boost/ticket/3809)).
+	+ In `getaddrinfo` emulation,
+	 only check the socket type (`SOCK\_STREAM`
+	 or `SOCK\_DGRAM`) if
+	 a service name has been specified. This should allow the emulation
+	 to work with raw sockets.
+	+ Added a workaround for some broken Windows firewalls that make a
+	 socket appear bound to 0.0.0.0 when it is in fact bound to 127.0.0.1.
+	+ Applied a fix for reported excessive CPU usage under Solaris ([#3670](https://svn.boost.org/trac/boost/ticket/3670)).
+	+ Added some support for platforms that use older compilers such as
+	 g++ 2.95 ([#3743](https://svn.boost.org/trac/boost/ticket/3743)).
+* [Circular Buffer](/libs/circular_buffer/index.html):
+
+	+ Added methods erase\_begin(size\_type) and erase\_end(size\_type) with
+	 constant complexity for such types of stored elements which do not
+	 need an explicit destruction e.g. int or double.
+	+ Similarly changed implementation of the clear() method and the destructor
+	 so their complexity is now constant for such types of stored elements
+	 which do not require an explicit destruction (the complexity for
+	 other types remains linear).
+* [Fusion](/libs/fusion/index.html):
+
+	+ The accumulator is the first argument to the functor of `fusion::fold` and `fusion::accumulate`
+	 ([#2355](https://svn.boost.org/trac/boost/ticket/2355)).
+	+ Added support for associative iterators and views ([#3473](https://svn.boost.org/trac/boost/ticket/3473)).
+* [Graph](/libs/graph/index.html):
+
+	+ Removed old interface to `compressed\_sparse\_row\_graph`,
+	 making new interface the default.
+* [Integer](/libs/integer/index.html):
+
+	+ Reverted Trunk to release branch state (i.e. a "known good state").
+	+ Fixed issues: [653](https://svn.boost.org/trac/boost/ticket/653),
+	 [3084](https://svn.boost.org/trac/boost/ticket/3084),
+	 [3177](https://svn.boost.org/trac/boost/ticket/3177),
+	 [3180](https://svn.boost.org/trac/boost/ticket/3180),
+	 [3568](https://svn.boost.org/trac/boost/ticket/3548),
+	 [3657](https://svn.boost.org/trac/boost/ticket/3657),
+	 [2134](https://svn.boost.org/trac/boost/ticket/2134).
+	+ Added long long support to boost::static\_log2,
+	 boost::static\_signed\_min, boost::static\_signed\_max,
+	 boost::static\_unsigned\_minboost::static\_unsigned\_max,
+	 when available.
+	+ The argument type and the result type of boost::static\_signed\_min
+	 etc are now typedef'd. Formerly, they were hardcoded as unsigned
+	 long and int respectively. Please, use
+	 the provided typedefs in new code (and update old code as soon as
+	 possible).
+* [Iostreams](/libs/iostreams/index.html):
+
+	+ Fixed many outstanding issues. Thanks to Richard Smith for his work
+	 on this. ([#3612](https://svn.boost.org/trac/boost/ticket/3612),
+	 [#3311](https://svn.boost.org/trac/boost/ticket/3311),
+	 [#2094](https://svn.boost.org/trac/boost/ticket/2094),
+	 [#3010](https://svn.boost.org/trac/boost/ticket/3010),
+	 [#2894](https://svn.boost.org/trac/boost/ticket/2894),
+	 [#3011](https://svn.boost.org/trac/boost/ticket/3011),
+	 [#3352](https://svn.boost.org/trac/boost/ticket/3352),
+	 [#3505](https://svn.boost.org/trac/boost/ticket/3505)).
+	+ For more information see the [library
+	 release notes](/libs/iostreams/doc/release_notes.html).
+* [Program.Options](/libs/program_options/index.html):
+
+	+ Information about option name added to a few exception classes and
+	 various clean ups in exception classes ([#3423](https://svn.boost.org/trac/boost/ticket/3423)).
+	+ Description wordwrapping in presense of default parameters fixed
+	 ([#2613](https://svn.boost.org/trac/boost/ticket/2613)).
+	+ Empty value in configuration file is now permitted ([#1537](https://svn.boost.org/trac/boost/ticket/1537)).
+	+ Quotes are no longer stripped from string values ([#850](https://svn.boost.org/trac/boost/ticket/850)).
+	+ Fix endless loop in case of long default arguments ([#689](https://svn.boost.org/trac/boost/ticket/689)).
+	+ Fix compile warning caused by usage of boost::any ([#2562](https://svn.boost.org/trac/boost/ticket/2562)).
+	+ Fix memory bug in example/response\_file.cpp ([#3525](https://svn.boost.org/trac/boost/ticket/3525)).
+	+ Most compilation warnings were fixed ([#3608](https://svn.boost.org/trac/boost/ticket/3608)).
+	+ Make column width for description text configurable. ([#3703](https://svn.boost.org/trac/boost/ticket/3703)).
+	+ Add general split function: split\_unix() ([#2561](https://svn.boost.org/trac/boost/ticket/2561)).
+	+ Enable open config files from given file name ([#3264](https://svn.boost.org/trac/boost/ticket/3264)).
+	+ Additional flag for required options ([#2982](https://svn.boost.org/trac/boost/ticket/2982)).
+	+ Enable case insensitive style for command line ([#3498](https://svn.boost.org/trac/boost/ticket/3498)).
+* [PropertyMap](/libs/property_map/index.html):
+
+	+ Removed old header files (directly in the `boost/` directory); they were deprecated
+	 since 1.40, replaced by headers in `boost/property\_map/`.
+* [Proto](/libs/proto/index.html):
+
+	+ Fix const correctness issues with `proto::flatten`
+	 and friends ([#3364](https://svn.boost.org/trac/boost/ticket/3364)).
+	+ Accomodate recent change to `fusion::fold`,
+	 remove old support for Doxygen and pre-1.35 Fusion ([#3553](https://svn.boost.org/trac/boost/ticket/3553)).
+	+ In binary operations, when one operand has a user-specified domain
+	 and the other has the default domain, the user-specified domain trumps.
+	+ Fix `BOOST\_PROTO\_EXTENDS`
+	 to work with elaborated types.
+	+ Work around EDG compiler bug with function types and cv-qualification.
+* [Regex](/libs/regex/index.html):
+
+	+ Added support for Functors rather than strings as format expressions.
+	+ Improved error reporting when throwing exceptions to include better
+	 more relevant information.
+	+ Improved performance and reduced stack usage of recursive expressions.
+	+ Fixed tickets [#2802](https://svn.boost.org/trac/boost/ticket/2802),
+	 [#3425](https://svn.boost.org/trac/boost/ticket/3425),
+	 [#3507](https://svn.boost.org/trac/boost/ticket/3507),
+	 [#3546](https://svn.boost.org/trac/boost/ticket/3546),
+	 [#3631](https://svn.boost.org/trac/boost/ticket/3631),
+	 [#3632](https://svn.boost.org/trac/boost/ticket/3632),
+	 [#3715](https://svn.boost.org/trac/boost/ticket/3715),
+	 [#3718](https://svn.boost.org/trac/boost/ticket/3718),
+	 [#3763](https://svn.boost.org/trac/boost/ticket/3763),
+	 [#3764](https://svn.boost.org/trac/boost/ticket/3764)
+* [Spirit](/libs/spirit/index.html):
+ Spirit V2.2,
+ see the '[What's
+ New](/doc/libs/1_42_0/libs/spirit/doc/html/spirit/what_s_new.html)' section for details.
+* [Unordered](/libs/unordered/index.html):
+
+	+ Support instantiating the containers with incomplete value types.
+	+ Add `erase\_return\_void`
+	 as a temporary workaround for the current `erase`
+	 which can be inefficient because it has to find the next element
+	 to return an iterator ([#3693](http://svn.boost.org/trac/boost/ticket/3693)).
+	+ Add templated find overload for compatible keys.
+	+ Improved codegear compatibility.
+	+ Other minor changes, full details in [the
+	 changelog](/doc/html/unordered/changes.html#unordered.changes.boost_1_42_0).
+* [Xpressive](/libs/xpressive/index.html):
+
+	+ `match\_results` no
+	 longer relies on undefined behavior in `std::list`
+	 ([#3278](https://svn.boost.org/trac/boost/ticket/3278)).
+	+ Do NOT copy singular iterators ([#3538](https://svn.boost.org/trac/boost/ticket/3538)).
+	+ Eliminate gcc and darwin warnings ([#3734](https://svn.boost.org/trac/boost/ticket/3734)).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* OS X:
+ 
+	+ GCC 4.0.1 on Intel Leopard.
+	+ GCC 4.0.1 on PowerPC Tiger.
+* Linux:
+ 
+	+ GCC 4.4.1 on Ubuntu Linux.
+	+ GCC 4.4 on Debian.
+* Windows:
+ 
+	+ Visual C++ 7.1 SP1, 8.0 SP1 and 9.0 SP1 on Windows XP.
+	+ Visual C++ 9.0 on Windows 2008, 64 bit.
+	+ GCC 4.3.3, using Mingw
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 32 and 64 bit.
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Intel 10.1 on Red Hat Enterprise Linux.
+	+ Intel 10.1 on 64 bit Red Hat Enterprise Linux.
+	+ Intel 11.0 on 32 bit Red Hat Enterprise Linux.
+	+ Intel 11.0 on 64 bit Red Hat Enterprise Linux.
+	+ Intel 11.1 on 64 bit Red Hat Enterprise Linux.
+	+ Intel 11.1 on 64 bit Linux Redhat 5.1 Server.
+	+ Intel 11.1 on Suse Linux 64 bit.
+	+ GCC 3.4.6, GCC 4.2.4, GCC 4.3.4 and GCC 4.4.2 on Red Hat Enterprise
+	 Linux.
+	+ GCC 4.3.4 and GCC 4.4.2 with C++0x extensions on Red Hat Enterprise
+	 Linux.
+	+ GCC 4.4.1 on 64 bit Linux.
+	+ GCC 4.4.3 on Debian unstable.
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.2 on Red Hat Enterprise
+	 Linux.
+* OS X:
+ 
+	+ Intel C++ Compiler 10.1, 11.0, 11.1 on Leopard.
+	+ GCC 4.0.1 on Intel Leopard.
+	+ GCC 4.0.1 on PowerPC Tiger.
+* Windows:
+ 
+	+ Visual C++ 7.1, 8,0, 9,0 on XP.
+	+ Visual C++ 9.0 using STLport 5.2 on XP and Windows Mobile 5.0.
+	+ Visual C++ 10.0 beta 2.
+	+ Visual C++ 10.0 on 32-bit Vista.
+	+ Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.1 (2010).
+	+ Intel C++ 11.1, with a Visual C++ 9.0 backend, on Vista 32-bit.
+	+ GCC 4.4.1 on Mingw, with and without C++0x extensions.
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition for AIX, V10.1.0.0, on AIX Version
+	 5.3.0.40.
+* FreeBSD:
+ 
+	+ GCC 4.2.1 on FreeBSD 7.0, 32 bit and 64 bit.
+* Solaris:
+ 
+	+ Sun C++ 5.10 on Solaris 5.10.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

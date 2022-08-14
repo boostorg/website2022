@@ -1,0 +1,121 @@
+---
+title: Binary Integer Literals
+copyright: 
+revised: 
+---
+
+
+Binary Integer Literals
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../BOOST_BA_idm35151229096240.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../BOOST_BINARY.html)
+
+
+### 
+[Binary
+ Integer Literals](binary_integer_literals.html "Binary Integer Literals")
+[Introduction](binary_integer_literals.html#utility.utilities.binary_integer_literals.introduction)
+[Example](binary_integer_literals.html#utility.utilities.binary_integer_literals.example)
+[Reference](binary_integer_literals.html#boost_binary.reference)
+[Acknowledgments](binary_integer_literals.html#utility.utilities.binary_integer_literals.acknowledgments)
+
+
+#### 
+[Introduction](binary_integer_literals.html#utility.utilities.binary_integer_literals.introduction "Introduction")
+ The macro `BOOST\_BINARY`
+ is used for the representation of binary literals. It takes as an argument
+ a binary number arranged as an arbitrary amount of 1s and 0s in groupings
+ of length 1 to 8, with groups separated by spaces. The macro serves as
+ a replacement for [binary
+ integer literals](https://en.cppreference.com/w/cpp/language/integer_literal), adopted in C++14.
+ 
+ The type of the literal yielded is determined by the same rules as those
+ of [hex
+ and octal literals](https://en.cppreference.com/w/cpp/language/integer_literal). By implementation, this macro expands directly
+ to an octal literal during preprocessing, so there is no overhead at runtime
+ and the result is usable in any place that an octal literal would be.
+ 
+ In order to directly support binary literals with suffixes, additional
+ macros of the form `BOOST\_BINARY\_XXX`
+ are also provided, where `XXX`
+ is a standard integer suffix in all capital letters.
+ 
+ In addition, LL and ULL suffixes may be used for representing `long long`
+ and `unsigned long
+long` types in compilers which provide
+ them as an extension.
+ 
+ The `BOOST\_BINARY` family
+ of macros resides in the header [<boost/utility/binary.hpp>](../../../../../../boost/utility/binary.hpp).
+ 
+
+#### 
+[Example](binary_integer_literals.html#utility.utilities.binary_integer_literals.example "Example")
+```
+void foo( int );
+
+void foo( unsigned long );
+
+void bar()
+{
+  int value1 = BOOST\_BINARY( 100 111000 01 1 110 );
+
+  unsigned long value2 = BOOST\_BINARY\_UL( 100 001 ); // unsigned long
+
+  long long value3 = BOOST\_BINARY\_LL( 11 000 ); // long long if supported
+
+  [`assert`](https://en.cppreference.com/w/cpp/error/assert)(    BOOST\_BINARY( 10010 )
+          &  BOOST\_BINARY( 11000 )
+          == BOOST\_BINARY( 10000 )
+        );
+
+  foo( BOOST\_BINARY( 1010 ) ); // calls the first foo
+
+  foo( BOOST\_BINARY\_LU( 1010 ) ); // calls the second foo
+}
+
+```
+#### 
+Reference
+##### 
+Header <[boost/utility/binary.hpp](../../../../../../boost/utility/binary.hpp)>
+```
+
+
+[BOOST\_BINARY](../../BOOST_BINARY.html "Macro BOOST_BINARY")(bit\_groupings)
+[BOOST\_BINARY\_U](../../BOOST_BINARY_U.html "Macro BOOST_BINARY_U")(bit\_groupings)
+[BOOST\_BINARY\_L](../../BOOST_BINARY_L.html "Macro BOOST_BINARY_L")(bit\_groupings)
+[BOOST\_BINARY\_UL](../../BOOST_BINARY_UL.html "Macro BOOST_BINARY_UL")(bit\_groupings)
+[BOOST\_BINARY\_LU](../../BOOST_BINARY_LU.html "Macro BOOST_BINARY_LU")(bit\_groupings)
+[BOOST\_BINARY\_LL](../../BOOST_BINARY_LL.html "Macro BOOST_BINARY_LL")(bit\_groupings)
+[BOOST\_BINARY\_ULL](../../BOOST_BINARY_ULL.html "Macro BOOST_BINARY_ULL")(bit\_groupings)
+[BOOST\_BINARY\_LLU](../../BOOST_BINARY_LLU.html "Macro BOOST_BINARY_LLU")(bit\_groupings)
+[BOOST\_SUFFIXED\_BINARY\_LITERAL](../../BOOST_SU_idm35151229114032.html "Macro BOOST_SUFFIXED_BINARY_LITERAL")(bit\_groupings, suffix)
+[BOOST\_SUFFIXED\_BINARY\_LITERAL\_D](../../BOOST_SU_idm35151229112752.html "Macro BOOST_SUFFIXED_BINARY_LITERAL_D")(d, bit\_groupings, suffix)
+[BOOST\_BINARY\_LITERAL\_D](../../BOOST_BINARY_LITERAL_D.html "Macro BOOST_BINARY_LITERAL_D")(d, bit\_groupings)
+```
+
+#### 
+[Acknowledgments](binary_integer_literals.html#utility.utilities.binary_integer_literals.acknowledgments "Acknowledgments")
+ Contributed by Matt Calabrese.
+ 
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../BOOST_BA_idm35151229096240.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../BOOST_BINARY.html)

@@ -1,0 +1,169 @@
+---
+title: Version 1.31.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.31.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.31.0
+==============
+
+Version 1.31.0
+--------------
+
+
+January 26th, 2004 12:00 GMT
+
+
+[Documentation](/doc/libs/1_31_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_31\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.31.0/boost_1_31_0.tar.bz2) |
+| [boost\_1\_31\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.31.0/boost_1_31_0.tar.gz) |
+| windows | [boost\_1\_31\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.31.0/boost_1_31_0.zip) |
+
+
+### New License
+ A unified [Boost Software
+ License](/doc/libs/1_31_0/more/license_info.html) has been developed and will gradually replace the individual
+ licenses for most Boost libraries. The new license offers better legal protection
+ for both users and developers, and should speed user's legal reviews of Boost
+ libraries. Dave Abrahams led the Boost effort to develop better licensing.
+ The legal team was led by [Diane
+ Cabell](http://cyber.law.harvard.edu/people/cabell/index.html), Director, Clinical Programs, [Berkman
+ Center for Internet & Society](http://cyber.law.harvard.edu), Harvard Law School. [Devin
+ Smith](http://www.nixonpeabody.com/attorneys_detail1.asp?ID=121), attorney, [Nixon
+ Peabody LLP](http://www.nixonpeabody.com/default.asp), wrote the Boost License. Eva Chan, Harvard Law School,
+ contributed analysis of issues and drafts of various legal documents.
+ 
+ Note: Many of the Boost libraries are still using earlier licenses, though
+ all conform to the [Boost
+ License Requirements](/doc/libs/1_31_0/more/lib_guide.htm#license). After this release we will begin an effort to
+ move toward uniform use of the new license.
+ 
+
+### Build and Installation
+
+
+* New [Getting Started](/doc/libs/1_31_0/more/getting_started.html)
+ procedures ease download and installation, from Rene Rivera and others.
+* Improved support for libraries requiring [separate
+ compilation](/doc/libs/1_31_0/more/separate_compilation.html), from John Maddock and others.
+
+### New Libraries
+
+
+* [enable\_if](/doc/libs/1_31_0/libs/utility/enable_if.html): Selective
+ inclusion of function template overloads, from Jaakko Jarvi, Jeremiah Willcock,
+ and Andrew Lumsdaine. This is an important new technique which exploits
+ the SFINAE (substitution-failure-is-not-an-error) principle.
+* [Variant Library](/doc/libs/1_31_0/libs/variant/index.html): Safe,
+ generic, stack-based discriminated union container, from Eric Friedman
+ and Itay Maman.
+
+### Updated Libraries
+
+
+* [Compose](/doc/libs/1_31_0/libs/compose/index.htm): This
+ library has been deprecated and will be removed in a future release. Use
+ [Bind](/doc/libs/1_31_0/libs/bind/bind.html) or [Lambda](/doc/libs/1_31_0/libs/lambda/doc/index.html) instead.
+* [Date
+ Time Library](/doc/libs/1_31_0/libs/date_time/doc/index.html): A whole host of bug fixes, new features, and documentation
+ improvements. See the Date Time Change History for details.
+* [Filesystem
+ Library](/doc/libs/1_31_0/libs/filesystem/doc/index.htm):
+ Several added functions, including improved checking for
+ directory and file name portability.
+* [Iterator
+ Library](/doc/libs/1_31_0/libs/iterator/doc/index.html): Major version upgrade, with interface as proposed for the
+ C++ library TR, including an improved iterator\_adaptor
+ design plus several new components, from David Abrahams, Jeremy Siek, and
+ Thomas Witt.
+* [MultiArray](/doc/libs/1_31_0/libs/multi_array/index.html): The
+ multi\_array class template now provides an element-preserving
+ resize operation as well as default construction (see the [reference
+ manual](/doc/libs/1_31_0/libs/multi_array/doc/reference.html) for more information).
+* [Python Library](/doc/libs/1_31_0/libs/python/index.html):
+
+	+ Support for Python 2.3 and Intel C++ on Linux
+	+ Container [Indexing
+	 Suite](/doc/libs/1_31_0/libs/python/doc/v2/indexing.html) added.
+	+ injected constructors and wrapped function objects.
+	+ wrapping static data members.
+	+ `std::wstring` conversions.
+	+ Improved [keyword
+	 arguments](/doc/libs/1_31_0/libs/python/doc/v2/args.html).
+	+ Better error messages, including name demangling for GCC.
+	+ Simpler [build
+	 procedure](/doc/libs/1_31_0/libs/python/doc/building.html).
+	+ *...and more....*
+* [Random Number
+ Library](/doc/libs/1_31_0/libs/random/index.html): Interface changed to match the C++ [TR
+ proposal](/doc/libs/1_31_0/libs/random/wg21-proposal.html), from Jens Maurer.
+* [Regex](/doc/libs/1_31_0/libs/regex/doc/index.html): Completely
+ new matching algorithm is now much faster than before, plus a selection
+ of [new features
+ and enhancements](/doc/libs/1_31_0/libs/regex/doc/history.html).
+* [Boost.Spirit
+ 1.8.0](/doc/libs/1_31_0/libs/spirit/index.html):
+
+	+ Multiple grammar start rules
+	+ Multiple Scanner rules (no more scanner business woes)
+	+ More dynamic parsers
+	+ Predefined actors
+	+ Numerous bug fixes and QOI stuff
+	+ *and more...*
+
+ Starting from Spirit v1.8.0, ill conforming compilers will no longer be
+ supported. If you are still using one of these older compilers, please use
+ Spirit v1.6.x. See [@http://spirit.sf.net Spirit's Site] for more details.
+* [Test Library](/doc/libs/1_31_0/libs/test/index.html):
+
+	+ Free function template based test case
+	+ Custom exception translators support in execution monitor and
+	 register\_exception\_translator added for unit test framework
+	+ Added support for multi-module unit tests in automatic
+	 registration facility
+	+ Floating point comparison algorithm reworked (Is not backward
+	 compatible!!!)
+	+ Added support for custom users predicate returning both boolean
+	 result code and possibly error message
+	+ Documentation structure rework and update
+
+ For a complete list of changes see the Test Library
+ [release notes](/doc/libs/1_31_0/libs/test/doc/release_notes.html#v1_31_0).
+
+### Miscellaneous
+
+
+* Expanded testing and fixes for non-conforming compilers.
+* Web site hosting now provided by [SourceForge](http://www.sourceforge.net/).
+
+
+
+ 
+
+
+
+ 
+
+ 
+

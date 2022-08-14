@@ -1,0 +1,382 @@
+---
+title: Version 1.59.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.59.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.59.0
+==============
+
+Version 1.59.0
+--------------
+
+
+August 13th, 2015 15:23 GMT
+
+
+[Documentation](/doc/libs/1_59_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_59\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.bz2) |
+| [boost\_1\_59\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz) |
+| windows | [boost\_1\_59\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.7z) |
+| [boost\_1\_59\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.zip) |
+
+
+### Known Issue
+
+
+* Boost.Log contains has a regression that prevents some of the logging statements
+ from compiling ([#11549](https://svn.boost.org/trac/boost/ticket/11549)). This is fixed in [git](https://github.com/boostorg/log/commit/7da193fde1a9c1bc925ee980339f4df2e1a66fa7).
+
+### New Libraries
+
+
+* [Convert](/libs/convert/):
+ An extendible and configurable
+ type-conversion framework, from Vladimir Batov.
+* [Coroutine2](/libs/coroutine2/):
+ (C++14) Coroutine
+ library, from Oliver Kowalke.
+
+### Updated Libraries
+
+
+* [Container](/libs/container/):
+
+	+ [GitHub
+	 #26: *Fix bug in stable\_vector::capacity()*](https://github.com/boostorg/container/pull/26).
+	 Thanks to timsong-cpp/Arindam Mukerjee.
+	+ [GitHub
+	 #27: *fix stable\_vector's index\_of's doxygen comment*](https://github.com/boostorg/container/pull/27).
+	 Thanks to kariya-mitsuru.
+	+ [Trac #11380:
+	 *"Container library std forward declarations incorrect
+	 in std\_fwd.hpp on libc++ with gcc"*](https://svn.boost.org/trac/boost/ticket/11380).
+	+ [Trac #11388:
+	 *"boost::container::list::emplace\_back broken on Visual
+	 Studio 2010"*](https://svn.boost.org/trac/boost/ticket/11388).
+	+ [Trac #11339:
+	 *"VC12 LNK2005 error with boost::container::adaptive\_pool"*](https://svn.boost.org/trac/boost/ticket/11339).
+* [Context](/libs/context/):
+
+	+ [#11223](https://svn.boost.org/trac/boost/ticket/11223) check support for std::integer\_sequence
+	+ execution\_context uses internally Windows Fibers with BOOST\_USE\_WINFIBERS
+	+ support of assember for MinGW on Windows (32bit)
+* [Coroutine](/libs/coroutine/):
+
+	+ [#10978](https://svn.boost.org/trac/boost/ticket/10978) remove additional semicolons
+	+ [#11230](https://svn.boost.org/trac/boost/ticket/11230) coroutine\_error returns dangling exception message pointer
+	+ [#11234](https://svn.boost.org/trac/boost/ticket/11234) doesn't compile when used with boost::range::algorithms
+	+ [#11356](https://svn.boost.org/trac/boost/ticket/11356) coroutines segfaults with BOOST\_USE\_SEGMENTED\_STACKS
+* [Fusion](/libs/fusion/):
+
+	+ Add a new concept, `Unbounded
+	Sequence` for sequence and
+	 `Unbounded Iterator`
+	 for iterator. Currently, `Unbounded
+	Sequence` affects the behaviour
+	 of `fusion::(value\_)at(\_c)`
+	 and `fusion::(value\_)at\_key`. `Unbounded
+	Iterator` has no effect
+	 (reserved for future release). For more details, see [Unbounded
+	 Sequence](libs/fusion/doc/html/fusion/sequence/concepts/unbounded_sequence.html) and [Unbounded
+	 Iterator](/libs/fusion/doc/html/fusion/iterator/concepts/unbounded_iterator.html). ([pull-request
+	 85](https://github.com/boostorg/fusion/pull/85))
+	+ Support C++11 variadic templates for `fusion::list`.
+	 ([pull-request
+	 84](https://github.com/boostorg/fusion/pull/84))
+	+ *Fixed bugs:*
+	
+		- Fix missing include `<utility>`.
+		 ([#11161](https://svn.boost.org/trac/boost/ticket/11161))
+		- Revert some constexpr support, regression in 1.58.0. ([#11211](https://svn.boost.org/trac/boost/ticket/11211),
+		 [#11267](https://svn.boost.org/trac/boost/ticket/11267))
+		- Fix compile error with fold due to missing include. ([#11249](https://svn.boost.org/trac/boost/ticket/11249))
+		- Fix compile error with adapting an empty struct, regression
+		 in 1.58.0. ([#11269](https://svn.boost.org/trac/boost/ticket/11269))
+		- Remove use of obsolete (and incorrect) workaround for sequence
+		 comparison, it affects MSVC-8 and earlier. ([pull-request
+		 78](https://github.com/boostorg/fusion/pull/78))
+		- Fix compile error while copying a sequece which derived from
+		 fusion::list, regression in 1.58.0. ([pull-request
+		 87](https://github.com/boostorg/fusion/pull/87))
+		- Fix compile error on copying a fusion::tuple. ([#11140](https://svn.boost.org/trac/boost/ticket/11140))
+		- Add workarounds for GCC 4.6 with constexpr. ([#11517](https://svn.boost.org/trac/boost/ticket/11517))
+* [Geometry](/libs/geometry/):
+
+	+ *Additional functionality:*
+	
+		- Added rtree const\_iterator, begin(), end() and the support
+		 for Boost.Range.
+		- The support for C++11 `std::initializer\_list`
+		 in geometries models.
+		- Disjoint and intersects support the following geometry combinations:
+		 multipoint/linestring, multipoint/multilinestring.
+		- Added relate() and relation() algorithms.
+		- Intersection has been implemented for combinations of pointlike
+		 and linear geometries
+		- Added implementation for difference(pointlike, linear)
+		- New algorithm is\_empty, returning true if the geometry represents
+		 the empty set
+		- The envelope algorithm supports pointlike and linear geometries
+		 in the spherical equatorial coordinate system
+		- The envelope algorithm supports pointlike geometries in the
+		 geographic coordinate system
+	+ *Improvements:*
+	
+		- Upgraded rtree const\_query\_iterator category to ForwardIterator.
+		- Buffer performance of buffers around multi-points is improved
+		 significantly
+	+ *Breaking changes:*
+	
+		- buffer side strategy now returns error\_code instead of bool.
+		 If you have your own custom side strategy, it should be adapted
+	+ *Solved tickets:*
+	
+		- [#11113](https://svn.boost.org/trac/boost/ticket/11113)
+		 Support easy enumeration of all elements with BOOST\_FOREACH
+		- [#11232](https://svn.boost.org/trac/boost/ticket/11232)
+		 Feature request - relate()
+		- [#11236](https://svn.boost.org/trac/boost/ticket/11236)
+		 Invalid result of centroid() for integer coordinate type
+		- [#11268](https://svn.boost.org/trac/boost/ticket/11268)
+		 Regression in boost::geometry::intersection interface with
+		 multi\_linestring and box -- does not compile on 1.57 VS 1.55
+		- [#11332](https://svn.boost.org/trac/boost/ticket/11332)
+		 Assertion failure in buffer for extreme coordinate differences
+		- [#11346](https://svn.boost.org/trac/boost/ticket/11346)
+		 Segment iterator does not work with ranges returning values
+		 instead of references
+		- [#11436](https://svn.boost.org/trac/boost/ticket/11436)
+		 sym\_difference(py1, py2, mpy) returns invalid multipolygon
+	+ *Bugfixes:*
+	
+		- Buffer: use a more robust way to calculate the side of an intersection,
+		 this fixes several errors in buffer generation
+		- Fix in selection of segment to which calculate from IP from,
+		 in intersection of two segments. Now is selected the one close
+		 to a segment-point point, or else the one on the shortest segment.
+		 This avoids (rarely occuring) generation of tiny triangles
+		 making output polygons invalid
+		- In rescaling round instead of truncate to the integer grid
+		 (this fix and the previous mentioned can have some impact on
+		 output geometries)
+		- Fix potential infinite loop in detail::has\_spikes (the loop
+		 can happen if the points passed have NaN coordinates)
+* [Interprocess](/libs/interprocess/):
+
+	+ [( Trac
+	 #5139 ( (*"Initial Stream Position in Boost.Interprocess.Vectorstream"*)](https://svn.boost.org/trac/boost/ticket/5139).
+	+ [GitHub
+	 Pull #19 (*"Fix exception visibility"*)](https://github.com/boostorg/interprocess/pull/19).
+	 Thanks to Romain-Geissler.
+* [Intrusive](/libs/intrusive/):
+
+	+ Implemented map and multimap-like
+	 interfaces.
+	+ Refactored hashtable containers to reduce template instantiations.
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Fixed warnings
+	+ Simplified metaprogramming (thanks to Edward Diener)
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- On systems with [symbol
+		 visibility](https://gcc.gnu.org/wiki/Visibility) support (e.g. Linux) the library is now
+		 built with all internal symbols hidden.
+		- **Breaking change:** The library
+		 has been ported to Boost.TypeIndex for its underlying type
+		 info management tool. This affected the following public interfaces:
+		 
+			* `invalid\_type`
+			 exceptions thrown by the library now have `typeindex::type\_index` attached
+			 as the description of the offending type. The type was
+			 previously identified by `type\_info\_wrapper`.
+			* Boost.Exception `type\_info\_info`
+			 error information now contains `typeindex::type\_index`
+			 instead of `type\_info\_wrapper`.
+			* `attribute\_value::get\_type()` now returns `typeindex::type\_index` instead
+			 of `type\_info\_wrapper`.
+			 User-defined attribute value implementations should be
+			 similarly changed (the `attribute\_value::impl::get\_type()` virtual method now
+			 also returns `typeindex::type\_index`).
+		- `type\_info\_wrapper`
+		 component has been deprecated and will be removed in future
+		 releases. Boost.TypeIndex is recommended as a replacement.
+		- Removed the previously deprecated headers: `boost/log/utility/intrusive\_ref\_counter.hpp`,
+		 `boost/log/utility/explicit\_operator\_bool.hpp`, `boost/log/utility/empty\_deleter.hpp`.
+		- Added support for building the library for OpenBSD. ([#11446](https://svn.boost.org/trac/boost/ticket/11446))
+		- Improved internal implementation of the event synchronization
+		 primitive used for asynchronous logging. ([#11398](https://svn.boost.org/trac/boost/ticket/11398))
+	+ Bug fixes:
+	 
+		- Fixed incorrect behavior of `attribute\_value\_set::insert()` and `attribute\_value\_set`
+		 constructor in some cases. ([#11190](https://svn.boost.org/trac/boost/ticket/11190))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Move](/libs/move/):
+
+	+ Changed `unique\_ptr`'s
+	 converting constructor taking the source by value in C++03 compilers
+	 to allow simple conversions from convertible types returned by value.
+	+ [Trac #11229:
+	 *"vector incorrectly copies move-only objects using
+	 memcpy"*](https://svn.boost.org/trac/boost/ticket/11229),
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ Added [ranked
+	 indices](/libs/multi_index/doc/tutorial/indices.html#rnk_indices).
+	+ Maintenance fixes.
+* [Predef](/libs/predef/):
+
+	+ Fix many problems with `predef\_check`
+	 functionality.
+	+ Update SunPro detection to accomodate latest version of compiler
+	 from Oracle.
+	+ Add `and` and `or` logical operators for `predef\_check` expression on the
+	 Boost Build side.
+	+ Fix `BOOST\_ARCH\_PARISC`
+	 to correctly spelled name.
+	+ Fix `MAKE\_YYYYM` macros
+	 to correctly limit the month.
+* [Program Options](/libs/program_options/):
+
+	+ Fix compilation errors, missing dllexport and warnings with MSVC
+	 and MinGW (Daniela Engert, Marcel Raad).
+	+ Fix unintialized fields (Zoey Greer).
+	+ Stop options with implicit value from consuming separate tokens (Michael
+	 John Decker).
+	+ Make multitoken limit be max int, not 32K (Hans Hohenfeld).
+	+ Code formatting and documentation fixes (Jurko Gospodnetić, Lauri
+	 Nurmi).
+	+ Minimal support for no-rtti build (Minmin Gong)
+	+ Don't increment environment pointer past the end (Vladimir Prus)
+* [Property Tree](/libs/property_tree/):
+
+	+ A new JSON parser with full Unicode support.
+	+ **Breaking change:** The new parser
+	 does not support comments or string concatenation in JSON files.
+	 These features were non-standard extensions of the old parser but
+	 their removal could break code which was relying on them.
+* [Boost.Test v3](/libs/test/):
+
+	+ Major new features
+	 
+		- `BOOST\_TEST`
+		 generic assertion
+		- data driven test cases
+		- test units can now have *attributes* for
+		 finer control over tests behavior (logical grouping, test dependencies,
+		 test enabling/disabling)
+		- CLI learned `colour\_output`
+		 and `list\_content`,
+		 extended unit test filtering (negation, labels)
+		- refactored and rewritten documentation using quickbook
+	+ Addressed issues:
+	 
+		- [#2018](https://svn.boost.org/trac/boost/ticket/2018) [#2450](https://svn.boost.org/trac/boost/ticket/2450) [#2600](https://svn.boost.org/trac/boost/ticket/2600) [#2717](https://svn.boost.org/trac/boost/ticket/2717) [#2759](https://svn.boost.org/trac/boost/ticket/2759) [#3182](https://svn.boost.org/trac/boost/ticket/3182) [#3316](https://svn.boost.org/trac/boost/ticket/3316) [#3392](https://svn.boost.org/trac/boost/ticket/3392) [#3402](https://svn.boost.org/trac/boost/ticket/3402) [#3445](https://svn.boost.org/trac/boost/ticket/3445)
+		- [#3463](https://svn.boost.org/trac/boost/ticket/3463) [#3542](https://svn.boost.org/trac/boost/ticket/3542) [#3481](https://svn.boost.org/trac/boost/ticket/3481) [#3495](https://svn.boost.org/trac/boost/ticket/3495) [#3592](https://svn.boost.org/trac/boost/ticket/3592) [#3595](https://svn.boost.org/trac/boost/ticket/3595) [#3623](https://svn.boost.org/trac/boost/ticket/3623) [#3664](https://svn.boost.org/trac/boost/ticket/3664) [#3784](https://svn.boost.org/trac/boost/ticket/3784) [#3785](https://svn.boost.org/trac/boost/ticket/3785)
+		- [#3811](https://svn.boost.org/trac/boost/ticket/3811) [#3834](https://svn.boost.org/trac/boost/ticket/3834) [#3896](https://svn.boost.org/trac/boost/ticket/3896) [#3932](https://svn.boost.org/trac/boost/ticket/3932) [#3938](https://svn.boost.org/trac/boost/ticket/3938) [#3964](https://svn.boost.org/trac/boost/ticket/3964) [#3978](https://svn.boost.org/trac/boost/ticket/3978) [#3979](https://svn.boost.org/trac/boost/ticket/3979) [#4161](https://svn.boost.org/trac/boost/ticket/4161) [#4275](https://svn.boost.org/trac/boost/ticket/4275)
+		- [#4389](https://svn.boost.org/trac/boost/ticket/4389) [#4434](https://svn.boost.org/trac/boost/ticket/4434) [#4587](https://svn.boost.org/trac/boost/ticket/4587) [#4806](https://svn.boost.org/trac/boost/ticket/4806) [#4911](https://svn.boost.org/trac/boost/ticket/4911) [#4923](https://svn.boost.org/trac/boost/ticket/4923) [#4924](https://svn.boost.org/trac/boost/ticket/4924) [#4982](https://svn.boost.org/trac/boost/ticket/4982) [#5008](https://svn.boost.org/trac/boost/ticket/5008) [#5036](https://svn.boost.org/trac/boost/ticket/5036)
+		- [#5262](https://svn.boost.org/trac/boost/ticket/5262) [#5374](https://svn.boost.org/trac/boost/ticket/5374) [#5412](https://svn.boost.org/trac/boost/ticket/5412) [#5563](https://svn.boost.org/trac/boost/ticket/5563) [#5582](https://svn.boost.org/trac/boost/ticket/5582) [#5599](https://svn.boost.org/trac/boost/ticket/5599) [#5718](https://svn.boost.org/trac/boost/ticket/5718) [#5729](https://svn.boost.org/trac/boost/ticket/5729) [#5870](https://svn.boost.org/trac/boost/ticket/5870) [#5972](https://svn.boost.org/trac/boost/ticket/5972)
+		- [#6002](https://svn.boost.org/trac/boost/ticket/6002) [#6071](https://svn.boost.org/trac/boost/ticket/6071) [#6074](https://svn.boost.org/trac/boost/ticket/6074) [#6161](https://svn.boost.org/trac/boost/ticket/6161) [#6766](https://svn.boost.org/trac/boost/ticket/6766) [#6712](https://svn.boost.org/trac/boost/ticket/6712) [#6748](https://svn.boost.org/trac/boost/ticket/6748) [#7046](https://svn.boost.org/trac/boost/ticket/7046) [#7136](https://svn.boost.org/trac/boost/ticket/7136) [#7410](https://svn.boost.org/trac/boost/ticket/7410) [#7894](https://svn.boost.org/trac/boost/ticket/7894)
+		- [#8201](https://svn.boost.org/trac/boost/ticket/8201) [#8272](https://svn.boost.org/trac/boost/ticket/8272) [#8467](https://svn.boost.org/trac/boost/ticket/8467) [#8862](https://svn.boost.org/trac/boost/ticket/8862) [#8895](https://svn.boost.org/trac/boost/ticket/8895) [#9179](https://svn.boost.org/trac/boost/ticket/9179) [#9272](https://svn.boost.org/trac/boost/ticket/9272) [#9390](https://svn.boost.org/trac/boost/ticket/9390) [#9409](https://svn.boost.org/trac/boost/ticket/9409) [#9537](https://svn.boost.org/trac/boost/ticket/9537)
+		- [#9539](https://svn.boost.org/trac/boost/ticket/9539) [#9581](https://svn.boost.org/trac/boost/ticket/9581) [#9960](https://svn.boost.org/trac/boost/ticket/9960) [#10318](https://svn.boost.org/trac/boost/ticket/10318) [#10394](https://svn.boost.org/trac/boost/ticket/10394) [#10888](https://svn.boost.org/trac/boost/ticket/10888) [#11054](https://svn.boost.org/trac/boost/ticket/11054) [#11347](https://svn.boost.org/trac/boost/ticket/11347) [#11358](https://svn.boost.org/trac/boost/ticket/11358) [#11359](https://svn.boost.org/trac/boost/ticket/11359)
+* [TypeIndex](/libs/type_index/):
+
+	+ Removed dependencies on some of the Boost libraries to improve compilation
+	 times and modularity
+	+ Warnings fixed in tests and other maintainance improvements were
+	 done.
+* [Variant](/libs/variant/):
+
+	+ Fixed missing include in element\_index.hpp [#11196](https://svn.boost.org/trac/boost/ticket/11196), [#11283](https://svn.boost.org/trac/boost/ticket/11283)
+	+ Fixed `boost::apply\_visitor` usage with C++14
+	 and const references [#11251](https://svn.boost.org/trac/boost/ticket/11251), [#11285](https://svn.boost.org/trac/boost/ticket/11285)
+	+ Relaxed compile time checks for all the `get<reference>(variant\_variable)` functions (thanks to Nicolas Cornu)
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.4
+	+ Clang, C++14: 3.6
+	+ GCC: 4.4.7, 4.8.2, 4.9.3
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 4.9.3
+	+ Intel: 15.0
+* Windows:
+ 
+	+ Visual C++: 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6
+	+ GCC: 4.8, 4.9
+* SunOS:
+ 
+	+ Sun: 6.0
+* QNX:
+ 
+	+ QCC: 4.4.2
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.1, 3.2, 3.3, 3.4
+	+ Clang, C++14: 3.6, 3.7
+	+ GCC: 4.4.7, 4.5.3, 4.6.4, 4.7.3, 4.8.1, 5.1.0, 6.0.0
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 4.9.3, 5.1.1
+	+ Intel: 15.0
+* Android:
+ 
+	+ Clang: 3.6
+	+ GCC: 4.8, 4.9
+* FreeBSD:
+ 
+	+ Clang: 3.4.1
+	+ GCC: 4.8.5, 5.1.0, 6.0.0
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

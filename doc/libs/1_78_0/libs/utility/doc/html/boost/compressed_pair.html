@@ -1,0 +1,114 @@
+---
+title: Class template compressed_pair
+copyright: 
+revised: 
+---
+
+
+Class template compressed\_pair
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../index.html) | [Libraries](../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/compressed_pair.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](compress_idm35151228634288.html)
+
+Class template compressed\_pair
+-------------------------------
+
+
+boost::compressed\_pair
+Synopsis
+--------
+```
+// In header: <[boost/detail/compressed\_pair.hpp](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp "Header <boost/detail/compressed_pair.hpp>")>
+
+template<typename T1, typename T2> 
+class [compressed\_pair](compressed_pair.html "Class template compressed_pair") {
+public:
+  // types
+  typedef T1                                          first\_type;            
+  typedef T2                                          second\_type;           
+  typedef call\_traits< first\_type >::param\_type       first\_param\_type;      
+  typedef call\_traits< second\_type >::param\_type      second\_param\_type;     
+  typedef call\_traits< first\_type >::reference        first\_reference;       
+  typedef call\_traits< second\_type >::reference       second\_reference;      
+  typedef call\_traits< first\_type >::const\_reference  first\_const\_reference; 
+  typedef call\_traits< second\_type >::const\_reference second\_const\_reference;
+
+  // [construct/copy/destruct](compressed_pair.html#boost.compressed_pairconstruct-copy-destruct)
+  [compressed\_pair](compressed_pair.html#idm35151228637616-bb)();
+  [compressed\_pair](compressed_pair.html#idm35151228637360-bb)(first\_param\_type, second\_param\_type);
+  explicit [compressed\_pair](compressed_pair.html#idm35151228636080-bb)(first\_param\_type);
+  explicit [compressed\_pair](compressed_pair.html#idm35151228635184-bb)(second\_param\_type);
+
+  // [public member functions](compressed_pair.html#idm35151228642352-bb)
+  first\_reference [first](compressed_pair.html#idm35151228641968-bb)();
+  first\_const\_reference [first](compressed_pair.html#idm35151228641328-bb)() const;
+  second\_reference [second](compressed_pair.html#idm35151228640560-bb)();
+  second\_const\_reference [second](compressed_pair.html#idm35151228639920-bb)() const;
+  void [swap](compressed_pair.html#idm35151228639152-bb)([compressed\_pair](compressed_pair.html "Class template compressed_pair") &);
+};
+```
+
+
+Description
+-----------
+### 
+`compressed_pair` 
+ public
+ construct/copy/destruct
+
+
+1. ```
+compressed\_pair();
+```
+2. ```
+compressed\_pair(first\_param\_type x, second\_param\_type y);
+```
+3. ```
+explicit compressed\_pair(first\_param\_type x);
+```
+4. ```
+explicit compressed\_pair(second\_param\_type y);
+```
+### 
+`compressed_pair` public member functions
+
+
+1. ```
+first\_reference first();
+```
+2. ```
+first\_const\_reference first() const;
+```
+3. ```
+second\_reference second();
+```
+4. ```
+second\_const\_reference second() const;
+```
+5. ```
+void swap([compressed\_pair](compressed_pair.html "Class template compressed_pair") & y);
+```
+### Specializations
+
+
+* [Class template compressed\_pair<T, T>](compress_idm35151228634288.html "Class template compressed_pair<T, T>")
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/compressed_pair.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](compress_idm35151228634288.html)

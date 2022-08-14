@@ -1,0 +1,406 @@
+---
+title: Class template basic_string_view
+copyright: 
+revised: 
+---
+
+
+Class template basic\_string\_view
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../index.html) | [Libraries](../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/string_view.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/string_view.html#header.boost.utility.string_view_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](../utility/utilities/value_init.html)
+
+Class template basic\_string\_view
+----------------------------------
+
+
+boost::basic\_string\_view
+Synopsis
+--------
+```
+// In header: <[boost/utility/string\_view.hpp](../utility/utilities/string_view.html#header.boost.utility.string_view_hpp "Header <boost/utility/string_view.hpp>")>
+
+template<typename charT, typename traits> 
+class [basic\_string\_view](basic_string_view.html "Class template basic_string_view") {
+public:
+  // types
+  typedef traits                                  traits\_type;           
+  typedef charT                                   value\_type;            
+  typedef charT \*                                 pointer;               
+  typedef const charT \*                           const\_pointer;         
+  typedef charT &                                 reference;             
+  typedef const charT &                           const\_reference;       
+  typedef const\_pointer                           const\_iterator;        
+  typedef const\_iterator                          iterator;              
+  typedef std::reverse\_iterator< const\_iterator > const\_reverse\_iterator;
+  typedef const\_reverse\_iterator                  reverse\_iterator;      
+  typedef std::size\_t                             size\_type;             
+  typedef std::ptrdiff\_t                          difference\_type;       
+
+  // [construct/copy/destruct](basic_string_view.html#boost.basic_string_viewconstruct-copy-destruct)
+  [basic\_string\_view](basic_string_view.html#idm35151228455472-bb)() noexcept;
+  [basic\_string\_view](basic_string_view.html#idm35151228455088-bb)(const [basic\_string\_view](basic_string_view.html "Class template basic_string_view") &);
+  template<typename Allocator> 
+    [basic\_string\_view](basic_string_view.html#idm35151228452272-bb)(const std::basic\_string< charT, traits, Allocator > &) noexcept;
+  [basic\_string\_view](basic_string_view.html#idm35151228450736-bb)(const charT \*);
+  [basic\_string\_view](basic_string_view.html#idm35151228449968-bb)(const charT \*, size\_type);
+  [basic\_string\_view](basic_string_view.html "Class template basic_string_view") & [operator=](basic_string_view.html#idm35151228453936-bb)(const [basic\_string\_view](basic_string_view.html "Class template basic_string_view") &);
+
+  // [public member functions](basic_string_view.html#idm35151228357424-bb)
+  constexpr const\_iterator [begin](basic_string_view.html#idm35151228357040-bb)() const noexcept;
+  constexpr const\_iterator [cbegin](basic_string_view.html#idm35151228356272-bb)() const noexcept;
+  constexpr const\_iterator [end](basic_string_view.html#idm35151228355504-bb)() const noexcept;
+  constexpr const\_iterator [cend](basic_string_view.html#idm35151228354736-bb)() const noexcept;
+  const\_reverse\_iterator [rbegin](basic_string_view.html#idm35151228353968-bb)() const noexcept;
+  const\_reverse\_iterator [crbegin](basic_string_view.html#idm35151228353200-bb)() const noexcept;
+  const\_reverse\_iterator [rend](basic_string_view.html#idm35151228352432-bb)() const noexcept;
+  const\_reverse\_iterator [crend](basic_string_view.html#idm35151228351664-bb)() const noexcept;
+  constexpr size\_type [size](basic_string_view.html#idm35151228350896-bb)() const noexcept;
+  constexpr size\_type [length](basic_string_view.html#idm35151228350128-bb)() const noexcept;
+  constexpr size\_type [max\_size](basic_string_view.html#idm35151228349360-bb)() const noexcept;
+  constexpr bool [empty](basic_string_view.html#idm35151228348592-bb)() const noexcept;
+  constexpr const\_reference [operator[]](basic_string_view.html#idm35151228347824-bb)(size\_type) const noexcept;
+  constexpr const\_reference [at](basic_string_view.html#idm35151228346544-bb)(size\_t) const;
+  constexpr const\_reference [front](basic_string_view.html#idm35151228345264-bb)() const;
+  constexpr const\_reference [back](basic_string_view.html#idm35151228344496-bb)() const;
+  constexpr const\_pointer [data](basic_string_view.html#idm35151228343728-bb)() const noexcept;
+  void [clear](basic_string_view.html#idm35151228342960-bb)() noexcept;
+  constexpr void [remove\_prefix](basic_string_view.html#idm35151228342192-bb)(size\_type);
+  constexpr void [remove\_suffix](basic_string_view.html#idm35151228341040-bb)(size\_type);
+  constexpr void [swap](basic_string_view.html#idm35151228339888-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view") &) noexcept;
+  template<typename Allocator> 
+    explicit [operator std::basic\_string< charT, traits, Allocator >](basic_string_view.html#idm35151228338352-bb)() const;
+  template<typename Allocator = std::allocator<charT> > 
+    std::basic\_string< charT, traits, Allocator > 
+    [to\_string](basic_string_view.html#idm35151228336816-bb)(const Allocator & = Allocator()) const;
+  size\_type [copy](basic_string_view.html#idm35151228334384-bb)(charT \*, size\_type, size\_type = 0) const;
+  constexpr [basic\_string\_view](basic_string_view.html "Class template basic_string_view") [substr](basic_string_view.html#idm35151228331824-bb)(size\_type, size\_type = npos) const;
+  constexpr int [compare](basic_string_view.html#idm35151228329520-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view")) const noexcept;
+  constexpr int 
+  [compare](basic_string_view.html#idm35151228393648-bb)(size\_type, size\_type, [basic\_string\_view](basic_string_view.html "Class template basic_string_view")) const noexcept;
+  constexpr int 
+  [compare](basic_string_view.html#idm35151228391216-bb)(size\_type, size\_type, [basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type, size\_type) const;
+  constexpr int [compare](basic_string_view.html#idm35151228387760-bb)(const charT \*) const;
+  constexpr int [compare](basic_string_view.html#idm35151228386480-bb)(size\_type, size\_type, const charT \*) const;
+  constexpr int [compare](basic_string_view.html#idm35151228384176-bb)(size\_type, size\_type, const charT \*, size\_type) const;
+  constexpr bool [starts\_with](basic_string_view.html#idm35151228381360-bb)(charT) const noexcept;
+  constexpr bool [starts\_with](basic_string_view.html#idm35151228380080-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view")) const noexcept;
+  constexpr bool [ends\_with](basic_string_view.html#idm35151228378672-bb)(charT) const noexcept;
+  constexpr bool [ends\_with](basic_string_view.html#idm35151228377392-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view")) const noexcept;
+  constexpr size\_type [find](basic_string_view.html#idm35151228375984-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = 0) const noexcept;
+  constexpr size\_type [find](basic_string_view.html#idm35151228373808-bb)(charT, size\_type = 0) const noexcept;
+  constexpr size\_type [find](basic_string_view.html#idm35151228371760-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type [find](basic_string_view.html#idm35151228369456-bb)(const charT \*, size\_type = 0) const noexcept;
+  constexpr size\_type 
+  [rfind](basic_string_view.html#idm35151228367408-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = npos) const noexcept;
+  constexpr size\_type [rfind](basic_string_view.html#idm35151228365232-bb)(charT, size\_type = npos) const noexcept;
+  constexpr size\_type 
+  [rfind](basic_string_view.html#idm35151228363184-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type [rfind](basic_string_view.html#idm35151228426416-bb)(const charT \*, size\_type = npos) const noexcept;
+  constexpr size\_type 
+  [find\_first\_of](basic_string_view.html#idm35151228424368-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = 0) const noexcept;
+  constexpr size\_type [find\_first\_of](basic_string_view.html#idm35151228422192-bb)(charT, size\_type = 0) const noexcept;
+  constexpr size\_type 
+  [find\_first\_of](basic_string_view.html#idm35151228420144-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type 
+  [find\_first\_of](basic_string_view.html#idm35151228417840-bb)(const charT \*, size\_type = 0) const noexcept;
+  constexpr size\_type 
+  [find\_last\_of](basic_string_view.html#idm35151228415792-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = npos) const noexcept;
+  constexpr size\_type [find\_last\_of](basic_string_view.html#idm35151228413616-bb)(charT, size\_type = npos) const noexcept;
+  constexpr size\_type 
+  [find\_last\_of](basic_string_view.html#idm35151228411568-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type 
+  [find\_last\_of](basic_string_view.html#idm35151228409264-bb)(const charT \*, size\_type = npos) const noexcept;
+  constexpr size\_type 
+  [find\_first\_not\_of](basic_string_view.html#idm35151228407216-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = 0) const noexcept;
+  constexpr size\_type [find\_first\_not\_of](basic_string_view.html#idm35151228405040-bb)(charT, size\_type = 0) const noexcept;
+  constexpr size\_type 
+  [find\_first\_not\_of](basic_string_view.html#idm35151228402992-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type 
+  [find\_first\_not\_of](basic_string_view.html#idm35151228400688-bb)(const charT \*, size\_type = 0) const noexcept;
+  constexpr size\_type 
+  [find\_last\_not\_of](basic_string_view.html#idm35151228398640-bb)([basic\_string\_view](basic_string_view.html "Class template basic_string_view"), size\_type = npos) const noexcept;
+  constexpr size\_type [find\_last\_not\_of](basic_string_view.html#idm35151228396464-bb)(charT, size\_type = npos) const noexcept;
+  constexpr size\_type 
+  [find\_last\_not\_of](basic_string_view.html#idm35151228459952-bb)(const charT \*, size\_type, size\_type) const noexcept;
+  constexpr size\_type 
+  [find\_last\_not\_of](basic_string_view.html#idm35151228457648-bb)(const charT \*, size\_type = npos) const noexcept;
+
+  // [private member functions](basic_string_view.html#idm35151228448688-bb)
+  template<typename r\_iter> 
+    size\_type [reverse\_distance](basic_string_view.html#idm35151228448304-bb)(r\_iter, r\_iter) const noexcept;
+  template<typename Iterator> 
+    Iterator [find\_not\_of](basic_string_view.html#idm35151228445872-bb)(Iterator, Iterator, [basic\_string\_view](basic_string_view.html "Class template basic_string_view")) const noexcept;
+
+  // public data members
+  static constexpr size\_type npos;
+};
+```
+
+
+Description
+-----------
+### 
+`basic_string_view` 
+ public
+ construct/copy/destruct
+
+
+1. ```
+basic\_string\_view() noexcept;
+```
+2. ```
+basic\_string\_view(const [basic\_string\_view](basic_string_view.html "Class template basic_string_view") & rhs);
+```
+3. ```
+template<typename Allocator> 
+  basic\_string\_view(const std::basic\_string< charT, traits, Allocator > & str) noexcept;
+```
+4. ```
+basic\_string\_view(const charT \* str);
+```
+5. ```
+basic\_string\_view(const charT \* str, size\_type len);
+```
+6. ```
+[basic\_string\_view](basic_string_view.html "Class template basic_string_view") & operator=(const [basic\_string\_view](basic_string_view.html "Class template basic_string_view") & rhs);
+```
+### 
+`basic_string_view` public member functions
+
+
+1. ```
+constexpr const\_iterator begin() const noexcept;
+```
+2. ```
+constexpr const\_iterator cbegin() const noexcept;
+```
+3. ```
+constexpr const\_iterator end() const noexcept;
+```
+4. ```
+constexpr const\_iterator cend() const noexcept;
+```
+5. ```
+const\_reverse\_iterator rbegin() const noexcept;
+```
+6. ```
+const\_reverse\_iterator crbegin() const noexcept;
+```
+7. ```
+const\_reverse\_iterator rend() const noexcept;
+```
+8. ```
+const\_reverse\_iterator crend() const noexcept;
+```
+9. ```
+constexpr size\_type size() const noexcept;
+```
+10. ```
+constexpr size\_type length() const noexcept;
+```
+11. ```
+constexpr size\_type max\_size() const noexcept;
+```
+12. ```
+constexpr bool empty() const noexcept;
+```
+13. ```
+constexpr const\_reference operator[](size\_type pos) const noexcept;
+```
+14. ```
+constexpr const\_reference at(size\_t pos) const;
+```
+15. ```
+constexpr const\_reference front() const;
+```
+16. ```
+constexpr const\_reference back() const;
+```
+17. ```
+constexpr const\_pointer data() const noexcept;
+```
+18. ```
+void clear() noexcept;
+```
+19. ```
+constexpr void remove\_prefix(size\_type n);
+```
+20. ```
+constexpr void remove\_suffix(size\_type n);
+```
+21. ```
+constexpr void swap([basic\_string\_view](basic_string_view.html "Class template basic_string_view") & s) noexcept;
+```
+22. ```
+template<typename Allocator> 
+  explicit operator std::basic\_string< charT, traits, Allocator >() const;
+```
+23. ```
+template<typename Allocator = std::allocator<charT> > 
+  std::basic\_string< charT, traits, Allocator > 
+  to\_string(const Allocator & a = Allocator()) const;
+```
+24. ```
+size\_type copy(charT \* s, size\_type n, size\_type pos = 0) const;
+```
+25. ```
+constexpr [basic\_string\_view](basic_string_view.html "Class template basic_string_view") substr(size\_type pos, size\_type n = npos) const;
+```
+26. ```
+constexpr int compare([basic\_string\_view](basic_string_view.html "Class template basic_string_view") x) const noexcept;
+```
+27. ```
+constexpr int 
+compare(size\_type pos1, size\_type n1, [basic\_string\_view](basic_string_view.html "Class template basic_string_view") x) const noexcept;
+```
+28. ```
+constexpr int 
+compare(size\_type pos1, size\_type n1, [basic\_string\_view](basic_string_view.html "Class template basic_string_view") x, size\_type pos2, 
+        size\_type n2) const;
+```
+29. ```
+constexpr int compare(const charT \* x) const;
+```
+30. ```
+constexpr int compare(size\_type pos1, size\_type n1, const charT \* x) const;
+```
+31. ```
+constexpr int 
+compare(size\_type pos1, size\_type n1, const charT \* x, size\_type n2) const;
+```
+32. ```
+constexpr bool starts\_with(charT c) const noexcept;
+```
+33. ```
+constexpr bool starts\_with([basic\_string\_view](basic_string_view.html "Class template basic_string_view") x) const noexcept;
+```
+34. ```
+constexpr bool ends\_with(charT c) const noexcept;
+```
+35. ```
+constexpr bool ends\_with([basic\_string\_view](basic_string_view.html "Class template basic_string_view") x) const noexcept;
+```
+36. ```
+constexpr size\_type 
+find([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = 0) const noexcept;
+```
+37. ```
+constexpr size\_type find(charT c, size\_type pos = 0) const noexcept;
+```
+38. ```
+constexpr size\_type 
+find(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+39. ```
+constexpr size\_type find(const charT \* s, size\_type pos = 0) const noexcept;
+```
+40. ```
+constexpr size\_type 
+rfind([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = npos) const noexcept;
+```
+41. ```
+constexpr size\_type rfind(charT c, size\_type pos = npos) const noexcept;
+```
+42. ```
+constexpr size\_type 
+rfind(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+43. ```
+constexpr size\_type 
+rfind(const charT \* s, size\_type pos = npos) const noexcept;
+```
+44. ```
+constexpr size\_type 
+find\_first\_of([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = 0) const noexcept;
+```
+45. ```
+constexpr size\_type find\_first\_of(charT c, size\_type pos = 0) const noexcept;
+```
+46. ```
+constexpr size\_type 
+find\_first\_of(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+47. ```
+constexpr size\_type 
+find\_first\_of(const charT \* s, size\_type pos = 0) const noexcept;
+```
+48. ```
+constexpr size\_type 
+find\_last\_of([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = npos) const noexcept;
+```
+49. ```
+constexpr size\_type find\_last\_of(charT c, size\_type pos = npos) const noexcept;
+```
+50. ```
+constexpr size\_type 
+find\_last\_of(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+51. ```
+constexpr size\_type 
+find\_last\_of(const charT \* s, size\_type pos = npos) const noexcept;
+```
+52. ```
+constexpr size\_type 
+find\_first\_not\_of([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = 0) const noexcept;
+```
+53. ```
+constexpr size\_type 
+find\_first\_not\_of(charT c, size\_type pos = 0) const noexcept;
+```
+54. ```
+constexpr size\_type 
+find\_first\_not\_of(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+55. ```
+constexpr size\_type 
+find\_first\_not\_of(const charT \* s, size\_type pos = 0) const noexcept;
+```
+56. ```
+constexpr size\_type 
+find\_last\_not\_of([basic\_string\_view](basic_string_view.html "Class template basic_string_view") s, size\_type pos = npos) const noexcept;
+```
+57. ```
+constexpr size\_type 
+find\_last\_not\_of(charT c, size\_type pos = npos) const noexcept;
+```
+58. ```
+constexpr size\_type 
+find\_last\_not\_of(const charT \* s, size\_type pos, size\_type n) const noexcept;
+```
+59. ```
+constexpr size\_type 
+find\_last\_not\_of(const charT \* s, size\_type pos = npos) const noexcept;
+```
+### 
+`basic_string_view` private member functions
+
+
+1. ```
+template<typename r\_iter> 
+  size\_type reverse\_distance(r\_iter first, r\_iter last) const noexcept;
+```
+2. ```
+template<typename Iterator> 
+  Iterator find\_not\_of(Iterator first, Iterator last, [basic\_string\_view](basic_string_view.html "Class template basic_string_view") s) const noexcept;
+```
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](../utility/utilities/string_view.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/string_view.html#header.boost.utility.string_view_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](../utility/utilities/value_init.html)

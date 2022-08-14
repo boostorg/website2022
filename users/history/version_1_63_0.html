@@ -1,0 +1,347 @@
+---
+title: Version 1.63.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.63.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.63.0
+==============
+
+Version 1.63.0
+--------------
+
+
+December 26th, 2016 23:43 GMT
+
+
+[Documentation](/doc/libs/1_63_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_63\_0.tar.bz2](https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2) | beae2529f759f6b3bf3f4969a19c2e9d6f0c503edcb2de4a61d1428519fcb3b0 |
+| [boost\_1\_63\_0.tar.gz](https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.gz) | fe34a4e119798e10b8cc9e565b3b0284e9fd3977ec8a1b19586ad1dec397088b |
+| windows | [boost\_1\_63\_0.7z](https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.7z) | 25db3956a8d58187ac7a0702cc917e9bab47ff90baafc35e4e789dca1ce5f423 |
+| [boost\_1\_63\_0.zip](https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.zip) | 97ce6635df1f44653a597343cd5757bb8b6b992beb3720f5fc761e3644bcbe7b |
+
+
+### Third Party Downloads
+
+
+* [Windows Binaries](https://boostorg.jfrog.io/artifactory/main/release/1.63.0/binaries/)
+
+
+### Post-release Patches
+
+
+* [Atomic](/libs/atomic/):
+
+	+ Using 64-bit atomic operations on 32-bit x86 with gcc versions older
+	 than 4.7 and compatible compilers can result in generation of incorrect
+	 code. This problem is fixed in [this](https://github.com/boostorg/atomic/commit/a67cc1b055cf09f371e2eca544884634a1ccc886)
+	 commit.
+
+### Updated Libraries
+
+
+* [Atomic](/libs/atomic/):
+
+	+ Added the static constant `atomic<T>::is\_always\_lock\_free`
+	 for conformance with C++17. The constant indicates that the given
+	 specialization always provides lock-free implementation of atomic
+	 operations.
+	+ Improved support of Oracle Studio on x86 targets.
+* [Container](/libs/container/):
+
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #12534: *"flat\_map fails to compile if included
+		 after type\_traits is instantiated under gcc"*](https://svn.boost.org/trac/boost/ticket/12534).
+		- [Trac
+		 #12577: *"Null reference in pair.hpp triggers
+		 runtime warning with -fsanitize=undefined"*](https://svn.boost.org/trac/boost/ticket/12577).
+		- [GitHub
+		 #40: *Fix parameter types in copy\_move\_algo.hpp: iterator\_traits::difference\_type
+		 -> allocator\_traits::size\_type*](https://github.com/boostorg/container/pull/40).
+		- [GitHub
+		 #41: *Avoid -Wunreachable-code in do\_allocate()*](https://github.com/boostorg/container/pull/41).
+* [Context](/libs/context/):
+
+	+ [#11687](https://svn.boost.org/trac/boost/ticket/11687) Xcode (Apple clang) and thread\_local
+	+ [#12114](https://svn.boost.org/trac/boost/ticket/12114) context does not preserve fpu context on ios arm64 devices
+	 (fixed for other architecturs too)
+	+ [#12411](https://svn.boost.org/trac/boost/ticket/12411) fpu registers not preserved with O2 optimizations in Visual
+	 Studio (fixed for other architecturs too)
+	+ [#12551](https://svn.boost.org/trac/boost/ticket/12551) building boost on arm64 causes error: unknown directive
+	+ reduced signatur for ontop-functions
+	+ unit-test for private fcontext-API
+	+ performance-test for ucontext and fcontext fixed
+* [Fiber](/libs/fiber/):
+
+	+ unbounded\_channel and bounded\_channel marked as deprecated
+	+ new classes buffered\_channel and unbuffered\_channel
+	+ performance improved
+* [Fusion](/libs/fusion/):
+
+	+ Fixed `fusion::vector` buggy constructors (Thanks
+	 to Lee Clagett).
+	+ `BOOST\_FUSION\_ADAPT\*` and `BOOST\_FUSION\_DEFINE\*` now allow empty structures. ([#6592](https://svn.boost.org/trac/boost/ticket/6592))
+	+ `BOOST\_FUSION\_DEFINE\*` allows move constructor and assignment.
+	 ([#10099](https://svn.boost.org/trac/boost/ticket/10099))
+	+ Adaptor for `std::array` (Thanks to Mateusz Łoskot).
+	 ([#8241](https://svn.boost.org/trac/boost/ticket/8241))
+	+ Fixed returning temporary variable warnings on MSVC.
+* [Geometry](/libs/geometry):
+
+	+ *Improvements:*
+	
+		- Intersection: take care that output is valid (work in progres,
+		 not yet finished - but more is valid)
+	+ *Solved tickets:*
+	
+		- [#12289](https://svn.boost.org/trac/boost/ticket/12289)
+		 Avoid warning/compilation error for std::cout
+		- [#12412](https://svn.boost.org/trac/boost/ticket/12412)
+		 Invalid result of covered\_by() with geographic Points and Boxes
+		- [#12413](https://svn.boost.org/trac/boost/ticket/12413)
+		 rtree::remove() not working properly with geographic Points
+* [Hash](/libs/functional/hash):
+
+	+ Fixed some warnings.
+* [Interprocess](/libs/interprocess/):
+
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #12499 (*"Memory allocation fails"*)](https://svn.boost.org/trac/boost/ticket/12499).
+		- [GitHub
+		 Pull #30 (*"Provide extension point so library
+		 user can provide default temp folder"*)](https://github.com/boostorg/interprocess/pull/30).
+		- [GitHub
+		 Pull #31 (*"Add xsi\_key(key\_t) constructor"*)](https://github.com/boostorg/interprocess/pull/31).
+* [Intrusive](/libs/intrusive/):
+
+	+ Fixed bugs:
+	 
+		- [Boost
+		 Trac #12556: *member\_value\_traits.hpp has a missing
+		 #include*](https://svn.boost.org/trac/boost/ticket/12556)
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Fixed issue found by `-fsanitize=undefined` [#21](https://github.com/boostorg/lexical_cast/issues/21)
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- Removed the previously deprecated `type\_info\_wrapper`.
+	+ New features:
+	 
+		- Added a way to access the current file name from the text file
+		 sink backend. The file name can be obtained with the `get\_current\_file\_name` method.
+	+ Bug fixes:
+	 
+		- Fixed compilation errors for Android API prior to version 21.
+		- Streaming operators now take scalar types and enums by value.
+		 This allows to output static constants and bitfields directly
+		 into formatting stream and record stream. ([#11998](https://svn.boost.org/trac/boost/ticket/11998))
+		- Fixed auto-detection of native syslog API. ([#12600](https://svn.boost.org/trac/boost/ticket/12600))
+		- In UDP socket based syslog backend implementation, changed
+		 the syslog message format for better compliance with RFC3164.
+		- File close handler installed in text file sink backend is no
+		 longer called if the file is not open yet.
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Metaparse](/libs/metaparse/):
+
+	+ Improved the implementation of `BOOST\_METAPARSE\_STRING`
+	
+		- The maximal string length limit has been increased to 2048
+		- The maximal string length limit can be extended beyond 2048
+		 by regenerating some of the Boost headers using a script (part
+		 of the library)
+		- The string length limit can be changed within a compilation
+		 unit
+* [Move](/libs/move/):
+
+	+ Improved experimental adaptive sort algorithm performance
+	+ Activate BOOST\_MOVE\_FORCEINLINE
+* [Optional](/libs/optional/):
+
+	+ Added two new in-place constructors. They work similarly to `emplace()`
+	 functions: they initialize the contained value by perfect-forwarding
+	 the obtained arguments. One constructor always initializes the contained
+	 value, the other based on a boolean condition.
+	+ Syntax `o =
+	{}` now correctly un-initializes
+	 an `optional`, just
+	 like in `std::optional`.
+	+ Fixed `optional<optional<T>&>`
+	 initialization. ([#12203](https://svn.boost.org/trac/boost/ticket/12203))
+	+ Optional constructors are sfinae-friendly. This fixes interaction
+	 with `std::tuple`. ([#12563](https://svn.boost.org/trac/boost/ticket/12563))
+* [Phoenix](/libs/phoenix/):
+
+	+ Most of modules now support C++11 variadic templates.
+	+ Fixed type deduction failure with result type.
+	+ Suppress unused warnings.
+	+ Fixed too few arguments error on binary math functions.
+	+ Added workarounds for older compiler.
+* [Python](/libs/python/):
+
+	+ Added (basic) support for C++11 (std::shared\_ptr, std::unique\_ptr)
+	+ Incorporated an extension API to wrap [NumPy](http://www.numpy.org/)
+	+ Removed obsolete bits and pieces
+* [Test](/libs/test/):
+
+	+ Boost.test v3.4 see the [Change
+	 log](/doc/libs/1_63_0/libs/test/doc/html/boost_test/change_log.html) section for more details.
+	+ New feature: `per\_element`
+	 and `lexicographic`
+	 modifiers of `BOOST\_TEST`
+	 can also be applied to string comparison
+	+ Breaking change: colons that appear in test case names are replaced
+	 with underscores
+	+ Bug fixes
+	 
+		- Trac tickets [#11756](https://svn.boost.org/trac/boost/ticket/11756), [#11907](https://svn.boost.org/trac/boost/ticket/11907), [#12339](https://svn.boost.org/trac/boost/ticket/12339), [#12506](https://svn.boost.org/trac/boost/ticket/12506),
+		 [#12507](https://svn.boost.org/trac/boost/ticket/12507), [#12530](https://svn.boost.org/trac/boost/ticket/12530),
+		- Trac tickets [#12531](https://svn.boost.org/trac/boost/ticket/12531)
+		- Pull request [PR103](https://github.com/boostorg/test/pull/103),
+		 [PR104](https://github.com/boostorg/test/pull/104)
+* [TypeIndex](/libs/type_index/):
+
+	+ Added `runtime\_cast`
+	 to the library as an emulation of `dynamic\_cast`.
+	 Thanks to Chris Glover for the implementation. See [runtime\_cast
+	 reference](/doc/html/boost_typeindex_header_reference.html#header.boost.type_index.runtime_cast_hpp) for more info.
+	+ Internals of the CTTI were made more platform independant, due to
+	 change of the `std::size\_t`
+	 type to `unsigned int`.
+* [Units](/libs/units/):
+
+	+ Fix inspection warnings
+	+ updated physico-chemical constants to CODATA 2014 values
+	+ define biot correctly as 10 Ampere
+* [Unordered](/libs/unordered/):
+
+	+ Fix an exception safety issue in assignment.
+	+ Use `std::allocator\_traits` where available,
+	 and support modern style rebind ([#12459](https://svn.boost.org/trac/boost/ticket/12459)).
+	+ Add some allocator aware constructors.
+	+ Use the hint iterator in `emplace\_hint`.
+	+ Fixed some warnings.
+	+ See the [changelog](/doc/html/unordered/changes.html)
+	 for more details.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 3.8.1
+	+ Clang, C++14: 3.5, 3.6, 3.7, 3.8.1
+	+ Clang, C++1z: 3.8.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.2, 5.2.0, 6.2.0
+	+ GCC, C++11: 4.4.7, 4.7.2, 4.7.3, 4.8.5, 4.9.3, 5.2.0, 6.1.1, 6.2.0
+	+ GCC, C++14: 5.2.0, 5.3.0, 6.1.1, 6.2.0
+	+ Intel: 16.0, 17.0
+	+ Intel, C++11: 16.0, 17.0
+	+ Intel, C++14: 16.0, 17.0
+* OS X:
+ 
+	+ Apple Clang: 7.0.2
+	+ Apple Clang, C++11: 7.0.2
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0
+	+ GCC, C++11, mingw: 4.6.4, 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1.0, 5.2.0, 5.3.0, 6.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7, 3.8
+	+ GCC: 4.9, 5.4, 6.2
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.5
+	+ Oracle Solaris Studio, C++11: 12.5
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 3.8.1
+	+ Clang, C++14: 3.5, 3.6, 3.7, 3.8.1
+	+ Clang, C++1z: 3.8.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.2, 5.2.0, 6.1.1, 6.2.0
+	+ GCC, C++11: 4.4.7, 4.7.2, 4.7.3, 4.8.5, 4.9.3, 5.2.0, 6.1.1, 6.2.0
+	+ GCC, C++14: 5.2.0, 5.3.0, 6.1.1, 6.2.0, 7.0.0 (experimental)
+	+ GCC, C++1z: 6.1.1
+	+ Intel: 16.0, 17.0
+	+ Intel, C++11: 16.0, 17.0
+	+ Intel, C++14: 16.0, 17.0
+* OS X:
+ 
+	+ Apple Clang: 7.0.2
+	+ Apple Clang, C++11: 7.0.2
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0
+	+ GCC, C++11, mingw: 4.6.4, 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1.0, 5.2.0, 5.3.0, 6.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7, 3.8
+	+ GCC: 4.9, 5.4, 6.2
+	+ GCC,C++14: 6.1.0
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.5
+	+ Oracle Solaris Studio, C++11: 12.5
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

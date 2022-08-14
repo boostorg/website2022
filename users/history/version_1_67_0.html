@@ -1,0 +1,713 @@
+---
+title: Version 1.67.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.67.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.67.0
+==============
+
+Version 1.67.0
+--------------
+
+
+April 14th, 2018 20:37 GMT
+
+
+[Documentation](/doc/libs/1_67_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_67\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.tar.bz2) | 2684c972994ee57fc5632e03bf044746f6eb45d4920c343937a465fd67a5adba |
+| [boost\_1\_67\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.tar.gz) | 8aa4e330c870ef50a896634c931adf468b21f8a69b77007e45c444151229f665 |
+| windows | [boost\_1\_67\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.7z) | 1cd94f03a71334a67d36f5161b57f5931e0cd6ecf726d7aca8bd82a3be720b74 |
+| [boost\_1\_67\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.zip) | 7e37372d8cedd0fd6b7529e9dd67c2cb1c60e6c607aed721f5894d704945a7ec |
+
+
+### Third Party Downloads
+
+
+* [Windows Binaries](https://boostorg.jfrog.io/artifactory/main/release/1.67.0/binaries/)
+
+
+### Known Issues
+ These are patches from library authors which were found too late to be fixed
+ in the release. Be careful as they have not been through the normal testing
+ process.
+ 
+
+
+* Fix compiling with FreeBSD:
+ 
+	+ </patches/1_67_0/0001-Fiber-Use-pthread_setaffinity_np-on-FreeBSD-as-well.patch>
+	+ </patches/1_67_0/0002-Wave-Avoid-using-wrong-T_DIVIDE-on-BSDs.patch>
+* Fix Python auto-linking:
+ 
+	+ </patches/1_67_0/0003-Python-Fix-auto-linking-logic-Windows-only.patch>
+
+### New Libraries
+
+
+* [Contract](/libs/contract/):
+ Contract programming
+ for C++. All contract programming features are supported: Subcontracting,
+ class invariants, postconditions (with old and return values), preconditions,
+ customizable actions on assertion failure (e.g., terminate or throw), optional
+ compilation and checking of assertions, etc, from Lorenzo Caminiti.
+* [HOF](/libs/hof/):
+ Higher-order functions for C++,
+ from Paul Fultz II.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Added missing const qualifier to `basic\_socket\_acceptor::get\_option`.
+	+ Worked around a parsing error that occurs with some versions of gcc.
+	+ Fixed broken code samples in tutorial.
+	+ Added new experimental features. (Note that "experimental"
+	 features may be changed without notice in subsequent releases.)
+	 
+		- Added `experimental::detached`
+		 completion token.
+		- Added `experimental::redirect\_error`
+		 completion token.
+		- Added `experimental::co\_spawn`
+		 facility for integration with the coroutines technical specification.
+		- Updated timeout examples to use latest features.
+		- Used `asio::steady\_timer` rather than
+		 `asio::deadline\_timer`.
+		- Used `asio::dynamic\_buffer` rather than
+		 `asio::streambuf`.
+		- Used timed `asio::io\_context::run\_for()` function for blocking clients.
+		- Added example showing a custom completion token for blocking
+		 with timeouts.
+	+ Fixed unit tests to compile when `BOOST\_ASIO\_NO\_DEPRECATED`
+	 is defined.
+	+ Changed socket iostreams to use chrono by default, to fix compatibility
+	 with the Networking TS. Define `BOOST\_ASIO\_USE\_BOOST\_DATE\_TIME\_FOR\_SOCKET\_IOSTREAM`
+	 to enable the old Boost.Date\_Time interface in `basic\_socket\_streambuf`
+	 and `basic\_socket\_iostream`.
+	+ Updated examples to use chrono rather than Boost.Date\_Time.
+	+ Fixed an incorrect member function detector in the `is\_dynamic\_buffer` trait.
+	+ Fixed an `async\_result`
+	 incompatibility with deprecated `handler\_type`.
+	+ Added a missing move optimisation in the SSL stream implementation.
+	+ Fixed incorrect `basic\_resolver\_results::value\_type`
+	 typedef.
+	+ Fixed a compile error with some OpenSSL versions when `SSL\_OP\_NO\_COMPRESSION` is defined.
+	+ Changed `add\_certificate\_authority`
+	 to process multiple certificates in a bundle.
+	+ Eliminated deprecation warning with MSVC by using `std::invoke\_result`
+	 rather than `std::result\_of`.
+	+ Changed to use `std::string\_view`
+	 for C++17 or later, and `std::experimental::string\_view`
+	 for C++14. Define the preprocessor macro `BOOST\_ASIO\_DISABLE\_STD\_STRING\_VIEW`
+	 to force the use of std::experimental::string\_view (assuming it is
+	 available) when compiling in C++17 mode.
+	+ Ensured `DynamicBuffer`
+	 template arguments are decayed before using in `enable\_if`
+	 tests.
+	+ Changed documentation to distinguish legacy completion handlers (which
+	 are still required to be CopyConstructible) from new MoveConstructible
+	 handlers.
+	+ Suppressed a discarded return value warning in the buffer debugging
+	 support.
+	+ Fixed `basic\_yield\_context`
+	 to work with completion signatures containing reference parameters.
+	+ Ensured that stackful coroutines launched using `spawn()` correctly store decayed copies
+	 of their function and handler arguments.
+	+ Fixed some compatibility issues with Android.
+	+ Added cross-compilation support to Jamfiles.
+	+ Fixed some minor portability issues in examples.
+* [Atomic](/libs/atomic/):
+
+	+ **Breaking change:** Changed the result
+	 of the `(op)\_and\_test`
+	 operations added in Boost 1.66 to the opposite - the functions now
+	 return `true` if the operation
+	 result is non-zero. This is consistent with other `test`
+	 methods in Boost.Atomic and the C++ standard library. Users can define
+	 `BOOST\_ATOMIC\_DETAIL\_HIGHLIGHT\_OP\_AND\_TEST`
+	 when compiling their code to emit warnings on every use of the changed
+	 functions. This way users can locate the code that needs to be updated.
+	 ([#11](https://github.com/boostorg/atomic/issues/11))
+	+ Update for C++2a. On C++11 compilers that support scoped enums, the
+	 `memory\_order` enumeration
+	 is now scoped and contains constants with shorter names like `acquire`, `release`
+	 or `seq\_cst` (i.e.
+	 users can use `memory\_order::acquire`
+	 instead of `memory\_order\_acquire`).
+	 The old constants are also provided for backward compatibility. ([P0439R0](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0439r0.html))
+	+ Update for C++2a. Added experimental support for atomic operations
+	 on floating point types. In addition to general operations, `add`, `sub`,
+	 `negate` operations
+	 and their `fetch\_(op)` and `opaque\_(op)` versions are supported. Lock-free
+	 property can be tested with the new macros `BOOST\_ATOMIC\_FLOAT/DOUBLE/LONG\_DOUBLE\_LOCK\_FREE`.
+	 The support for floating point types is optional and can be disabled
+	 by defining `BOOST\_ATOMIC\_NO\_FLOATING\_POINT`.
+	 ([P0020R6](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0020r6.html))
+	+ Added new experimental operations:
+	 
+		- `negate\_and\_test`
+		 and `complement\_and\_test`
+		 which perform negation or bitwise complement and return `true` if the result is not zero.
+		- `add`, `sub`, `negate`,
+		 `bitwise\_and`,
+		 `bitwise\_or`,
+		 `bitwise\_xor`,
+		 `bitwise\_complement`
+		 operations which perform the operation and return its result.
+	+ For generic `atomic<T>` specialization, the default constructor
+	 is now trivial if `T`'s
+	 default constructor is.
+	+ The internal implementation of `atomic<T>` has been updated to avoid undefined
+	 behavior that stems from signed integer overflows. As required by
+	 the C++ standard, the library uses two's complement representation
+	 of signed integers internally and accroding rules of overflow. Currently,
+	 the library requires the native signed integer types to also use
+	 two's complement representation (but no defined overflow semantics).
+	+ Improved Clang support. In particular, fixed DCAS not being lock-free
+	 and fixed possible incorrect code generated on 32-bit x86.
+	+ Improved MinGW support. For gcc versions up to 4.6, fixed compilation
+	 of DCAS on x86.
+	+ In x86 PIE code, asm blocks now preserve `ebx`
+	 value.
+* [Beast](/libs/beast/):
+
+	+ This version fixes significant defects in `websocket::stream`
+	 which can lead to asserts or undefined behavior. Users are encouraged
+	 to update to the latest Boost release.
+	+ For a complete list of changes, please view the official [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html).
+* [ContainerHash](/libs/container_hash/):
+
+	+ Extracted from the functional module to break a dependency cycle.
+	+ Moved headers to new location to reflect name change, the old include
+	 paths will still work.
+	+ Added support for `std::string\_view`,
+	 `std::error\_code`, `std::error\_condition`,
+	 `std::optional`, `std::variant`,
+	 `std::monostate` where available.
+	+ Added explicit support for `vector<bool>`, so that it will work with libc++
+	 ([#13501](https://svn.boost.org/trac/boost/ticket/13501)).
+	+ More detail in the [library
+	 change log](/doc/html/hash/changes.html#hash.changes.boost_1_67_0).
+* [Context](/libs/context/):
+
+	+ [#62](https://github.com/boostorg/context/issues/62)/[PR#64](https://github.com/boostorg/context/pull/64): fix i386/macho routines to correctly
+	 return transfer\_t in EAX/EDX
+	+ [#65](https://github.com/boostorg/context/issues/65): `\_\_sanitizer\_finish\_switch\_fiber`
+	 should be called directly after context switch
+	+ [#66](https://github.com/boostorg/context/issues/66): Clang on Windows : error: No best alternative for libs/context/build/asm\_sources
+	+ [#73](https://github.com/boostorg/context/issues/73): fixing C2492 for execution\_context (v1)
+	+ known bug: including all.hpp + <context-impl>ucontext/winfib
+	 causes error 'forced\_unwind: is not a member of boost::context::detail'
+* [Core](/libs/core/):
+
+	+ Updated `to\_address`
+	 and `pointer\_traits`
+	 to reflect the design adopted for C++2a in [P0653R2](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0653r2.html)
+	 (Glen Fernandes).
+* [Coroutine2](/libs/coroutine2/):
+
+	+ [#13](https://github.com/boostorg/coroutine2/issues/13): Pull coroutine does not rethrow an exception if
+	 it is thrown on the first entry
+* [DateTime](/libs/date_time/):
+
+	+ Fixed various year 2038 (32-bit) issues ([#2818](https://svn.boost.org/trac/boost/ticket/2818)) ([#2819](https://svn.boost.org/trac/boost/ticket/2819)) ([#3487](https://svn.boost.org/trac/boost/ticket/3487))
+	 ([#4543](https://svn.boost.org/trac/boost/ticket/4543)) ([#8450](https://svn.boost.org/trac/boost/ticket/8450)) ([#9158](https://svn.boost.org/trac/boost/ticket/9158)) ([#9489](https://svn.boost.org/trac/boost/ticket/9489)) ([#10570](https://svn.boost.org/trac/boost/ticket/10570)) ([#12609](https://svn.boost.org/trac/boost/ticket/12609))
+	+ Fixed a binary serialization regression introduced in 1.66.0 ([#56](https://github.com/boostorg/date_time/issues/56))
+	 ([PR#58](https://github.com/boostorg/date_time/pull/58)) ([PR#70](https://github.com/boostorg/date_time/pull/70))
+	+ Updated the timezone database file ([#4430](https://svn.boost.org/trac/boost/ticket/4430)) ([#10087](https://svn.boost.org/trac/boost/ticket/10087)) ([PR#68](https://github.com/boostorg/date_time/pull/68))
+	+ Enhanced `from\_iso\_string`
+	 so it can read output of `to\_iso\_string`
+	 for special values ([#1078](https://svn.boost.org/trac/boost/ticket/1078)) ([PR#69](https://github.com/boostorg/date_time/pull/69))
+	+ Changed maximum supported year from 10000 to 9999 to resolve various
+	 issues ([#13159](https://svn.boost.org/trac/boost/ticket/13159)) ([#12630](https://svn.boost.org/trac/boost/ticket/12630)) ([PR#71](https://github.com/boostorg/date_time/pull/71))
+	+ `boost::date\_time::period\_parser::delimiter\_strings` did nothing ([#11142](https://svn.boost.org/trac/boost/ticket/11142))
+	 ([PR#63](https://github.com/boostorg/date_time/pull/63))
+	+ Ensure special values are not automatically translated to integral
+	 types ([#11168](https://svn.boost.org/trac/boost/ticket/11168)) ([PR#64](https://github.com/boostorg/date_time/pull/64))
+	+ `int\_adapter::is\_signed` should be const ([#12363](https://svn.boost.org/trac/boost/ticket/12363))
+	 ([PR#60](https://github.com/boostorg/date_time/pull/60))
+	+ `boost::date\_time::time\_input\_facet` throws when using
+	 `%j`
+	 alone ([#12910](https://svn.boost.org/trac/boost/ticket/12910)) ([PR#59](https://github.com/boostorg/date_time/pull/59))
+	+ Time input facet is not able to parse `%e` day ([#13194](https://svn.boost.org/trac/boost/ticket/13194)) ([PR#54](https://github.com/boostorg/date_time/pull/54))
+	+ Improved Github CI build environment for better project metrics and
+	 quality ([PR#52](https://github.com/boostorg/date_time/pull/52)) ([PR#72](https://github.com/boostorg/date_time/pull/72))
+	+ Fixed various compiler warnings ([#3606](https://svn.boost.org/trac/boost/ticket/3606)) ([#9882](https://svn.boost.org/trac/boost/ticket/9882)) ([PR#62](https://github.com/boostorg/date_time/pull/62))
+* [DLL](/libs/dll/):
+
+	+ Fixes for calling functions on dirty `GetLastError()` [#16](https://github.com/boostorg/dll/issues/16).
+* [Fiber](/libs/fiber/):
+
+	+ [#128](https://github.com/boostorg/fiber/issues/128): Assertion "! ctx->ready\_is\_linked()" when
+	 using condition\_variable::wait\_for
+	+ [#132](https://github.com/boostorg/fiber/issues/132): fatal error: 'stdexception' file not found
+	+ [#141](https://github.com/boostorg/fiber/issues/141): boost::fibers::async problem
+	+ [#146](https://github.com/boostorg/fiber/issues/146): remove unecessary lock of remote-ready-queue spinlock
+	+ [#153](https://github.com/boostorg/fiber/issues/153): docu: replace set\_ready() by schedule()
+	+ [#154](https://github.com/boostorg/fiber/issues/154): Document iterators on channels
+	+ [#155](https://github.com/boostorg/fiber/issues/155): this\_fiber is wrongly documented as being a member
+	 of boost::fibers
+	+ [#156](https://github.com/boostorg/fiber/issues/156): Many examples are using their own barrier.hpp
+	+ [#158](https://github.com/boostorg/fiber/issues/158): add BOOST\_FIBERS\_DECL to work\_stealing class
+	+ [#162](https://github.com/boostorg/fiber/issues/162): remove use-coutner increment for timed wait ops
+	+ [#166](https://github.com/boostorg/fiber/issues/166): remove assertion for wait\_is\_linked() in schedule()
+	+ [#167](https://github.com/boostorg/fiber/issues/167): call shared\_state::owner\_destroyed() only if future
+	 was created from
+	+ [#168](https://github.com/boostorg/fiber/issues/168): fiber/doc/installing.qbk not not up to date
+* [Filesystem](/libs/filesystem/):
+
+	+ Fix static initialization issue that caused a crash if path operations
+	 were used before main() ([PR#62](https://github.com/boostorg/filesystem/pull/62), [PR#43](https://github.com/boostorg/filesystem/pull/43), [PR#50](https://github.com/boostorg/filesystem/pull/50),
+	 [PR#59](https://github.com/boostorg/filesystem/pull/59))
+* [Fusion](/libs/fusion/):
+
+	+ Switch to SFINAE in template parameters on `fusion::map`
+	 to fix compile error on newer MSVC 2017. ([PR#164](https://github.com/boostorg/fusion/pull/164))
+	+ Fix for compilers not compatible with CWG defect 945 on `fusion::vector`. ([PR#166](https://github.com/boostorg/fusion/pull/166))
+	+ Added limits precheck on sequence converter to make error message
+	 clearer. ([PR#168](https://github.com/boostorg/fusion/pull/168))
+	+ Allow incomplete types in `fusion::tag\_of`
+	 and `fusion::is\_native\_fusion\_sequence`. Note
+	 that this changes no behaviour from previous release, but compliant
+	 to TypeTraits's change. ([PR#171](https://github.com/boostorg/fusion/pull/171))
+* [Geometry](/libs/geometry/):
+
+	+ Improvements:
+	 
+		- New map projection and SRS transformation representations (undocumented
+		 for now due to potential interface changes).
+		- New densify() algorithm.
+		- No longer using std::iterator (thanks to Daniela Engert).
+		- No longer using allocator directly in the rtree. Replaced with
+		 boost::container::allocator\_traits (thanks to Daniela Engert).
+		- Default rtree allocator changed to boost::container::new\_allocator
+		 to still support move semantics emulation in C++03 with boost::container::allocator\_traits.
+		- Area strategies interface changed. This is potentially a breaking
+		 change.
+		- Radius or Sphere can be passed into spherical strategies.
+		- Added Point-Box and Box-Box spherical and geographic distance()
+		 strategies.
+		- Simplify (multi)polygons will discard output rings of 2 points
+		 or (for closed polygons) 3 points, but it tries to avoid creating
+		 those
+		- Simplify (multi)polygons will omit empty interior rings or
+		 polygons from output
+	+ Solved issues:
+	 
+		- [13386](https://svn.boost.org/trac10/ticket/13386)
+		 Workaround for some gcc compilers
+		- [13381](https://svn.boost.org/trac10/ticket/13381)
+		 Compile error with matrix\_transformer in Visual C++ 2015
+		- [13436](https://svn.boost.org/trac10/ticket/13436)
+		 Incorrectness in boost::geometry::model::polygon documentation
+	+ Bugfixes:
+	 
+		- Add missing strategy resolving in length() algorithm, affecting
+		 Variant support.
+		- Simplify (multi)polygons now simplifies closing point
+	+ Changes in behavior
+	 
+		- Simplify (multi)polygons now usually rotates input rings before
+		 simplifying to select a non collinear point on its convex hull.
+		 This improves output.
+* [Locale](/libs/locale/):
+
+	+ Added support of `unique\_ptr`
+	 interface in addition to C++2003 `auto\_ptr`
+	 - in order to support C++2017, now you can use `BOOST\_LOCALE\_HIDE\_AUTO\_PTR`
+	 definiton to remove `auto\_ptr`
+	 from the interfaces and prevent deprecated watnings.
+	+ Fixed test problem with ICU >60.1
+	+ Fix of solaris build
+	+ Fixed wired FreeBSD/clang issue on optimized build. Probably compiler
+	 workaround
+	+ Added workaround for failing MSVC tests due to 932 codepage codecvt
+	 issue
+	+ Fixed bugs 6851, 12572, 12453
+	+ Fixed missing throw in case of failure in `icu/date\_time`
+	+ Fixed build agains Boost.Thread v4
+	+ Fixed Year of week instead of year ICU backend formatting
+	+ Fixed formatting test for ICU 56.1 and above
+* [Log](/libs/log/):
+
+	+ Improved compatibility with C++17: use `allocator\_traits`
+	 to work with allocators instead of directly accessing its members.
+	+ Improved compatibility with gcc 7 and later by updating library ABI
+	 namespace definition.
+	+ Added documentation for the "Append" config file parameter
+	 for "TextFile" sinks. The parameter was supported previously,
+	 only the documentation was missing.
+* [Math](/libs/math/index.html):
+
+	+ Add naive Monte Carlo integration support.
+	+ Add Chebyshev interpolation routines.
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ Elements with overloaded `operator&` are now fully accepted (ticket
+	 [#13307](https://svn.boost.org/trac/boost/ticket/13307)). Thanks to Daniel Frey for his updating [Boost.Operators](/libs/utility/operators.htm#deref)
+	 to help fix this issue.
+	+ Avoided usage of `std::allocator`
+	 members deprecated in C++17. Contributed by Daniela Engert.
+	+ Maintenance fixes.
+* [Multiprecision](/libs/multiprecision/index.html):
+
+	+ **Breaking Change:** When converting
+	 a multiprecision integer to a narrower type, if the value is too
+	 large (or negative) to fit in the smaller type, then the result is
+	 either the maximum (or minimum) value of the target type. This was
+	 always the intended behaviour, but was somewhat haphazardly enforced
+	 before. If you really do want just the low order N bits of a value,
+	 then you will need to mask these out prior to the case, for example:
+	 `static\_cast<unsigned>(~static\_cast<unsigned>(0) & my\_value)`. Note that technically (to avoid
+	 undefined behaviour) you should do the same thing with built in integer
+	 types too. See [#13109](https://svn.boost.org/trac/boost/ticket/13109).
+	+ Fix bug in conversion of decimal to rational types (zero needs special
+	 handling), see [#13148](https://svn.boost.org/trac/boost/ticket/13148).
+	+ Fix conversion from cpp\_bin\_float to a wider built in integer type,
+	 see [#13301](https://svn.boost.org/trac/boost/ticket/13301).
+	+ Improve performance heurists used in cpp\_bin\_float exp function.
+	+ Fix bug in floor/ceil and cpp\_bin\_float when the exponent type is
+	 wider than an int, see [#13264](https://svn.boost.org/trac/boost/ticket/13264).
+	+ Disable explicit conversion operator when the target type is already
+	 constructible from this type, see [#30](https://github.com/boostorg/multiprecision/issues/30).
+	+ Fix support for changes new to MPIR-3.0, see [#13124](https://svn.boost.org/trac/boost/ticket/13124).
+* [Optional](/libs/optional/index.html):
+
+	+ Fixed issue [#46](https://github.com/boostorg/optional/issues/46)
+	+ Fixed `-Wzero-as-null-pointer-constant`
+	 warnings.
+* [Phoenix](/libs/phoenix/):
+
+	+ Correct documentation and example code. ([#8187](https://svn.boost.org/trac/boost/ticket/8187), [PR#56](https://github.com/boostorg/phoenix/pull/56),
+	 [PR#57](https://github.com/boostorg/phoenix/pull/57))
+	+ Fixed bug with initializing phoenix lazy from array types in C++11.
+	 ([#12733](https://svn.boost.org/trac/boost/ticket/12733), [PR#58](https://github.com/boostorg/phoenix/pull/58), [PR#61](https://github.com/boostorg/phoenix/pull/61))
+	+ Use proto subscript and assignment overload operators buildins to
+	 fix compile error with some lambda experssions on recent MSVC. ([#62](https://github.com/boostorg/phoenix/issues/62),
+	 [PR#64](https://github.com/boostorg/phoenix/pull/64), [PR#66](https://github.com/boostorg/phoenix/pull/66), [PR#67](https://github.com/boostorg/phoenix/pull/67))
+	+ Remove use of deprecated `std::iteratror`.
+	 Thanks to Daniela Engert. ([PR#59](https://github.com/boostorg/phoenix/pull/59))
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Maintenance fixes.
+* [Python](/libs/python/):
+
+	+ The library name now includes the version suffix of the Python version
+	 used to compile it. For example, a variant compiled with Python 2.7
+	 will produce library names `boost\_python27`
+	 and `boost\_numpy27`,
+	 etc.. Combined with a related fix in Boost.Build, this means that
+	 it is now possible to build variants for multiple Python versions
+	 in a single build process.
+* [Spirit](/libs/spirit/):
+
+	+ Spirit.X3:
+	 
+		- **Breaking change:** Removed
+		 `with\_context`
+		 ([#239](https://github.com/boostorg/spirit/issues/239))
+		- Added noexcept to `x3::variant`
+		 and `forward\_ast`
+		 ([#241](https://github.com/boostorg/spirit/issues/241))
+		- CR+LF lines wrongly counted in `error\_handler::position()` ([#248](https://github.com/boostorg/spirit/issues/248))
+		- Fixed `unused\_type`
+		 attribute case in `parse\_into\_container`
+		 ([#266](https://github.com/boostorg/spirit/issues/266))
+		- Fixed parsing into associative containers ([#289](https://github.com/boostorg/spirit/issues/289))
+		- Fixed overflow problem in `uint\_parser<signed
+		T>`
+		 ([#297](https://github.com/boostorg/spirit/issues/297))
+		- Added VS2015 Update 3 support by using workarounds ([#308](https://github.com/boostorg/spirit/issues/308))
+		- Fixed include guard names collision with Qi ([#313](https://github.com/boostorg/spirit/issues/313))
+		- Added parsing into range ([#316](https://github.com/boostorg/spirit/issues/316)) ([#12928](https://svn.boost.org/trac/boost/ticket/12928))
+		- Changed iterator concept static assert from `ForwardIterator`
+		 to `ReadableIteratorConcept`
+		 && `ForwardTraversalConcept`
+		 ([#320](https://github.com/boostorg/spirit/issues/320))
+		- Reenabled `fusion::map`
+		 support ([#330](https://github.com/boostorg/spirit/issues/330))
+		- Fixed `string("...")` and `attr("...")` to single item sequence ([#337](https://github.com/boostorg/spirit/issues/337))
+		- Dereference a single item view instead of unwrapping sequence
+		 ([#340](https://github.com/boostorg/spirit/issues/340))
+		- Prevent `parse\_nan`
+		 from dereferencing out of range iterator ([#351](https://github.com/boostorg/spirit/issues/351))
+		- Use traits to test if container is empty ([#355](https://github.com/boostorg/spirit/issues/355))
+	+ Spirit V2
+	 
+		- Fixed keyword directives compilation on C++11 ([#256](https://github.com/boostorg/spirit/issues/256))
+		 ([#11493](https://svn.boost.org/trac/boost/ticket/11493))
+		- Fixed subrules compilation ([#279](https://github.com/boostorg/spirit/issues/279)) ([#259](https://github.com/boostorg/spirit/issues/259))
+		- Fixed subrules use after scope bug ([#284](https://github.com/boostorg/spirit/issues/284)) ([#5270](https://svn.boost.org/trac/boost/ticket/5270))
+		- Fixed undefined behavior in sequential or operator. Underlying
+		 parsers order of execution was dependent on compiler ([#310](https://github.com/boostorg/spirit/issues/310))
+		- Spirit was accidentally relaying on `types`
+		 typedef of `boost::optional`.
+		 The typedef was removed in the new optional implementation
+		 ([#271](https://github.com/boostorg/spirit/issues/271)) ([#12349](https://svn.boost.org/trac/boost/ticket/12349))
+		- Fixed problems with `BOOST\_SPIRIT\_NO\_PREDEFINED\_TERMINALS`
+		 (`attr\_cast`,
+		 `confix`, `distinct`, `keywords`,
+		 and `flush\_multi\_pass`)
+		 ([#314](https://github.com/boostorg/spirit/issues/314)) ([#13311](https://svn.boost.org/trac/boost/ticket/13311))
+		- Added missing copy assignment operator to `hold\_any`
+		 ([#361](https://github.com/boostorg/spirit/issues/361)) ([#8268](https://svn.boost.org/trac/boost/ticket/8268))
+	+ Spirit.Qi:
+	 
+		- Fixed alternate operator ([#201](https://github.com/boostorg/spirit/issues/201)) ([#271](https://github.com/boostorg/spirit/issues/271)) ([#12349](https://svn.boost.org/trac/boost/ticket/12349))
+		- Fixed signed integer overflow in real parser ([#245](https://github.com/boostorg/spirit/issues/245))
+		- Fixed overflow problem in `uint\_parser<signed
+		T>`
+		 ([#297](https://github.com/boostorg/spirit/issues/297))
+		- Fixed `get\_current\_line`,
+		 `get\_line\_start`,
+		 and added `get\_line\_end`
+		 ([#304](https://github.com/boostorg/spirit/issues/304))
+		- Permutations parser were always initializing optionals ([#319](https://github.com/boostorg/spirit/issues/319))
+		 ([#12473](https://svn.boost.org/trac/boost/ticket/12473))
+		- Changed iterator concept static assert from `ForwardIterator`
+		 to `ReadableIteratorConcept`
+		 && `ForwardTraversalConcept`
+		 ([#320](https://github.com/boostorg/spirit/issues/320))
+		- Added assertations to real parsers to ensure that the `parse\_frac\_n` from user defined
+		 real policy does not return negative values and also to prevent
+		 static analyzers false-positives ([#358](https://github.com/boostorg/spirit/issues/358))
+	+ Spirit.Karma:
+	 
+		- Fixed alternate operator ([#271](https://github.com/boostorg/spirit/issues/271))
+		- Fixed `no\_buffering\_policy`
+		 missing copy constructor ([#261](https://github.com/boostorg/spirit/issues/261))
+		- The `ostream\_iterator`
+		 was inheriting `std::iterator`
+		 which is deprecated in C++17 ([#345](https://github.com/boostorg/spirit/issues/345))
+	+ Spirit.Lex:
+	 
+		- Store id as promoted type to allow out-of-enum values ([#247](https://github.com/boostorg/spirit/issues/247))
+		- Fixed C2001 'newline in constant' warning in generated lexers
+		 ([#324](https://github.com/boostorg/spirit/issues/324)) ([#11540](https://svn.boost.org/trac/boost/ticket/11540))
+	+ Spirit.Classic:
+	 
+		- Fixed `remove\_reference`
+		 usage without a namespace in Phoenix ([#274](https://github.com/boostorg/spirit/issues/274))
+		- Fixed `std::complex` usage without the
+		 include ([#273](https://github.com/boostorg/spirit/issues/273))
+		- Fixed compilation of `match<T
+		&>` ([#275](https://github.com/boostorg/spirit/issues/275))
+		- Fixed compilation with `BOOST\_DISABLE\_THREADS`
+		 defined ([#323](https://github.com/boostorg/spirit/issues/323)) ([#12639](https://svn.boost.org/trac/boost/ticket/12639))
+		- Increment scanner through iterator policy ([#336](https://github.com/boostorg/spirit/issues/336)) ([#7371](https://svn.boost.org/trac/boost/ticket/7371))
+		- Removed deprecated in C++17 `std::iterator`
+		 usage ([#345](https://github.com/boostorg/spirit/issues/345))
+* [Stacktrace](/libs/stacktrace/):
+
+	+ Async safe dumping into files on Windows OS was causing hangs on
+	 some platforms and now is disabled [#33](https://github.com/boostorg/stacktrace/issues/33). Users are encouraged
+	 to update to the latest Boost release.
+	+ [ContainerHash](/libs/container_hash/) library
+	 is now used to reduce dependencies.
+	+ Minor fixes (including [#31](https://github.com/boostorg/stacktrace/issues/31), [#38](https://github.com/boostorg/stacktrace/issues/38), [#39](https://github.com/boostorg/stacktrace/issues/39),
+	 [#40](https://github.com/boostorg/stacktrace/issues/40), [#42](https://github.com/boostorg/stacktrace/issues/42)).
+* [Test](/libs/test/):
+
+	+ Boost.test v3.7 see the [Changes
+	 log](/doc/libs/1_67_0/libs/test/doc/html/boost_test/change_log.html) for more details.
+	+ Breaking changes
+	 
+		- Adding test cases with the same name to the same test suite
+		 is now reported as an error. See the changes log for more details.
+	+ New feature:
+	 
+		- Colour output on by default and available on Windows,
+		- Improved and clearer command line help
+		- `BOOST\_AUTO\_TEST\_CASE\_TEMPLATE`
+		 now accepts a sequence of types in an `std::tuple`
+	+ Bug fixes and pull requests:
+	 
+		- Trac tickets: [#12092](https://svn.boost.org/trac/boost/ticket/12092), [#12596](https://svn.boost.org/trac/boost/ticket/12596), [#12597](https://svn.boost.org/trac/boost/ticket/12597), [#12969](https://svn.boost.org/trac/boost/ticket/12969),
+		 [#13058](https://svn.boost.org/trac/boost/ticket/13058), [#13149](https://svn.boost.org/trac/boost/ticket/13149), [#13170](https://svn.boost.org/trac/boost/ticket/13170)
+		- Trac tickets: [#13181](https://svn.boost.org/trac/boost/ticket/13181), [#13371](https://svn.boost.org/trac/boost/ticket/13371), [#13387](https://svn.boost.org/trac/boost/ticket/13387), [#13398](https://svn.boost.org/trac/boost/ticket/13398),
+		 [#13407](https://svn.boost.org/trac/boost/ticket/13407), [#13435](https://svn.boost.org/trac/boost/ticket/13435), [#13443](https://svn.boost.org/trac/boost/ticket/13443)
+		- Pull requests: [#112](https://github.com/boostorg/test/issues/112), [#118](https://github.com/boostorg/test/issues/118), [#118](https://github.com/boostorg/test/issues/118), [#121](https://github.com/boostorg/test/issues/121),
+		 [#122](https://github.com/boostorg/test/issues/122), [#125](https://github.com/boostorg/test/issues/125), [#127](https://github.com/boostorg/test/issues/127)
+* [TypeIndex](/libs/type_index/):
+
+	+ [ContainerHash](/libs/container_hash/) library
+	 is now used to reduce dependencies.
+	+ Minor fixes (including [#17](https://github.com/boostorg/type_index/issues/17))
+* [TypeTraits](/libs/type_traits/):
+
+	+ Added new traits `detected`,
+	 `detected\_or`, `is\_detected`, `is\_detected\_convertible`,
+	 `is\_detected\_exact`,
+	 `is\_complete`.
+	+ Added greatly improved code for detecting binary operators.
+	+ Add assertions for completeness to traits which require complete
+	 types as arguments: this prevents various traits from giving eroneous
+	 results from incomplete types.
+	+ Fix minor issue with mpl compatibility, see [#12212](https://svn.boost.org/trac/boost/ticket/12212).
+	+ Add macro to indicate when `is\_constructible`
+	 is fully implemented, see [#12003](https://svn.boost.org/trac/boost/ticket/12003).
+	+ Update `is\_function`
+	 and `is\_member\_function\_pointer`
+	 to work correctly with C++17 noexcept specifications.
+	+ Add workaround for `is\_default\_constructible`
+	 and `std::pair`.
+	+ Added fallback for `is\_nothrow\_swappable`
+	 on pre-C++11 compilers.
+* [Utility](/libs/utility/):
+
+	+ **Breaking change:** `<boost/utility.hpp>`
+	 header no longer includes `boost::next`
+	 and `boost::prior` as they have been moved to
+	 the iterator module. Instead include `<boost/next\_prior.hpp>`.
+	 Other uses of `<boost/utility.hpp>` are discouraged, it's better
+	 to use the header for the specific functionality instead.
+* [Unordered](/libs/unordered/):
+
+	+ Template deduction guides.
+	+ Standard conforming `noexcept`
+	 specifications for `swap`,
+	 `operator=`
+	 and node handles.
+	+ Add `element\_type`
+	 to iterators, so that `std::pointer\_traits`
+	 will work.
+	+ Support `std::piecewise\_construct` on recent Visual
+	 C++ and Dinkumware libraries.
+	+ Use `std::iterator\_traits` rather than the
+	 boost iterator traits in order to remove dependency on Boost.Iterator.
+	+ Iterators no longer inherit from `std::iterator`,
+	 as it's deprecated ([PR#7](https://github.com/boostorg/unordered/pull/7)).
+	+ More detail in the [library
+	 change log](/doc/html/unordered/changes.html#unordered.changes.boost_1_67_0).
+* [Units](/libs/units/):
+
+	+ Fix sqrt for scaled units [#10270](https://svn.boost.org/trac/boost/ticket/10270) [#27](https://github.com/boostorg/units/issues/27)
+	+ Add constexpr support [#22](https://github.com/boostorg/units/issues/22)
+	+ minor documentation fixes
+* [Uuid](/libs/uuid/):
+
+	+ **Breaking change:** random\_generator
+	 is no longer copyable ([#61](https://github.com/boostorg/uuid/issues/61))
+	+ Optimized random\_generator to use OS-provided entropy directly ([PR#53](https://github.com/boostorg/uuid/pull/53))
+	+ Provide `random\_generator\_mt19937`
+	 for bulk UUID generation
+	+ Handle entropy acquisition errors instead of ignoring them
+	+ Support for Windows UWP ([#24](https://github.com/boostorg/uuid/issues/24))
+	+ Support for CloudABI
+* [Variant](/libs/variant/):
+
+	+ Substitute function arguments on compilers with variadic templates
+	 support and do not generate substitution metafunctions using preprocessor
+	 [#42](https://github.com/boostorg/variant/issues/42), [#46](https://github.com/boostorg/variant/issues/46). Many thanks to Nikita Kniazev for providing
+	 an initial fix.
+	+ Perfect forwarding for passing visitor in apply\_visitor [#40](https://github.com/boostorg/variant/issues/40),
+	 [#13288](https://svn.boost.org/trac/boost/ticket/13288). Many thanks to Paweł Dac!
+	+ Minor fixes (including [#41](https://github.com/boostorg/variant/issues/41), [#44](https://github.com/boostorg/variant/issues/44))
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 5.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 5.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.1
+	+ Clang, C++17: 5.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 7.2.0
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 7.2.0
+	+ GCC, C++14: 5.4.0, 5.4.1, 6.3.0, 6.4.0, 7.1.0, 7.2.0, 7.3.0
+	+ GCC, C++17: 7.2.0
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Clang: 9.0.0
+	+ Clang, C++11: 9.0.0
+	+ Clang, C++14: 9.0.0
+	+ Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0, 7.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 4.0.1, 5.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 5.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.1
+	+ Clang, C++17: 5.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.2, 4.9.2, 5.4.0, 7.2.0
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 7.2.0
+	+ GCC, C++14: 5.4.0, 5.4.1, 6.3.0, 6.4.0, 7.1.0, 7.2.0, 7.3.0
+	+ GCC, C++17: 7.2.0
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Clang: 9.0.0
+	+ Clang, C++11: 9.0.0
+	+ Clang, C++14: 9.0.0
+	+ Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0, 7.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

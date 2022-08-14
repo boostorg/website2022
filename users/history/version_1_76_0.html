@@ -1,0 +1,539 @@
+---
+title: Version 1.76.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.76.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.76.0
+==============
+
+Version 1.76.0
+--------------
+
+
+April 16th, 2021 21:05 GMT
+
+
+[Documentation](/doc/libs/1_76_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_76\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2) | f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41 |
+| [boost\_1\_76\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz) | 7bd7ddceec1a1dfdcbdb3e609b60d01739c38390a5f956385a12f3122049f0ca |
+| windows | [boost\_1\_76\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.7z) | 88782714f8701b6965f3fce087a66a1262601dd5ccd5b2e5305021beb53042a1 |
+| [boost\_1\_76\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.zip) | 0fd43bb53580ca54afc7221683dfe8c6e3855b351cd6dce53b1a24a7d7fbeedd |
+
+
+### New Libraries
+
+
+* No new libraries
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Added `ip::scope\_id\_type` type alias.
+	+ Added `ip::port\_type` type alias.
+	+ Added `std::hash` specialisations for IP addresses.
+	+ Added `std::hash` specialisations for `ip::basic\_endpoint<>`.
+	+ Refactored SFINAE usage to improve compile times.
+	+ Added friendship support to customisation points, and made most customisations
+	 private.
+	+ Changed `any\_io\_executor`
+	 to a "strong typedef"-style class.
+	+ Fixed `experimental::as\_single`
+	 to work with handler hook deprecation.
+	+ Ensured pthread condition variable attributes are cleaned up on all
+	 platforms.
+	+ Clarified thread safety notes on sockets and descriptors.
+	+ Ensured `errno` is
+	 not overwritten if `socket()` fails on macOS/FreeBSD.
+	+ Fixed work tracking for `io\_context`
+	 and `thread\_pool` executors
+	 when move-assigned.
+	+ Ensured internal `call\_stack`
+	 objects are accessed only from implementation files.
+	+ Fixed I/O object move-assignment to ensure the executor is left in
+	 a valid state.
+	+ Fixed detection of compiler support for defaulted template argument
+	 on functions with MSVC.
+	+ Prevented the `blocking.always`
+	 property from being used with `strand<>`, as it did not produce the
+	 correct semantics.
+	+ Removed deprecated file asio/impl/src.cpp.
+* [Atomic](/libs/atomic/):
+
+	+ Fixed compilation with MSVC for ARM. ([PR#49](https://github.com/boostorg/atomic/pull/49))
+* [Beast](/libs/beast/):
+
+	+ This update brings minor bug fixes and revamped CI reporting.
+	+ We'd love to know how you or your company use Beast, consider adding
+	 an entry to the [Companies
+	 and Individuals Using Beast](https://github.com/boostorg/beast/wiki/Companies-and-Individuals-Using-Beast) list.
+	+ See the full [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html) for a complete list of changes.
+* [Bind](/libs/bind/):
+
+	+ Add support for using the standard C++11 placeholders with `boost::bind`.
+	+ Update `boost::apply` to use variadic templates
+	 and perfect forwarding.
+* [Container](/libs/continer/):
+
+	+ Added [[no-discard]] attribute in all containers to catch bugs related
+	 to unused return values.
+	+ Replaced default standard exception classes with Boost.Container
+	 own classes, reducing considerably the included files overhead. Example:
+	 in MSVC 19 `boost/container/vector.hpp`
+	 preprocessed file size reduces from 1,5MB to 930KB. If you still
+	 want to use standard exception classes, you can define `BOOST\_CONTAINER\_USE\_STD\_EXCEPTIONS`
+	 before using any Boost.Container class.
+	+ Fixed bugs/issues:
+	 
+		- [GitHub
+		 #102: *"flat\_map::insert ambiguous with initializer
+		 list & pairs that need to convert"*](https://github.com/boostorg/container/issues/102).
+		- [GitHub
+		 #139: *"flat\_map merge and iterators"*](https://github.com/boostorg/container/issues/139).
+		- [GitHub
+		 #141: *"small\_vector does not propagate no throw
+		 properties of move operation of contained type"*](https://github.com/boostorg/container/issues/141).
+		- [GitHub
+		 #164: *"Compile error when using `pmr::map` with a `std::pair`; works when using a
+		 `std::tuple`"*](https://github.com/boostorg/container/issues/164).
+		- [GitHub
+		 #171: *"deque::clear() uses undefined behaviour"*](https://github.com/boostorg/container/issues/171).
+* [Core](/libs/core/):
+
+	+ Add implicit conversion between compatible reference wrappers.
+	+ Add `boost/core/cmath.hpp`, a portable implementation
+	 of the floating point classification functions from `<cmath>`.
+	+ Add `boost/core/bit.hpp`, a portable implementation
+	 of the C++20 standard header `<bit>`.
+	+ Fix `BOOST\_TEST\_EQ`,
+	 `BOOST\_TEST\_NE` for
+	 character types under C++20.
+	+ Revise allocator access utilities (now support VS2013, and no workarounds
+	 use `allocator\_traits`.)
+* [DLL](/libs/dll/):
+
+	+ **BREAKING CHANGE**: `boost::dll::import`
+	 was renamed to `boost::dll::import\_symbol`
+	 to avoid collision with C++20 `import`
+	 keyword.
+	+ Updated docs, including FAQ section.
+* [Filesystem](/libs/filesystem/):
+
+	+ Updated compatibility with WASI platform. ([PR#169](https://github.com/boostorg/filesystem/pull/169))
+	+ Fixed an exception being thrown by `path::remove\_filename`
+	 if the path is "////". ([#176](https://github.com/boostorg/filesystem/issues/176))
+	+ Fixed `create\_directories`
+	 disregarding errors from file status query operations issued internally.
+	 This could result in incorrect error codes returned by `create\_directories`. ([#182](https://github.com/boostorg/filesystem/issues/182))
+* [Geometry](/libs/geometry/):
+
+	+ Improvements
+	 
+		- [PR#670](https://github.com/boostorg/geometry/pull/670) New IOs to\_wkt() and from\_wkt() (thanks to
+		 Baidyanath Kundu).
+		- [PR#756](https://github.com/boostorg/geometry/pull/756) Non cartesian and robust convex hulls.
+		- [PR#768](https://github.com/boostorg/geometry/pull/768) Umbrella strategies for relops, setops, index,
+		 buffer and more (undocumented for now).
+		- [PR#797](https://github.com/boostorg/geometry/pull/797) New azimuth() algorithm.
+		- [PR#801](https://github.com/boostorg/geometry/pull/801) Improved accuracy in geographic area computations.
+		- [PR#820](https://github.com/boostorg/geometry/pull/820) Parameter scale added to svg\_mapper.
+	+ Bugfixes
+	 
+		- [PR#808](https://github.com/boostorg/geometry/pull/808) Fixed compilation error with rtree serialization
+		 enabled (thanks to Tristan Carel).
+		- [PR#815](https://github.com/boostorg/geometry/pull/815) Fixed issue in buffer().
+		- Various fixes in set operations and buffer.
+	+ Breaking changes
+	 
+		- Removed strategy convex\_hull::graham\_andrew.
+* [GIL](/libs/gil/):
+
+	+ BREAKING: In next release, we are going to drop support for GCC 5.
+	 We will also change the required minimum C++ version from C++11 to
+	 C++14.
+* [Histogram](/libs/histogram/):
+
+	+ This release contains critical fixes, please check that your results
+	 are not affected.
+	+ See [Release
+	 Notes](/libs/histogram/doc/html/histogram/history.html) for details.
+* [Intrusive](/libs/intrusive/):
+
+	+ Reduced compile-time dependencies:
+	 
+		- `linear\_slist\_algorithms`
+		 use a simple node\_ptr instead of std::pair on return.
+		- `list`/`slist` use `operator
+		<`/`operator
+		==` instead of `std::equal\_to`/`std::less`.
+	+ Fixed [GitHub
+	 #54: *set.rbegin() looks like O(log(N))*](https://github.com/boostorg/intrusive/issues/54)
+* [Interprocess](/libs/interprocess/):
+
+	+ Added `wchar\_t` API support
+	 for named resources in operating systems that offer native wide character
+	 API (e.g. Windows). The following classes were updated with `wchar\_t` name support:
+	 
+		- `file\_mapping`
+		- `managed\_mapped\_file`
+		- `managed\_shared\_memory`
+		- `managed\_windows\_shared\_memory`
+		- `shared\_memory\_object`
+		- `windows\_shared\_memory\_object`
+		- `file\_lock`
+		- `named\_condition`
+		- `named\_condition\_any`
+		- `named\_mutex`
+		- `named\_recursive\_mutex`
+		- `named\_semaphore`
+		- `named\_sharable\_mutex`
+		- `named\_upgradable\_mutex`
+		- `message\_queue`
+	+ Added `BOOST\_INTERPROCESS\_FORCE\_NATIVE\_EMULATION`
+	 macro option to disable the use of generic emulation code for process
+	 shared synchronization primitives instead of native POSIX or Winapi
+	 functions.
+	+ Fixed bugs:
+	 
+		- [GitHub
+		 #76 (*"Cygwin compilation errors"*)](https://github.com/boostorg/interprocess/issues/76).
+		- [GitHub
+		 #83 (*"Add BOOST\_INTERPROCESS\_FORCE\_NATIVE\_EMULATION
+		 option"*)](https://github.com/boostorg/interprocess/pull/83).
+		- [GitHub
+		 #92 (*"bufferstream: Correct MSVC compilation
+		 warning"*)](https://github.com/boostorg/interprocess/pull/92).
+		- [GitHub
+		 #106 (*"Use fallocate on truncate\_file"*)](https://github.com/boostorg/interprocess/pull/106).
+		- [GitHub
+		 #120 (*"segment\_manager customization"*)](https://github.com/boostorg/interprocess/issues/120).
+		- [GitHub
+		 #122 (*"Mark constructors/assignment/swap noexcept
+		 where possible"*)](https://github.com/boostorg/interprocess/issues/122).
+		- [GitHub
+		 #126 (*"\_ReadWriteBarrier is deprecated warning
+		 when compiling with clang-cl.exe"*)](https://github.com/boostorg/interprocess/issues/126).
+* [JSON](/libs/json/):
+
+	+ [Security
+	 Report](https://cppalliance.org/pdf/C%20Plus%20Plus%20Alliance%20-%20Boost%20JSON%20Security%20Assessment%202020%20-%20Assessment%20Report%20-%2020210317.pdf) from Bishop Fox.
+	+ ([#481](https://github.com/boostorg/json/issues/481)) Refactored `value\_from`
+	 implementation; user customizations are now always preferred over
+	 library-provided overloads.
+	+ ([#484](https://github.com/boostorg/json/issues/484)) Fix imprecise parsing for some floating point numbers.
+	+ ([#485](https://github.com/boostorg/json/issues/485)) Fix link errors in standalone mode, when used alongside
+	 Boost.
+	+ ([#497](https://github.com/boostorg/json/issues/497)) Fix Boost.Build builds on GCC 4.8.
+* [LexicalCast](/libs/lexical_cast/):
+
+	+ Dropped dependency on Boost.Math (thanks to Peter Dimov [#37](https://github.com/boostorg/lexical_cast/issues/37),
+	 [#39](https://github.com/boostorg/lexical_cast/issues/39)).
+	+ Fixes for the CI and coverage (thanks to Sam Darwin from "The
+	 C++ Alliance" [#38](https://github.com/boostorg/lexical_cast/issues/38), [#42](https://github.com/boostorg/lexical_cast/issues/42)).
+* [Log](/libs/log/):
+
+	+ Bug fixes:
+	 
+		- Corrected a formal race condition in the thread-safe log record
+		 queue implementation used in the `unbounded\_fifo\_queue`
+		 policy of the `asynchronous\_sink`
+		 frontend. The race could be detected by TSAN, but it was not
+		 a real problem on most current CPU architectures and compilers.
+		 ([#139](https://github.com/boostorg/log/issues/139))
+		- When copying a logger with a channel attribute (e.g. `channel\_logger`), the channel
+		 attribute is now deep-copied from the original logger. This
+		 means that modifying the channel in the new logger will no
+		 longer affect the original logger.
+		- Replaced the use of `std::allocator<void>` in template parameters
+		 with a new tag type `boost::log::use\_std\_allocator`
+		 to silence libc++ warnings about the former being deprecated
+		 in C++17 and later. The tag indicates that the instantiated
+		 template should be using a specialization of `std::allocator` internally to allocate
+		 dynamic memory, so the change has no functional effect. ([#141](https://github.com/boostorg/log/issues/141))
+		- Boost.Log no longer defines `\_\_MSVCRT\_VERSION\_\_`
+		 macro on MinGW and MinGW-w64. Defining this macro caused incompatibility
+		 with UCRT, which is available as an option in recent MinGW-w64.
+		 ([PR#149](https://github.com/boostorg/log/pull/149))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/):
+
+	+ **Breaking Change:** C++03 support is
+	 now removed, a C++11 or later conformant compiler is now required
+	 to use this library.
+	+ Added Z-test.
+	+ Added execution policy support to univariate and bivariate statistics:
+	 enables parallel execution (requires C++17 and `<execution>`).
+	+ Big update/improvement on CI testing.
+	+ Bivariate statistics now have integer support.
+	+ T-Test now has integer support.
+	+ Linear regression now has integer support.
+	+ Correct PDF of the beta distribution at the endpoints.
+	+ Correct use of Stirling's approximation in certain multiprecision
+	 cases, fixes [#396](https://github.com/boostorg/math/issues/396).
+	+ Eliminate -Wimplicit-int-float-conversion on clang.
+	+ Fix some constexpr issues in quaternion/octonion.
+	+ Minor performance fix to tanh\_sinh integration.
+	+ Update hypergeometric functions internal scaling to allow for 64-bit
+	 (long long) exponents with multiprecision types.
+* [Move](/libs/move/):
+
+	+ [Git Issue
+	 #35: *"New nothrow move traits are incomplete"*](https://github.com/boostorg/move/issues/35).
+* [Multiprecision](/libs/multiprecision/):
+
+	+ **BREAKING CHANGE**: Massive refactoring
+	 and code simplification makes C++11 an absolute requirement.
+	+ Use BOOST\_TRY/CATCH in headers so code can be used in exception-free
+	 environments.
+	+ Correct corner case in pow, fixes [#277](https://github.com/boostorg/multiprecision/issues/277).
+	+ Correct exception type thrown to match docs in lsb/msb: fixes [#257](https://github.com/boostorg/multiprecision/issues/257).
+	+ Allow moves and operators between related but different types (ie
+	 types with the same allocator), fixes [#278](https://github.com/boostorg/multiprecision/issues/278).
+* [Nowide](/libs/nowide/):
+
+	+ Fix discarding of characters for text file streams when seek or sync
+	 functions are used and newlines were converted (e.g. on Windows)
+	+ Fix potential use-after-free bug when reusing (via `open`) a file stream that has been
+	 closed
+	+ Fix potential invalid memory access when using a file stream that
+	 has been moved or swapped to where the source had a put-back character
+	 or was set to unbuffered mode
+	+ Fix compatibility with ucrt runtime by not defining `\_\_MSVCRT\_VERSION\_\_`
+	+ Known issues: Read performance for text files is degraded. Binary
+	 files and writing is unaffected.
+* [Optional](/libs/optional/):
+
+	+ Fixed MSVC warning C4702.
+* [Outcome](/libs/outcome/):
+
+	+ Announcements:
+	 
+		- BREAKING CHANGE: After a year and three major Boost releases
+		 announcing this upcoming change, this is the FIRST RELEASE
+		 of the v2.2 branch. This branch has a number of major breaking
+		 changes to the Outcome v2.1 which shipped in Boost 1.75 and
+		 earlier, see the documentation for details.
+	+ Enhancements:
+	 
+		- VS2019.8 changed how to enable Coroutines, which caused Outcome
+		 to not compile on that compiler.
+		- If on C++ 20, we now use C++ 20 `[[likely]]`
+		 instead of compiler-specific markup to indicate when TRY has
+		 likely success or failure.
+		- BREAKING CHANGE: Previously the value of `spare\_storage(const
+		basic\_result|basic\_outcome \*)
+		noexcept` was not propagated
+		 over `BOOST\_OUTCOME\_TRY`,
+		 which causes things like stack backtraces captured at the point
+		 of construction of an errored result to get dropped at every
+		 `TRY` point.
+		 This has been fixed by adding an optional `spare\_storage`
+		 to `success\_type<T>` and `failure\_type<T>`, as well as to `auto success(T
+		&&, ...)`
+		 and `auto failure(T
+		&&, ...)`.
+	+ Bug fixes:
+	 
+		- Boost.Outcome should now compile with `BOOST\_NO\_EXCEPTIONS`
+		 defined. Thanks to Emil, maintainer of Boost.Exception, making
+		 a change for me, Boost.Outcome should now compile with C++
+		 exceptions globally disabled. You won't be able to use `boost::exception\_ptr` as it can't
+		 be included if C++ exceptions are globally disabled.
+		- BREAKING CHANGE [#244](https://github.com/ned14/outcome/issues/244)
+		 It came as a shock to learn that `BOOST\_OUTCOME\_TRY`
+		 had been broken since the inception of this library for certain
+		 corner case code, which required a breaking change in how TRY
+		 works. See [the
+		 changelog in the documentation for more detail](https://boostorg.github.io/outcome/changelog.html).
+* [Parameter](/libs/parameter/):
+
+	+ Added a workaround for MSVC 2015 code miscompilation when an rvalue
+	 was used as a default value of a named parameter of a function. ([PR#109](https://github.com/boostorg/parameter/pull/109),
+	 [#132](https://github.com/boostorg/log/issues/132))
+* [PFR](/libs/pfr/):
+
+	+ Fixed reflection of types with missing `const`
+	 in SFINAE expressions in template constructor. Now reflection of
+	 aggregates with `std::optional<std::chrono::duration<???>>` fields works on any
+	 Standard Library implementation, even if LWG3050 is not fixed.
+	+ Comparison functions are now `constexpr`
+	[#52](https://github.com/boostorg/pfr/issues/52)
+	+ Fixed numerous typos in docs (thanks to Phil Miller [#63](https://github.com/boostorg/pfr/issues/63))
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Worked around [GCC
+	 bug](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=95888) affecting GCC versions 9.3-10.2 (issue [#20](https://github.com/boostorg/poly_collection/issues/20)).
+* [Predef](/libs/predef/):
+
+	+ Version 1.13
+	+ Add `ARCH\_PPC\_64` predef.
+	+ Fix `ARCH\_WORD\_BITS\*` redefinition warnings/errors.
+	+ Add `ARCH\_E2K`, Elbrus
+	 2000, architecture from Konstantin Ivlev.
+	+ Fix not handling recent C++ version that go above 10.x version.
+	+ Version 1.12
+	+ Switch to using the endian.h header on OpenBSD. (Brad Smith)
+	+ Fix not handling recent versions of stdcxx that go above version
+	 9.
+	+ Fix including sub-BSD OS headers directly causing redef warnings.
+	+ Add CI testing of direct inclusion of all headers.
+	+ Add CI testing on FreeBSD for clang and gcc.
+	+ Add `WORD\_BITS` set
+	 of predefs to detect the architecture word size. Initial implementation
+	 inspired by submission from Mikhail Komarov.
+	+ Add CI testing for Cygwin 32 and 64.
+* [PropertyTree](/libs/property_tree/):
+
+	+ Property Tree has a new maintainer.
+	+ Fix usage of deprecated Boost.Bind features.
+	+ Link to Wikipedia fixed.
+	+ Use BOOST\_OVERRIDE to fix GCC warnings.
+	+ Add extensive CI testing.
+* [Regex](/libs/regex/):
+
+	+ Regex is now header only except in C++03 mode.
+	+ Support for C++03 is now deprecated.
+	+ The library can now be used "standalone" without the rest
+	 of Boost being present.
+* [Stacktrace](/libs/stacktrace/):
+
+	+ Better support for pre-C++11 builds on clang [#102](https://github.com/boostorg/stacktrace/issues/102).
+	+ Bigger warning for **do not use boost::stacktrace::stacktrace
+	 in signal handlers** [#71](https://github.com/boostorg/stacktrace/issues/71).
+* [TypeTraits](/libs/type_traits/):
+
+	+ Fix for Visual Studio managed code projects.
+* [Variant2](/libs/variant2/):
+
+	+ Improved generated code for the double buffered case.
+
+### Updated Tools
+
+
+* [Build](/tools/build/):
+
+	+ Includes release of [B2
+	 version 4.4.1](/tools/build/doc/html/#_version_4_4_1).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0,
+	 9.0.0, 10.0.0, 11.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0, 9.0.0, 10.0.0, 11.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0, 9.0.0, 10.0.0, 11.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0, 11.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Marshall Clow, Michael Caisse and Glen Fernandes managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

@@ -1,0 +1,453 @@
+---
+title: Version 1.47.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.47.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.47.0
+==============
+
+Version 1.47.0
+--------------
+
+
+July 11th, 2011 22:19 GMT
+
+
+[Documentation](/doc/libs/1_47_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_47\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.47.0/boost_1_47_0.tar.bz2) |
+| [boost\_1\_47\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.47.0/boost_1_47_0.tar.gz) |
+| windows | [boost\_1\_47\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.47.0/boost_1_47_0.7z) |
+| [boost\_1\_47\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.47.0/boost_1_47_0.zip) |
+
+
+### New Libraries
+
+
+* [Chrono](/libs/chrono/index.html):
+ Useful time
+ utilities, from Vicente J. Botet Escribá.
+* [Geometry](/libs/geometry/index.html):
+ Geometry
+ Library, from Barend Gehrels, Bruno Lalande and Mateusz Loskot.
+* [Phoenix](/libs/phoenix/index.html):
+ Define small
+ unnamed function objects at the actual call site, and more, from Joel de
+ Guzman, Dan Marsden and Thomas Heller.
+* [Ratio](/libs/ratio/index.html):
+ Compile time rational
+ arithmetic, from Vicente J. Botet Escribá.
+
+### Updated Libraries
+
+
+* [Accumulators](/libs/accumulators/index.html):
+
+	+ New statistical accumulators: `sum\_kahan`,
+	 `sum\_of\_weights\_kahan`,
+	 `sum\_of\_variates\_kahan`.
+* [Asio](/libs/asio/index.html):
+
+	+ Many new features and improvements:
+	 
+		- Signal handling.
+		- A debugging aid for asynchronous programs.
+		- Timeouts on socket iostreams.
+		- Composed connect operations.
+		- Rewritten SSL implementation.
+		- C++0x move support.
+		- Compatibility with POSIX `fork()`.
+		- ... and much more. See the [Revision
+		 History](/doc/libs/1_47_0/doc/html/boost_asio/history.html) in the Boost.Asio documentation for more details.
+	+ Tickets addressed: [#2879](https://svn.boost.org/trac/boost/ticket/2879),
+	 [#3238](https://svn.boost.org/trac/boost/ticket/3238),
+	 [#3297](https://svn.boost.org/trac/boost/ticket/3297),
+	 [#3307](https://svn.boost.org/trac/boost/ticket/3307),
+	 [#3702](https://svn.boost.org/trac/boost/ticket/3702),
+	 [#3741](https://svn.boost.org/trac/boost/ticket/3741),
+	 [#3900](https://svn.boost.org/trac/boost/ticket/3900),
+	 [#3905](https://svn.boost.org/trac/boost/ticket/3905),
+	 [#3939](https://svn.boost.org/trac/boost/ticket/3939),
+	 [#3958](https://svn.boost.org/trac/boost/ticket/3958),
+	 [#4162](https://svn.boost.org/trac/boost/ticket/4162),
+	 [#4971](https://svn.boost.org/trac/boost/ticket/4971),
+	 [#5124](https://svn.boost.org/trac/boost/ticket/5124),
+	 [#5128](https://svn.boost.org/trac/boost/ticket/5128),
+	 [#5418](https://svn.boost.org/trac/boost/ticket/5418),
+	 [#5453](https://svn.boost.org/trac/boost/ticket/5453).
+* [Config](/libs/config/index.html):
+
+	+ Fixed bug [#1988](https://svn.boost.org/trac/boost/ticket/1988)
+* [DateTime](/libs/date_time/index.html):
+
+	+ Fixed bugs [#4920](https://svn.boost.org/trac/boost/ticket/4920),
+	 [#3651](https://svn.boost.org/trac/boost/ticket/3651),
+	 [#4845](https://svn.boost.org/trac/boost/ticket/4845),
+	 [#4475](https://svn.boost.org/trac/boost/ticket/4475),
+	 [#4952](https://svn.boost.org/trac/boost/ticket/4952),
+	 [#5345](https://svn.boost.org/trac/boost/ticket/5345),
+	 [#5250](https://svn.boost.org/trac/boost/ticket/5250),
+	 [#4798](https://svn.boost.org/trac/boost/ticket/4798),
+	 [#4754](https://svn.boost.org/trac/boost/ticket/4754),
+	 [#4411](https://svn.boost.org/trac/boost/ticket/4411),
+	 [#5126](https://svn.boost.org/trac/boost/ticket/5126),
+	 [#4780](https://svn.boost.org/trac/boost/ticket/4780),
+	 [#2475](https://svn.boost.org/trac/boost/ticket/2475),
+	 [#1674](https://svn.boost.org/trac/boost/ticket/1674).
+* [Dynamic Bitset](/libs/dynamic_bitset/index.html):
+
+	+ Fixed bug [#5439](https://svn.boost.org/trac/boost/ticket/5439)
+* [Foreach](/libs/foreach/index.html):
+
+	+ Use rvalue refs on supporting compilers for const rvalue detection.
+* [Function](/libs/function/index.html):
+
+	+ Bug fixes: [#3410](https://svn.boost.org/trac/boost/ticket/3410),
+	 [#3618](https://svn.boost.org/trac/boost/ticket/3618),
+	 [#3912](https://svn.boost.org/trac/boost/ticket/3912),
+	 [#4073](https://svn.boost.org/trac/boost/ticket/4073),
+	 [#4325](https://svn.boost.org/trac/boost/ticket/4325),
+	 [#4717](https://svn.boost.org/trac/boost/ticket/4717),
+	 [#4765](https://svn.boost.org/trac/boost/ticket/4765).
+* [Function Types](/libs/function_types/index.html):
+
+	+ Bug fixes: [#1653](https://svn.boost.org/trac/boost/ticket/1653),
+	 [#3162](https://svn.boost.org/trac/boost/ticket/3162).
+* [Graph](/libs/graph/index.html):
+
+	+ Bug fixes.
+	+ Remove deprecated function `kolmogorov\_max\_flow`,
+	 use `boykov\_kolmogorov\_max\_flow`
+	 instead.
+	+ Removed `<boost/graph/detail/is\_same.hpp>` header since its functionality
+	 is in Boost.Type\_Traits.
+* [Iostreams](/libs/iostreams/index.html):
+
+	+ Support filesystem v3 paths ([#4485](https://svn.boost.org/trac/boost/ticket/4485)).
+	+ Fix a memory leak in `chain`
+	 ([#4922](https://svn.boost.org/trac/boost/ticket/4922)).
+* [Iterator](/libs/iterator/index.html):
+
+	+ Add `function\_input\_iterator`
+	 ([#2893](https://svn.boost.org/trac/boost/ticket/2893)).
+	+ Bug fixes: [#1427](https://svn.boost.org/trac/boost/ticket/1427),
+	 [#1517](https://svn.boost.org/trac/boost/ticket/1517),
+	 [#3434](https://svn.boost.org/trac/boost/ticket/3434).
+* [Lexical cast](/libs/conversion/lexical_cast.htm):
+
+	+ Better performance and less memory usage for many combinations of
+	 Source and Target types ([#5564](https://svn.boost.org/trac/boost/ticket/5564),
+	 [#5417](https://svn.boost.org/trac/boost/ticket/5417),
+	 [#4397](https://svn.boost.org/trac/boost/ticket/4397),
+	 [#5350](https://svn.boost.org/trac/boost/ticket/5350),
+	 [#5576](https://svn.boost.org/trac/boost/ticket/5576)).
+	+ Documentation updated ([#5576](https://svn.boost.org/trac/boost/ticket/5576),
+	 [#5494](https://svn.boost.org/trac/boost/ticket/5494)).
+* [Logic](/libs/logic/index.html):
+
+	+ Bug fixes: [#3093](https://svn.boost.org/trac/boost/ticket/3093),
+	 [#3600](https://svn.boost.org/trac/boost/ticket/3600).
+* [Math](/libs/math/index.html):
+
+	+ Added changesign function to sign.hpp to facilitate addition of nonfinite
+	 facets.
+	+ Addition of nonfinite facets from Johan Rade, with tests, examples
+	 of use for C99 format infinity and NaN, and documentation.
+	+ Added tests and documentation of changesign from Johan Rade.
+* [Meta State Machine](/libs/msm/index.html):
+
+	+ Added a [`stop()`](/doc/libs/1_47_0/libs/msm/doc/HTML/ch03s05.html#backend-start)
+	 method in the back-end.
+	+ Added partial support for [Boost.Phoenix
+	 functors in eUML](/doc/libs/1_47_0/libs/msm/doc/HTML/ch03s04.html#eUML-phoenix).
+	+ Added the possibility to [choose
+	 when state switching occurs](/doc/libs/1_47_0/libs/msm/doc/HTML/ch03s05.html#backend-state-switch).
+	+ Bugfixes:
+	 
+		- [#5117](https://svn.boost.org/trac/boost/ticket/5117),
+		 [#5253](https://svn.boost.org/trac/boost/ticket/5253),
+		 [#5533](https://svn.boost.org/trac/boost/ticket/5533),
+		 [#5573](https://svn.boost.org/trac/boost/ticket/5573).
+		- gcc warnings about unused variables.
+		- better implementation of `favor\_compile\_time`
+		 back-end policy.
+		- bug with eUML and state construction.
+		- incorrect eUML event and state macros.
+		- incorrect event type passed to a direct entry state's on\_entry
+		 action.
+		- more examples.
+* [MultiIndex](/libs/multi_index/index.html):
+
+	+ Fixed an ADL problem in `composite\_key\_compare`
+	 related with Boost.Ref.
+	+ Maintenance fixes.
+* [Proto](/libs/proto/index.html):
+
+	+ Pre-preprocessed for better compile times.
+	+ Default preprocessor limits raised:
+	 
+		- Max expression arity (`BOOST\_PROTO\_MAX\_ARITY`)
+		 bumped from 5 to 10.
+		- Max function call arity (`BOOST\_PROTO\_MAX\_FUNCTION\_CALL\_ARITY`)
+		 bumped from 5 to 10.
+		- Max logical operator arity (`BOOST\_PROTO\_MAX\_LOGICAL\_ARITY`)
+		 bumped from 8 to 10.
+	+ Better integration of `proto::basic\_expr`
+	 to avoid accidental needless instantiations of `proto::expr`.
+* [Random](/libs/random/index.html):
+
+	+ Synchronized with the new standard.
+	 
+		- Many new distributions added: `chi\_squared\_distribution`,
+		 `negative\_binomial\_distribution`,
+		 `fisher\_f\_distribution`,
+		 `student\_t\_distribution`,
+		 `weibull\_distribution`,
+		 `extreme\_value\_distribution`,
+		 `discrete\_distribution`,
+		 `piecewise\_constant\_distribution`,
+		 `piecewise\_liear\_distribution`
+		- Renamed `uniform\_int`
+		 and `uniform\_real`
+		 to `uniform\_int\_distribution`
+		 and `uniform\_real\_distribution`.
+		- Added members to all distributions: `param\_type`,
+		 `param`, stream
+		 operators, comparison operators, `min`
+		 and `max`.
+		- Allow distributions to be used directly with generators without
+		 use of `variate\_generator`.
+		- Changed the meaning of the parameters of `geometric\_distribution`
+		 and `lognormal\_distribution`.
+		- Added a second parameter to `gamma\_distribution`.
+		- Added `seed\_seq`
+		 and added the corresponding constructors and `seed` overloads the generators.
+		- Added `generate\_canonical`.
+		- Renamed the engine tempates. e.g. `mersenne\_twister`
+		 becomes `mersenne\_twister\_engine`.
+		- New engine adapter `independent\_bits\_engine`.
+		- Added new predefined engine typedefs: `mt19937\_64`,
+		 `ranlux[24|48][\_base]`,
+		 `knuth\_b`.
+		- Updated seeding algorithms.
+		- Added `discard`
+		- Use unsigned types instead of signed types in all the predefined
+		 engines.
+	+ Bug fixes:
+	 
+		- `linear\_congruential\_engine`
+		 could assert because the modular arithmetic was not implemented
+		 in all cases. `shuffle\_output`,
+		 now called `shuffle\_order\_engine`,
+		 could cause integer overflow. These cases were not triggered
+		 by any predefined engines.
+		- `uniform\_small\_int`
+		 now actually behaves as documented.
+	+ New efficient algorithms for `binomial\_distribution`
+	 and `poisson\_distribution`.
+	+ Moved all features into `namespace
+	boost::random`
+	+ Backwards compatibility issues:
+	 
+		- The seeding algorithms have changed. This was unavoidable for
+		 compatibility with the standard. Not to mention that some of
+		 the existing algorithms were weird and inconsistent.
+		 
+			* Seeding with an integer: The behaviour should be unchanged
+			 for most generators except `lagged\_fibonacci`
+			 and `subtract\_with\_carry`
+			 (and thus `ranlux`).
+			* Seeding a generator with another generator: This has
+			 been enabled by making all all generators models of
+			 `SeedSeq`.
+			 Therefore, if you seed a Boost.Random generator with
+			 a non Boost.Random generator, your code will no longer
+			 compile. The algorithm has changed, so code using this
+			 seeding method will yield different values.
+			* Seeding a generator from a pair of iterators: This implicitly
+			 assumed that the elements were 32-bit integers in some
+			 places, but not everywhere. I've added this requirement
+			 everywhere and updated the algorithms accordingly. The
+			 behaviour of generators with a `value\_type`
+			 no more than 32 bits should be unchanged.
+		- Renaming:
+		 
+			* Whenever a class was renamed, there is a wrapper with
+			 the old name. There are also using declarations in namespace
+			 boost for everything that was moved.
+			* The names of a few accessors in the distributions changed.
+			 Both the old and the new names are allowed.
+		- `geometric\_distribution`
+		 and `lognormal\_distribution`:
+		 The behaviour is different at runtime. `boost::geometric\_distribution`
+		 and `boost::lognormal\_distribution` provide
+		 the old behaviour, `boost::random::geometric\_distribution`
+		 and `boost::random::lognormal\_distribution` provide
+		 the new behaviour.
+		- Streaming: gamma\_distribution has a new parameter, thus text
+		 saved with the old version will not readable by the new version.
+		- `variate\_generator`
+		 is now a simple pass through wrapper. Code that assumes that
+		 it will adjust the generator's result type to match the distribution
+		 will no longer work. This is not an issue with any of the distributions
+		 provided by Boost.Random.
+		- Return types: The `result\_types`
+		 of some generators have changed slightly. Some signed types
+		 have changed to unsigned to match the standard.
+		- `has\_fixed\_range`:
+		 This is now always false, as it doesn't appear to be very useful
+		 and is excessively cumbersome. Anything that was accessing
+		 `const\_min` and
+		 `const\_max` without
+		 first checking `has\_fixed\_range`
+		 was incorrect to begin with.
+* [Range](/libs/range/index.html):
+
+	+ Fixed the end position `irange`
+	 when step size is greater than 1 ([#5544](https://svn.boost.org/trac/boost/ticket/5544)).
+* [Spirit](/libs/spirit/index.html):
+
+	+ Spirit V2.5, see the '[What's
+	 New](/doc/libs/1_47_0/libs/spirit/doc/html/spirit/what_s_new/spirit_2_5.html)' section for details.
+* [Tokenizer](/libs/tokenizer/index.html):
+
+	+ Fixed bug [#4649](https://svn.boost.org/trac/boost/ticket/4649).
+* [Utility](/libs/utility/index.html):
+
+	+ Bug fixes: [#4432](https://svn.boost.org/trac/boost/ticket/4432).
+* [Uuid](/libs/utility/index.html):
+
+	+ Fixed tickets: ([#5570](https://svn.boost.org/trac/boost/ticket/5570),
+	 [#4601](https://svn.boost.org/trac/boost/ticket/4601),
+	 [#4991](https://svn.boost.org/trac/boost/ticket/4991),
+	 [#5145](https://svn.boost.org/trac/boost/ticket/5145),
+	 [#5235](https://svn.boost.org/trac/boost/ticket/5235)).
+* [Wave](/libs/wave/index.html):
+
+	+ Wave V2.3.0, see the [Changelog](/libs/wave/ChangeLog)
+	 for details.
+
+### Build System
+
+
+* The official name of Boost.Build executable was changed to `b2`. The bootstrap scripts create a copy
+ with the old name `bjam`
+ to prevent third-party build scripts from failing.
+
+### Updated Tools
+
+
+* [BoostBook](/tools/boostbook/index.html):
+
+	+ Handle doxygen tags: `\see`, `tparam`,
+	 `ref` (for classes
+	 only).
+	+ Support note for classes as well as functions.
+* [Quickbook](/tools/quickbook/index.html):
+
+	+ Generate consistent ids for headings.
+	+ Improved unicode support for windows.
+	+ Warn about windows paths, as they aren't portable.
+	+ Reverse deprecation of `[br]`.
+	+ Support date ranges and comma seperated clauses in copyright attributes.
+	+ Improved delimeter checking for simple markup (e.g. `\*bold\*`).
+	+ Pass-thru comments in code snippets.
+	+ `__FILENAME__` macro now generates relative paths.
+	+ Allow quickbook escapes inside comments in syntax highlighted code.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ LLVM Clang 2.8
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.3.5, 4.4.1, 4.4.3, 4.4.5, 4.5.1, 4.5.2,
+	 4.6.0, 4.6.1
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.5.2
+	+ Intel 12.0
+* OS X:
+ 
+	+ Apple Clang 2.1
+	+ Intel 11.1
+	+ GCC: 4.2.1, 4.4.4
+	+ GCC, C++0x mode: 4.4.4
+* Windows:
+ 
+	+ Visual C++ 7.1, 9.0, 10.0
+	+ GCC, mingw: 4.4.0
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 64 bit
+* QNX:
+ 
+	+ QCC
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang from subversion, with GNU libstdc++.
+	+ LLVM Clang 2.8
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.3.5, 4.4.3, 4.4.5, 4.5.1, 4.5.2, 4.6.0,
+	 4.6.1
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.5.2
+	+ pgCC: 11.2
+	+ Intel: 10.1, 11.0, 11.1, 12.0
+	+ PathScale: 3.2
+* OS X:
+ 
+	+ Clang from subversion, with GNU libstdc++.
+	+ Intel 11.1
+	+ GCC: 4.4.4
+	+ GCC, C++0x mode: 4.4.4
+* Windows:
+ 
+	+ Visual C++ 7.1, 9.0, 10.0
+	+ Visual C++ with STLport: 9.0
+	+ Visual C++, Windows Mobile 5, with STLport: 9.0
+	+ GCC, mingw: 4.5.2
+	+ GCC, C++0x mode, mingw: 4.5.2
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition, V11.1.0.0
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

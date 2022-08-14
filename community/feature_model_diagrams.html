@@ -1,0 +1,169 @@
+---
+title: Feature Model Diagrams in text and HTML
+copyright: Beman Dawes 2000.
+revised: 
+---
+
+
+Feature Model Diagrams in text and HTML
+
+
+
+Feature Model Diagrams in text and HTML
+=======================================
+
+
+By [Beman
+ Dawes](/users/people/beman_dawes.html)
+
+Introduction
+------------
+
+
+In their seminal book, Generative Programming, Czarnecki and
+ Eisenecker ([C&E](#GenerativeProgramming)))
+ describe how to build feature models [C&E 4.4] consisting
+ of a feature diagram plus semantic, rationale, and other
+ attributes. Feature models are then used to drive design cycles
+ which eventually lead to manual or automatic assembly of
+ configurations.
+
+
+Feature models provide a language to describe the library
+ variability that is often such an issue in boost.org
+ discussions. The Whorf hypothesis that "Language shapes the way
+ we think, and determines what we can think about" seems to
+ apply. In discussion of library variability issues, we have
+ been crippled by lack of a good language. With feature models,
+ we now have a language to carry on the dialog.
+
+
+The graphical feature diagrams presented by C&E are not
+ in a suitable form for the email discussions boost.org depends
+ upon. The hierarchical nature of feature diagrams can be
+ represented by a simple text-based feature diagram language. A
+ feature model can also take advantage of the hyperlinks
+ inherent in HTML.
+
+
+Grammar
+-------
+
+
+The grammar for the feature diagram language is expressed in
+ Extended Bakus-Naur Form;::= represents productions, [...]
+ represents options, {...} represents zero or more instances,
+ and represents | alternatives.
+```
+
+feature-model       ::= concept-name details { feature }
+
+feature             ::= feature-name [details]
+
+details             ::= "(" feature-list ")"      // required features
+                      | "[" feature-list "]"      // optional features
+
+feature-list        ::= element { "|" element }   // one only
+                      | element { "+" element }   // one or more
+                      | element { "," element }   // all
+                                                  // [a+b] equivalent to [a,b]
+
+element             ::= feature
+                      | details
+concept-name        ::= name
+
+feature-name        ::= name
+
+```
+
+The usual lexical conventions apply. Names are
+ case-insensitive and consist of a leading letter, followed by
+ letters, digits, underscores or hyphens, with no spaces
+ allowed.
+
+
+At least one instance of each name should be hyperlinked to
+ the corresponding [Feature
+ Description](#FeatureDescriptions).
+
+
+While the grammar is intended for written communication
+ between people, it may also be trivially machine parsed for use
+ by automatic tools.
+Descriptive information is associated with each concept or
+ feature. According to [C&E 4.4.2] this includes:
+
+
+* Semantic descriptions.
+* Rationale.
+* Stakeholders and client programs.
+* Exemplar systems.
+* Constraints and default dependency rules.
+* Availability sites, binding sites, and binding mode.
+* Open/Closed attribute.
+
+
+What is a Feature?
+------------------
+
+
+A feature [C&E 4.9.1] is "anything users or client
+ programs might want to control about a concept. Thus, during
+ feature modeling, we document no only functional features ...
+ but also implementation features, ..., various optimizations,
+ alternative implementation techniques, and so on."
+
+
+Example
+-------
+```
+
+special-container ( organization,
+                    performance,
+                    interface  )         // all required
+
+organization [ ordered + indexed ]       // zero or more (4 configurations)
+
+indexed [ hash-function ]                // zero or one  (2 configurations)
+
+performance ( fast | small | balanced )  // exactly one  (3 configurations)
+
+interface ( STL-style + cursor-style )   // one or more  (3 configurations)
+
+```
+
+There should be feature descriptions for
+ `some-container, organization, ordered, indexed,
+ hash-function, performance, fast, small, balanced, interface,
+ STL-style, and cursor-style`.
+
+
+The number of possible configurations is (2 + 2\*2) \* 3 \* 3 =
+ 54, assuming no constraints.
+
+
+There are equivalent representations. For example:
+```
+
+special-container ( organization[ ordered+indexed[ hash-function ]],
+                    performance( fast|small|balanced ),
+                    interface( STL-style+cursor-style ) )
+
+```
+
+References
+----------
+
+
+Krzysztof Czarnecki and Ulrich W.
+ Eisenecker, [Generative
+ Programming](http://www.generative-programming.org), Addison-Wesley, 2000, ISBN 0-201-30977-7
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,423 @@
+---
+title: Version 1.61.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.61.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.61.0
+==============
+
+Version 1.61.0
+--------------
+
+
+May 13th, 2016 02:58 GMT
+
+
+[Documentation](/doc/libs/1_61_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_61\_0.tar.bz2](https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.bz2) | a547bd06c2fd9a71ba1d169d9cf0339da7ebf4753849a8f7d6fdb8feee99b640 |
+| [boost\_1\_61\_0.tar.gz](https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz) | a77c7cc660ec02704c6884fbb20c552d52d60a18f26573c9cee0788bf00ed7e6 |
+| windows | [boost\_1\_61\_0.7z](https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.7z) | fa1c34862b7ba8674ed6e064a14667a11830c6252f702d9458451834b74f7815 |
+| [boost\_1\_61\_0.zip](https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.zip) | 02d420e6908016d4ac74dfc712eec7d9616a7fc0da78b0a1b5b937536b2e01e8 |
+
+[List of checksums](/users/download/signatures/boost_1_61_0.sums.asc) signed by [Vladimir Prus](https://pgp.mit.edu/pks/lookup?op=get&search=0xDA472E8659753BA4)
+
+
+### Third Party Downloads
+
+
+* [Windows Binaries](https://sourceforge.net/projects/boost/files/boost-binaries/1.61.0)
+
+
+### New Libraries
+
+
+* [Compute](/libs/compute/):
+ Parallel/GPU-computing
+ library
+* [DLL](/libs/dll/):
+ Library for comfortable work
+ with DLL and DSO. Library provides a portable across platforms way to:
+ 
+	+ load libraries
+	+ import any native functions and variables
+	+ make alias names for C++ mangled functions and symbols
+	+ query libraries for sections and exported symbols
+	+ self loading and self querying
+	+ getting program and module location by exported symbol
+* [Hana](/libs/hana/):
+ A modern C++ metaprogramming
+ library. It provides high level algorithms to manipulate heterogeneous
+ sequences, allows writing type-level computations with a natural syntax,
+ provides tools to introspect user-defined types and much more.
+* [Metaparse](/libs/metaparse/):
+ A library for generating
+ compile time parsers parsing embedded DSL code as part of the C++ compilation
+ process. The library is similar to Spirit, however while parsers built
+ with Spirit parse at run-time, parsers built with Metaparse parse at compile-time.
+
+### Updated Libraries
+
+
+* [Any](/libs/any/):
+
+	+ More tests and maintainance fixes.
+* [Container](/libs/container/):
+
+	+ `small\_vector` supports
+	 more constructors and assignments.
+	+ Fixed bugs:
+	 
+		- [Trac
+		 #11820 : *"compiler error when using operator[]
+		 of map"*](https://svn.boost.org/trac/boost/ticket/11820).
+		- [Trac
+		 #11856 : *"pool\_resource.cpp error: declaration
+		 changes meaning"*](https://svn.boost.org/trac/boost/ticket/11856).
+		- [Trac
+		 #11866 : *"small\_vector does not have range constructor"*](https://svn.boost.org/trac/boost/ticket/11866).
+		- [Trac
+		 #11867 : *"small\_vector should have constructor
+		 and assignment operator taking other small\_vector"*](https://svn.boost.org/trac/boost/ticket/11867).
+		- [Trac
+		 #11912 : *"flat\_map use of vector::priv\_forward\_range\_insert\_expand\_backwards
+		 may cause move with same source"*](https://svn.boost.org/trac/boost/ticket/11912).
+		- [Trac
+		 #11957 : *"static\_vector::max\_size() is higher
+		 than the capacity"*](https://svn.boost.org/trac/boost/ticket/11957).
+		- [Trac
+		 #12014 : *"boost::container::set can not insert
+		 const (ref) range"*](https://svn.boost.org/trac/boost/ticket/12014).
+		- [GitHub
+		 #33: *Make sure std::string constructor is available*](https://github.com/boostorg/container/pull/33).
+* [Context](/libs/context/):
+
+	+ [#11246](https://svn.boost.org/trac/boost/ticket/11246) fails to build for mingw because of undefined symbols
+	+ [#11365](https://svn.boost.org/trac/boost/ticket/11365) execution\_context.hpp gives errors when building with
+	 VS2015RC
+	+ [#11652](https://svn.boost.org/trac/boost/ticket/11652) checking \_\_cpp\_lib\_integer\_sequence
+	+ [#11946](https://svn.boost.org/trac/boost/ticket/11946) crashes on x86\_64/MinGW
+	+ fcontext\_t: no longer part of public API
+	+ support for WinFiber API removed
+	+ execution\_context: relaxed to C++11
+	+ execution\_context: type-safe transfer of data
+	+ execution\_context: execute function on top of stack
+	+ execution\_context: improved performance
+	+ execution\_context: static member-fn `current()` removed
+	+ execution\_context: new call semantic
+* [Coroutine](/libs/coroutine/):
+
+	+ attribute related to FPU-env removed
+* [Coroutine2](/libs/coroutine2/):
+
+	+ attribute related to FPU-env removed
+	+ improved performance
+	+ relaxed to C++11
+* [Fusion](/libs/fusion/):
+
+	+ Mitigate massive warnings about use of `BOOST\_PP\_IS\_EMPTY`
+	 on MSVC8. [#11157](https://svn.boost.org/trac/boost/ticket/11157)
+	+ Container's conversion ctor and SFINAE. [#11766](https://svn.boost.org/trac/boost/ticket/11766)
+	+ Drop trailing `fusion::void\_`
+	 support from C++11 `fusion::vector`.
+	 [pull-request
+	 120](https://github.com/boostorg/fusion/pull/120)
+	+ Workarounds for GCC 4.0 and 4.1 ICE. [#5808](https://svn.boost.org/trac/boost/ticket/5808) [#7229](https://svn.boost.org/trac/boost/ticket/7229)
+	+ Workaround for ambiguous call of `fusion::convert`
+	 on GCC 3.4. [pull-request
+	 130](https://github.com/boostorg/fusion/pull/130)
+* [Geometry](/libs/geometry):
+
+	+ *Additional functionality:*
+	
+		- Support within and covered\_by for Box/Box in spherical and
+		 geographic coordinate systems.
+	+ *Improvements:*
+	
+		- Overlay: handle\_tangencies replaced by clusters, fixing many
+		 cases with colocated turns
+	+ *Solved tickets:*
+	
+		- [#9162](https://svn.boost.org/trac/boost/ticket/9162)
+		 Invalid result of relational operations for non-cartesian Point/Areal.
+		- [#10866](https://svn.boost.org/trac/boost/ticket/10866)
+		 union\_ doesn't work in 1.56 and 1.57.
+		- [#11018](https://svn.boost.org/trac/boost/ticket/11018)
+		 Invalid geometry intersection
+		- [#11576](https://svn.boost.org/trac/boost/ticket/11576)
+		 Intersection gives wrong results.
+		- [#11637](https://svn.boost.org/trac/boost/ticket/11637)
+		 Unused parameter warning.
+		- [#11725](https://svn.boost.org/trac/boost/ticket/11725)
+		 union\_ fails to create holes
+		- [#11789](https://svn.boost.org/trac/boost/ticket/11789)
+		 Assertion failure or invalid result of set operations for spherical\_equatorial
+		 coordinate system.
+		- [#11917](https://svn.boost.org/trac/boost/ticket/11917)
+		 Andoyer distance strategy returns 0 for antipodal points (default
+		 geographic distance).
+		- [#11928](https://svn.boost.org/trac/boost/ticket/11928)
+		 Improvement of the accuracy of surveyor area strategy.
+		- [#11966](https://svn.boost.org/trac/boost/ticket/11966)
+		 Compilation error in svg() for box and non-int coordinate type.
+		- [#11984](https://svn.boost.org/trac/boost/ticket/11984)
+		 union\_() generates self-intersecting polygon
+		- [#11987](https://svn.boost.org/trac/boost/ticket/11987)
+		 rtree::remove() not compiling for geographic CS.
+		- [#12000](https://svn.boost.org/trac/boost/ticket/12000)
+		 Uninitialized reference in (unused) constructor of relate's
+		 mask\_handler.
+		- [#12106](https://svn.boost.org/trac/boost/ticket/12106)
+		 Invalid assertion failure in envelope() for non-cartesian very
+		 short segments.
+	+ *Bugfixes:*
+	
+		- Fix intersects and disjoint for Segment/Box in cartesian coordinate
+		 system when Segment is parallel to Box's face.
+		- Fix relation operations for Point/Areal in spherical and geographic
+		 coordinate systems for edge cases.
+		- Fix intersects and disjoint for Point/Box and Box/Box in spherical
+		 and geographic coordinate systems for some cases.
+		- Fix within and covered\_by for Point/Box in spherical and geographic
+		 coordinate systems for some cases.
+* [Interprocess](/libs/interprocess/):
+
+	+ Fixed bugs:
+	 
+		- [GitHub
+		 Pull #23 (*"Fixed case sensetive for linux mingw"*)](https://github.com/boostorg/interprocess/pull/23).
+* [Intrusive](/libs/intrusive/):
+
+	+ Fixed bugs:
+	 
+		- [Boost
+		 Trac #11832: *clang-cl + boost intrusive = miscompile*](https://svn.boost.org/trac/boost/ticket/11832)
+		- [Boost
+		 Trac #11865: *Intrusive list explicit ctor error with
+		 Clang 3.6 (C++11/14)*](https://svn.boost.org/trac/boost/ticket/11865)
+		- [Boost
+		 Trac #11992: *Add an overload of insert\_check taking
+		 a key\_type*](https://svn.boost.org/trac/boost/ticket/11992)
+		- [GitHub
+		 Pull #19: *ebo\_functor\_holder: compile fix for copy
+		 constructor*](https://github.com/boostorg/intrusive/pull/19)
+* [Lexical Cast](/libs/lexical_cast/):
+
+	+ Fixed Sun Studio related issues
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- The support for `boost::basic\_string\_ref`
+		 and its specializations is deprecated; users are encouraged
+		 to switch to `boost::basic\_string\_view`.
+		 The support for `boost::basic\_string\_ref`
+		 will be removed in future releases.
+		- Added support for limiting the number of stored log files in
+		 the target directory of the file collector. Thanks to Erich
+		 Keane for the patch. ([#8746](https://svn.boost.org/trac/boost/ticket/8746))
+	+ Bug fixes:
+	 
+		- Fixed various compilation problems for Windows CE.
+		- Fixed compilation problems on Solaris.
+		- Added a workaround for MSVC-10 generating broken code for formatters
+		 in some cases. ([#12025](https://svn.boost.org/trac/boost/ticket/12025))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/):
+
+	+ Polynomial arithmetic added to tools.
+* [Move](/libs/move/):
+
+	+ Experimental: asymptotically optimal bufferless merge and sort algorithms:
+	 adaptive\_merge and adaptive\_sort.
+	+ Fixed bug:
+	 
+		- [Trac
+		 #11758: *"BOOST\_MOVABLE\_BUT\_NOT\_COPYABLE doesn't
+		 reset private access with rvalue ref version"*](https://svn.boost.org/trac/boost/ticket/11758).
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Fixed bug in stream input for integer types, see [#11857](https://svn.boost.org/trac/boost/ticket/11857).
+	+ Fixed some ambiguous conversions involving expression templates see
+	 [#11922](https://svn.boost.org/trac/boost/ticket/11922).
+	+ Add expression template aware min/max overloads see [#11149](https://svn.boost.org/trac/boost/ticket/11149).
+	+ Fix bug in right shifting negative small integers in cpp\_int see
+	 [#11999](https://svn.boost.org/trac/boost/ticket/11999).
+	+ Use memmove for bitshifts in cpp\_int when possible see [#9233](https://svn.boost.org/trac/boost/ticket/9233).
+	+ Use memcpy for data import into cpp\_int where possible, see [#9235](https://svn.boost.org/trac/boost/ticket/9235).
+	+ Changed `cpp\_bin\_float.convert\_to<double>()` to a function template rather
+	 than proceding via `long double` to avoid double-rounding bug,
+	 see [#12039](https://svn.boost.org/trac/boost/ticket/12039).
+	+ Fixed conversions from NaN's and Infinities, see [#12112](https://svn.boost.org/trac/boost/ticket/12112).
+	+ Enabled better support for Clang on Windows.
+	+ Fixed handling of NaN's and Infinities in basic arithmetic for cpp\_dec\_float
+	 and cpp\_bin\_float, see [#12090](https://svn.boost.org/trac/boost/ticket/12090).
+	+ Fixed fencepost error in cpp\_bin\_float subtraction.
+	+ Fixed double-rounding in conversion to float routines for cpp\_bin\_float,
+	 see [#12039](https://svn.boost.org/trac/boost/ticket/12039).
+	+ Make float128 denorm aware, see [#12075](https://svn.boost.org/trac/boost/ticket/12075).
+	+ Allow the library and tests to be used without exception handling
+	 support, see [#12070](https://svn.boost.org/trac/boost/ticket/12070).
+	+ Fixed buggy comparison operator overloads for boost::rational.
+	+ Added some workarounds for Oracle C++.
+	+ Fixed some missing typecasts for cases where cpp\_int's limb\_type
+	 is wider than unsigned.
+* [Optional](/libs/optional/):
+
+	+ Now `boost::optional` is specialized for reference
+	 parameters. This addresses a couple of issues:
+	 
+		- the `sizeof` of
+		 optional reference is that of a pointer,
+		- some bugs connected to copying optional references are gone,
+		- all run-time bugs caused by incorrect reference binding on
+		 some compilers are now turned into compile-time errors,
+		- you can swap optional references: it is like swapping pointers:
+		 shalow, underlying objects are not affected,
+		- optional references to abstract types work.
+	+ Documented nested typedefs ([Trac
+	 #5193](https://svn.boost.org/trac/boost/ticket/5193)).
+	+ Made the perfect-forwarding constructor SFINAE-friendly, which fixes
+	 [Trac #12002](https://svn.boost.org/trac/boost/ticket/12002).
+	 However, this only works in the newer platforms that correctly implement
+	 C++11 `<type\_traits>`.
+	+ Fixed [Trac
+	 #10445](https://svn.boost.org/trac/boost/ticket/10445).
+* [Regex](/libs/regex/):
+
+	+ Change to lockfree implementation of memory cache, see [PR#23](https://github.com/boostorg/regex/pull/23).
+* [Test](/libs/test/):
+
+	+ Boost.test v3.2 see the '[Change
+	 log](/doc/libs/1_61_0/libs/test/doc/html/boost_test/change_log.html)' section for details.
+	+ New features
+	 
+		- dataset driven test-cases learned to support fixtures and variadic
+		 number of arguments
+		- dataset driven test-cases sample types now honor move semantics
+	+ Bug fixes
+	 
+		- [#6767](https://svn.boost.org/trac/boost/ticket/6767), [#8905](https://svn.boost.org/trac/boost/ticket/8905), [#9443](https://svn.boost.org/trac/boost/ticket/9443), [#11854](https://svn.boost.org/trac/boost/ticket/11854)
+		- [#11887](https://svn.boost.org/trac/boost/ticket/11887), [#11889](https://svn.boost.org/trac/boost/ticket/11889), [#11983](https://svn.boost.org/trac/boost/ticket/11983)
+* [Variant](/libs/variant/):
+
+	+ Maintainance fixes.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7.1
+	+ Clang, C++14: 3.7.1, 3.8.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.3, 4.8.4, 4.8.5, 4.9.3, 5.3.0
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 5.2.1, 5.3.1
+	+ Intel: 16.0
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5
+	+ GCC, C++11, mingw: 4.6.4, 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1, 5.2
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7
+	+ GCC: 4.9, 5.3
+* FreeBSD:
+ 
+	+ Clang: 3.4.1, 3.7
+	+ GCC: 4.8.5, 5.3
+* Haiku:
+ 
+	+ GCC, C++11: 4.8.5
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.4, 12.5
+	+ Oracle Solaris Studio, C++11: 12.5
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7.1
+	+ Clang, c++14: 3.7.1, 3.8.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.3, 4.8.5, 4.9.3, 5.3.0, 5.3.1, 6.0.0
+	+ GCC, C++11: 4.4.7
+	+ GCC, C++14: 5.2.1
+	+ Intel: 16.0
+* OS X:
+ 
+	+ Apple Clang: 7.0.2
+	+ G++: 5.3.0
+* Windows:
+ 
+	+ GCC, C++03, mingw: 3.4.5
+	+ GCC, C++11, mingw: 4.6.4, 4.7.3, 4.8.1
+	+ GCC, C++14, mingw: 4.9.3, 5.1, 5.2
+	+ GCC, cygwin: 5.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0
+* Android:
+ 
+	+ Clang: 3.6, 3.7
+	+ GCC: 4.9, 5.3, 6.0
+* FreeBSD:
+ 
+	+ Clang: 3.41, 3.7.0
+	+ GCC, C++11: 4.8.5, 5.3.0, 6.0
+	+ GCC: 6.0
+* Haiku:
+ 
+	+ GCC, C++11: 4.8.5
+* QNX:
+ 
+	+ QCC: 4.4.2
+* SunOS:
+ 
+	+ Oracle Solaris Studio: 12.4, 12.5
+	+ Oracle Solaris Studio, C++11: 12.5
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

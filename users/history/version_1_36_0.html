@@ -1,0 +1,253 @@
+---
+title: Version 1.36.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.36.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.36.0
+==============
+
+Version 1.36.0
+--------------
+
+
+August 14th, 2008 12:00 GMT
+
+
+[Documentation](/doc/libs/1_36_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_36\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.36.0/boost_1_36_0.tar.bz2) |
+| [boost\_1\_36\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.36.0/boost_1_36_0.tar.gz) |
+| windows | [boost\_1\_36\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.36.0/boost_1_36_0.7z) |
+| [boost\_1\_36\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.36.0/boost_1_36_0.zip) |
+
+
+### New Libraries
+
+
+* [Accumulators](/libs/accumulators/index.html): Framework
+ for incremental calculation, and collection of statistical accumulators,
+ from Eric Niebler.
+* [Exception](/libs/exception/doc/boost-exception.html):
+ A
+ library for transporting of arbitrary data in exception objects, and transporting
+ of exceptions between threads, from Emil Dotchevski.
+* [Units](/libs/units/index.html):
+ Zero-overhead
+ dimensional analysis and unit/quantity manipulation and conversion, from
+ Matthias Schabel and Steven Watanabe
+* [Unordered](/libs/unordered/index.html):
+ Unordered
+ associative containers, from Daniel James.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/index.html):
+
+	+ Added support for serial ports.
+	+ Added support for UNIX domain sockets.
+	+ Added support for raw sockets and ICMP.
+	+ Added wrappers for POSIX stream-oriented file descriptors (excluding
+	 regular files).
+	+ Added wrappers for Windows stream-oriented `HANDLE`s
+	 such as named pipes (requires `HANDLE`s
+	 that work with I/O completion ports).
+	+ Added wrappers for Windows random-access `HANDLE`s
+	 such as files (requires `HANDLE`s
+	 that work with I/O completion ports).
+	+ Added support for reactor-style operations (i.e. they report readiness
+	 but perform no I/O) using a new `null\_buffers`
+	 type.
+	+ Added an iterator type for bytewise traversal of buffer sequences.
+	+ Added new `read\_until()` and `async\_read\_until()` overloads that take a user-defined
+	 function object for locating message boundaries.
+	+ Added an experimental two-lock queue (enabled by defining `BOOST\_ASIO\_ENABLE\_TWO\_LOCK\_QUEUE`)
+	 that may provide better `io\_service`
+	 scalability across many processors.
+	+ Various fixes, performance improvements, and more complete coverage
+	 of the custom memory allocation support.
+* [Assign](/libs/assign/index.html):
+`list\_of()`
+ (and its variants) now has overloaded comparison operators. This allows
+ you to write test code such as `BOOST\_CHECK\_EQUAL( my\_container, list\_of(2)(3)(4)(5)
+);`.
+* [Circular Buffer](/libs/circular_buffer/index.html):
+
+	+ Default constructor now doesn't allocate memory, and sets the capacity
+	 of the buffer to 0
+* [Foreach](/libs/foreach/index.html): `BOOST\_FOREACH` macro for easily iterating
+ over the elements of a sequence, from Eric Niebler.
+ 
+	+ New `BOOST\_REVERSE\_FOREACH`
+	 macro for iterating over a sequence in reverse.
+* [Function](/libs/function/index.html):
+
+	+ Improved allocator support, from Emil Dotchevski.
+* [Hash](/libs/functional/hash/index.html):
+ Minor
+ updates and fixes, for more info see the [change
+ log](/doc/html/hash/changes.html#hash.changes.boost_1_36_0).
+* [Interprocess](/libs/interprocess/index.html):
+
+	+ Added anonymous shared memory for UNIX systems.
+	+ Fixed missing move semantics on managed memory classes.
+	+ Added copy\_on\_write and open\_read\_only options for shared memory
+	 and mapped file managed classes.
+	+ `shared\_ptr` is movable
+	 and supports aliasing.
+* [Intrusive](/libs/intrusive/index.html):
+
+	+ Added `linear<>`
+	 and `cache\_last<>`
+	 options to singly linked lists.
+	+ Added `optimize\_multikey<>` option to unordered container
+	 hooks.
+	+ Optimized unordered containers when `store\_hash`
+	 option is used in the hook.
+	+ Implementation changed to avoid explicit use of `try`-`catch` blocks and be compilable with
+	 exceptions disabled.
+* [Math](/libs/math/doc/sf_and_dist/html/index.html):
+
+	+ Added new non-central Chi-Square, Beta, F and T distributions.
+	+ Added Exponential Integral and Zeta special functions.
+	+ Added Rounding, Truncation, and Unit-in-the-last-place functions.
+	+ Added support for compile time powers of a runtime base.
+	+ Added a few SSE2 based optimisations for the Lanczos approximations.
+* [MPI](/doc/html/mpi.html):
+
+	+ Added support for non-blocking operations in Python, from Andreas
+	 Klöckner.
+	+ Added support for graph topologies.
+* [Multi-index Containers](/libs/multi_index/doc/index.html):
+ Minor
+ additions and maintenance fixes. Consult the library [release
+ notes](/libs/multi_index/doc/release_notes.html#boost_1_36) for further information.
+* [PtrContainer](/libs/ptr_container/index.html):
+ Support
+ for a few more containers, and addition of insert iterators. For details
+ see [upgrading
+ details](/libs/ptr_container/doc/ptr_container.html#upgrading-from-boost-v-1-35).
+* [Spirit](/libs/spirit/index.html):
+ Integrated the
+ "Classic" Spirit V1.8.x code base with Spirit V2, "The New
+ Generation". See [Change
+ Log](/libs/spirit/classic/change_log.html).
+* [Thread](/libs/thread/index.html):
+
+	+ New generic `lock`
+	 and `try\_lock` functions
+	 for locking multiple mutexes at once.
+	+ Rvalue reference support for move semantics where the compilers supports
+	 it.
+	+ A few bugs fixed and missing functions added (including the serious
+	 win32 condition variable bug).
+	+ `scoped\_try\_lock` types
+	 are now backwards-compatible with Boost 1.34.0 and previous releases.
+	+ Support for passing function arguments to the thread function by
+	 supplying additional arguments to the `thread`
+	 constructor.
+	+ Backwards-compatibility overloads added for `timed\_lock`
+	 and `timed\_wait` functions
+	 to allow use of `xtime`
+	 for timeouts.
+* [Wave](/libs/wave/index.html):
+
+	+ Wave V2.0 is a new major release introducing some breaking API changes,
+	 preventing it to be used with Boost versions earlier than V1.36.0.
+	 Mainly, the API and hook interface have been streamlined for more
+	 consistency.
+	+ Fixed a couple of bugs, improved regression test system to include
+	 testing of the preporcessing hooks interface (for details see: [Changelog](/libs/wave/ChangeLog)).
+* [Xpressive](/libs/xpressive/index.html):
+ Regular
+ expressions that can be written as strings or as expression templates,
+ and that can refer to each other and themselves recursively with the power
+ of context-free grammars, from Eric Niebler.
+ 
+	+ `skip()`
+	 for specifying which parts of the input sequence to ignore when matching
+	 it against a regex.
+	+ `regex\_replace()`
+	 accepts formatter objects and formatter expressions in addition to
+	 format strings.
+	+ Range-based `regex\_replace()` algorithm.
+	+ Fix crash when semantic actions are placed in look-aheads, look-behinds
+	 or independent sub-expressions.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* GCC 4.01 on Mac OS X 10.4.10 with both Intel and Power PC
+* GCC 4.2.3 on Ubuntu Linux 8.04.1
+* HP C/aC++ B3910B A.06.17 on HP-UX 64-bit
+* Visual C++ 9.0 SP1 beta, 8.0 SP1, and 7.1, all on Windows XP SP-2
+ Boost's additional test compilers include:
+ 
+
+
+* GCC 4.2.1 on FreeBSD-7
+* GCC 4.1.2 on NetBSD
+* HP aCC on OS: HP-UX B.11.31 U ia64 and HP-UX B.11.31 9000/800 RISC
+* IBM XL C/C++ Enterprise Edition for AIX, V10.1.0.0, on AIX Version 5.3.0.40
+* Intel 9.1, 10.0, and 10.1, on Mac OS X 10.4.1
+* Compaq C++ V7.1-006 for Compaq Tru64 Unix on an OSF1 V5.1 platform.
+* Sun C++ 5.7, 5.8, 5.9 and GCC 3.4.6 on Sun Solaris 5.10.
+* On Linux:
+ 
+	+ GCC 3.4.3, 4.0.1, 4.2.1, 4.3.0.
+	+ GCC 4.3.0 with C++0x extensions.
+	+ GCC 3.4.6, 4.1.1, 4.2.1 on 64 bit linux.
+	+ Intel C++ 8.1, 9.0 and 9.1.
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.1
+	+ pgCC 7.2-3 64-bit target on x86-64 Linux
+* On Windows:
+ 
+	+ Intel 10.1, with Visual C++ 9 backend.
+	+ Lots of tests on Visual C++ 7.1, 8.0, 9.0
+	+ Visual C++ 7.1 with Apache C++ Standard Library 4.2.x branch.
+	+ Visual C++ 8.0 with STLport 5.1
+	+ Visual C++ 8.0 with STLport 5.1 cross-compiling for Windows Mobile
+	 5.0 Pocket PC SDK (ARMV4I).
+	+ Borland 5.6.4, 5.8.2, 5.9.3
+	+ 64 bit Intel 10.1, with Visual C++ 9 backend.
+	+ 64 bit Visual C++ 9.
+	+ Comeau C++ 4.3.10.1 beta 2, with Visual C++ 9 backend.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), [Rene
+ Rivera](/users/people/rene_rivera.html), and Daniel James managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

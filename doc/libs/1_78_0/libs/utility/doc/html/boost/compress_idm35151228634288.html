@@ -1,0 +1,106 @@
+---
+title: Class template compressed_pair<T, T>
+copyright: 
+revised: 
+---
+
+
+Class template compressed\_pair<T, T>
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../index.html) | [Libraries](../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](compressed_pair.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](../utility/utilities/in_place_factory.html)
+
+Class template compressed\_pair<T, T>
+-------------------------------------
+
+
+boost::compressed\_pair<T, T>
+Synopsis
+--------
+```
+// In header: <[boost/detail/compressed\_pair.hpp](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp "Header <boost/detail/compressed_pair.hpp>")>
+
+template<typename T> 
+class [compressed\_pair](compress_idm35151228634288.html "Class template compressed_pair<T, T>")<T, T> {
+public:
+  // types
+  typedef T                                           first\_type;            
+  typedef T                                           second\_type;           
+  typedef call\_traits< first\_type >::param\_type       first\_param\_type;      
+  typedef call\_traits< second\_type >::param\_type      second\_param\_type;     
+  typedef call\_traits< first\_type >::reference        first\_reference;       
+  typedef call\_traits< second\_type >::reference       second\_reference;      
+  typedef call\_traits< first\_type >::const\_reference  first\_const\_reference; 
+  typedef call\_traits< second\_type >::const\_reference second\_const\_reference;
+
+  // [construct/copy/destruct](compress_idm35151228634288.html#boost.compress_idm35151228634288construct-copy-destruct)
+  [compressed\_pair](compress_idm35151228634288.html#idm35151228688304-bb)();
+  [compressed\_pair](compress_idm35151228634288.html#idm35151228688048-bb)(first\_param\_type, second\_param\_type);
+  explicit [compressed\_pair](compress_idm35151228634288.html#idm35151228686768-bb)(first\_param\_type);
+
+  // [public member functions](compress_idm35151228634288.html#idm35151228627632-bb)
+  first\_reference [first](compress_idm35151228634288.html#idm35151228627248-bb)();
+  first\_const\_reference [first](compress_idm35151228634288.html#idm35151228626608-bb)() const;
+  second\_reference [second](compress_idm35151228634288.html#idm35151228625840-bb)();
+  second\_const\_reference [second](compress_idm35151228634288.html#idm35151228625200-bb)() const;
+  void [swap](compress_idm35151228634288.html#idm35151228624432-bb)(::[boost::compressed\_pair](compressed_pair.html "Class template compressed_pair")< T, T > &);
+};
+```
+
+
+Description
+-----------
+### 
+`compressed_pair` 
+ public
+ construct/copy/destruct
+
+
+1. ```
+compressed\_pair();
+```
+2. ```
+compressed\_pair(first\_param\_type x, second\_param\_type y);
+```
+3. ```
+explicit compressed\_pair(first\_param\_type x);
+```
+### 
+`compressed_pair` public member functions
+
+
+1. ```
+first\_reference first();
+```
+2. ```
+first\_const\_reference first() const;
+```
+3. ```
+second\_reference second();
+```
+4. ```
+second\_const\_reference second() const;
+```
+5. ```
+void swap(::[boost::compressed\_pair](compressed_pair.html "Class template compressed_pair")< T, T > & y);
+```
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../doc/src/images/prev.png)](compressed_pair.html)[![Up](../../../../../doc/src/images/up.png)](../utility/utilities/compressed_pair.html#header.boost.detail.compressed_pair_hpp)[![Home](../../../../../doc/src/images/home.png)](../index.html)[![Next](../../../../../doc/src/images/next.png)](../utility/utilities/in_place_factory.html)

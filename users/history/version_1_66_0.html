@@ -1,0 +1,481 @@
+---
+title: Version 1.66.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.66.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.66.0
+==============
+
+Version 1.66.0
+--------------
+
+
+December 18th, 2017 13:58 GMT
+
+
+[Documentation](/doc/libs/1_66_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_66\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.66.0/source/boost_1_66_0.tar.bz2) | 5721818253e6a0989583192f96782c4a98eb6204965316df9f5ad75819225ca9 |
+| [boost\_1\_66\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.66.0/source/boost_1_66_0.tar.gz) | bd0df411efd9a585e5a2212275f8762079fed8842264954675a4fddc46cfcf60 |
+| windows | [boost\_1\_66\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.66.0/source/boost_1_66_0.7z) | 596389389c005814ecb2a6b64c31dccd2c3e6fbc5a802b4dfada999ae5844628 |
+| [boost\_1\_66\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.66.0/source/boost_1_66_0.zip) | e1c55ebb00886c1a96528e4024be98a38b815115f62ecfe878fcf587ba715aad |
+
+
+### Third Party Downloads
+
+
+* [Windows Binaries](https://boostorg.jfrog.io/artifactory/main/release/1.66.0/binaries/)
+
+
+### Note about
+ the new Visual Studio release
+ Visual Studio 15.5 was released too late for us to test this release with it.
+ 
+
+### New Libraries
+
+
+* [Beast](/libs/beast/):
+ Portable HTTP, WebSocket,
+ and network operations using only C++11 and Boost.Asio, from Vinnie Falco.
+* [CallableTraits](/libs/callable_traits/):
+ A spiritual
+ successor to Boost.FunctionTypes, Boost.CallableTraits is a header-only
+ C++11 library for the compile-time inspection and manipulation of all 'callable'
+ types. Additional support for C++17 features, from Barrett Adair.
+* [Mp11](/libs/mp11/):
+ A C++11 metaprogramming library,
+ from Peter Dimov.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Implemented interface changes to reflect the Networking TS ([N4656](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4656.pdf)).
+	 
+		- See the [list](/doc/libs/1_66_0/doc/html/boost_asio/net_ts.html)
+		 of new interfaces and, where applicable, the corresponding
+		 old interfaces that have been superseded.
+		- The service template parameters, and the corresponding classes,
+		 are disabled by default. For example, instead of `basic\_socket<Protocol,
+		SocketService>`
+		 we now have simply `basic\_socket<Protocol>`. The old interface can
+		 be enabled by defining the `BOOST\_ASIO\_ENABLE\_OLD\_SERVICES`
+		 macro.
+	+ Removed previously deprecated functions.
+	+ Added support for customised handler tracking.
+	+ Added reactor-related (i.e. descriptor readiness) events to handler
+	 tracking.
+	+ Added special "concurrency hint" values that may be used
+	 to disable locking on a per `io\_context`
+	 basis.
+	+ Enabled perfect forwarding for the first `ssl::stream<>` constructor argument.
+	+ Added ability to release ownership of the underlying native socket.
+	 (Requires Windows 8.1 or later when using the I/O completion port
+	 backend.)
+* [Atomic](/libs/atomic/):
+
+	+ Implemented a set of experimental extended atomic operations for
+	 integral types:
+	 
+		- `fetch\_negate`,
+		 `fetch\_complement`
+		 - atomically replaces the value with a negated or binary complemented
+		 value and returns the original value
+		- `opaque\_<op>`
+		 - equivalent to `fetch\_<op>` except that it doesn't
+		 return the original value
+		- `<op>\_and\_test`
+		 - atomically applies `<op>`
+		 and returns `true`
+		 if the result is zero. **Note:**
+		 The result of these operations will change to the opposite
+		 in Boost 1.67. The code that uses these functions will need
+		 to be updated.
+		- `bit\_test\_and\_set`,
+		 `bit\_test\_and\_reset`,
+		 `bit\_test\_and\_complement`
+		 - atomically sets, resets or complements the specified bit
+		 and returns the original value of the bit
+	+ Following C++17 ([P0558R1](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0558r1.pdf)),
+	 arithmetic operations for pointers to non-object types are no longer
+	 provided.
+	+ Also following C++17 exposed `atomic<T>::value\_type`
+	 and `atomic<T>::difference\_type` member typedefs,
+	 where applicable, to the user's code.
+	+ Improved compatibility with gcc 7. In particular, using 128-bit operations
+	 on x86-64 should no longer require linking with libatomic (the compiler-supplied
+	 library).
+* [DateTime](/libs/date_time/):
+
+	+ The library has been converted to use Boost.WinAPI as the abstraction
+	 layer for Windows SDK.
+	+ Fixed an integral overflow that could cause incorrect results when
+	 adding or subtracting many years from a date (see [here](https://stackoverflow.com/questions/45537280/boost-datetime-issue-with-adding-long-year-durations)).
+* [Fiber](/libs/fiber/):
+
+	+ synchronization with CUDA streams
+	+ synchronization with ROCm/HIP streams
+* [Format](/libs/format/):
+
+	+ Improvements:
+	 
+		- Accept new conversion specifiers:
+		 
+			* [`a`](https://github.com/boostorg/format/pull/41): sets flags
+			 `fixed | scientific`
+			 (i.e. `hexfloat`)
+			* [`b`](https://github.com/boostorg/format/pull/43): sets flag
+			 `boolalpha`
+			* [`A`](https://github.com/boostorg/format/pull/41): same as
+			 `a` plus
+			 flag `uppercase`
+			* [`F`](https://github.com/boostorg/format/pull/41): same as
+			 `f` plus
+			 flag `uppercase`
+		- [42](https://github.com/boostorg/format/pull/42)
+		 Accept new argument types `j`
+		 and `z` from
+		 ISO C99 (parsed and ignored like all others).
+		- [44](https://github.com/boostorg/format/pull/44)
+		 Accept new argument types `I`,
+		 `I32`, `I64`, and `w`
+		 from Microsoft (parsed and ignored like all others).
+		- [33](https://github.com/boostorg/format/issues/33)
+		 Added a development tool called `format\_matrix`
+		 that exercises as many different combinations of format strings
+		 as possible and logs them to a file:
+		 
+			* helps prevent regressions in between boost releases
+			* allows for comparison against `snprintf`
+	+ Bugfixes:
+	 
+		- [36](https://github.com/boostorg/format/issues/36)
+		 Safely allow volatile arguments to be used with operator%
+		- [4636](https://svn.boost.org/trac10/ticket/4636)
+		 Explicit clamping provided to allow MSVC /RTCc to succeed
+		- [7477](https://svn.boost.org/trac10/ticket/7477)
+		 Fix compatibility with MSVC /Za
+		- [10324](https://svn.boost.org/trac10/ticket/10324)
+		 Const-correct cast issue resolved
+		- [11632](https://svn.boost.org/trac10/ticket/11632)
+		 Fix `-fsanitize=undefined`
+		 issue in `alt\_sstream.hpp`
+* [Fusion](/libs/fusion/):
+
+	+ [PR#149](https://github.com/boostorg/fusion/pull/149)
+	`isspace(c)`
+	 is not a macro in Dinkum clib for VxWorks, thanks to Brian Kuhl(@kuhlenough).
+	+ [PR#150](https://github.com/boostorg/fusion/pull/150)
+	 Remove circular preprocessor include, thanks to Gregor Jasny(@gjasny).
+	+ [PR#151](https://github.com/boostorg/fusion/pull/151)
+	 Change base of `fusion::tuple`.
+	+ [PR#153](https://github.com/boostorg/fusion/pull/153)
+	 Fixed compile error with `std::array`.
+	+ [PR#154](https://github.com/boostorg/fusion/pull/154)
+	 Fixed bugs nesting and copying on c++03.
+* [Geometry](/libs/geometry/):
+
+	+ Improvements:
+	 
+		- Add distance for geographic PointLike/AnyGeometry.
+	+ Bugfixes:
+	 
+		- Fixes in results of union/intersection/difference which could
+		 be incorrect in very complex cases
+		- Fixes in validity of union/intersection/difference/buffer
+		- Fixes in set and relational operations for non-cartesian coordinate
+		 systems.
+* [Iterator](/libs/iterator/):
+
+	+ `next()`/`prior()`
+	 functions now support user's iterators that don't specify nested
+	 types such as `iterator\_category`,
+	 `difference\_type`,
+	 etc. and instead specialize `std::iterator\_traits`
+	 to define those types. The compiler must support C++17-compatible
+	 `std::iterator\_traits` for this to work.
+* [Log](/libs/log/):
+
+	+ Bug fixes:
+	 
+		- Fixed a bug in `file\_collector::scan\_for\_files`
+		 that could cause incorrectly named log files in the target
+		 directory after the user's application restart.
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/):
+
+	+ New Features:
+	 
+		- Add Gauss and Gauss-Kronrod quadrature routines.
+		- Add double-exponential (tanh-sinh, exp-sinh and sinh-sinh)
+		 quadrature routines.
+		- Add Chebyshev polynomial evaluation, roots, integration, differentiation,
+		 and interpolation routines.
+* [Multi-index Containers](/libs/multi_index/index.html):
+
+	+ Made `modify` and
+	 `modify\_key` more robust
+	 so that the modified element is erased if the modifier throws or
+	 the rollback functor does not properly restore the element (full
+	 discussion at ticket [#12542](https://svn.boost.org/trac/boost/ticket/12542)). This is technically backwards
+	 incompatible; for instance, the following code:
+	 
+	
+	```
+	c.modify(c.begin(),[](auto&){throw 0;});
+	
+	```
+	
+	
+	 keeps the container `c`
+	 untouched in former versions of Boost whereas now `c.begin()` is erased. Thanks to Jon Kalb for
+	 raising the issue.
+	+ Maintenance fixes.
+* [Optional](/libs/optional/index.html):
+
+	+ On newer compilers `optional`
+	 is now trivially-copyable for scalar `T`s.
+	 This uses a different storage (just `T`
+	 rather than `aligned\_storage`).
+	 We require the compiler to support defaulted functions.
+	+ Changed the implementation of `operator==` to get rid of the `-Wmaybe-uninitialized`
+	 false-positive warning from GCC.
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Boost.PolyCollection has been backported to GCC 4.8 to 4.9 and Clang
+	 3.3 to 3.6. The version of libstdc++-v3 shipped with GCC 4.8 (which
+	 can also be used by Clang) has deficiencies that result in the following
+	 limitations when using Boost.PolyCollection:
+	 
+		- Stateful allocators are not properly supported.
+		- Allocator-extended move construction decays to allocator-extended
+		 copy construction.
+		- Copy construction crashes if an exception is thrown during
+		 element copying.
+	+ Maintenance fixes.
+* [Predef](/libs/predef/):
+
+	+ Improved Windows Universal Platform detection. (from James E. King,
+	 III)
+	+ Add detection for CloudABI with cloudlibc. (from James E. King, III)
+	+ Various other bug fixes.
+* [Regex](/libs/regex/):
+
+	+ Bug fixes:
+	 
+		- Numerous small fixes for security issues discovered by de-fuzzing.
+* [Stacktrace](/libs/stacktrace/):
+
+	+ Now works out-of-the-box on MinGW-w64.
+	+ Now works on MinGW (without `-w64`) if `libbacktrace`
+	 is properly installed. See "MinGW specific notes" section
+	 in documentation for more info.
+* [Thread](/libs/thread/):
+
+	+ Bugs Fixes
+	 
+		- [#12323](http://svn.boost.org/trac/boost/ticket/12323)
+		 windows - boost/thread/win32/mfc\_thread\_init.hpp has wrong
+		 signature for \_pRawDllMainOrig
+		- [#12730](http://svn.boost.org/trac/boost/ticket/12730)
+		 windows - static threads library is incompatible with MSVC
+		 2017 RC
+		- [#12976](http://svn.boost.org/trac/boost/ticket/12976)
+		 Boost Thread Executors documentation mistakes
+		- [#12949](http://svn.boost.org/trac/boost/ticket/12949)
+		 using sleep\_for in a thread context without including boost/thread/thread.hpp
+		 yields incorrect behaviour when BOOST\_THREAD\_HAS\_CONDATTR\_SET\_CLOCK\_MONOTONIC
+		 is defined
+		- [#13019](http://svn.boost.org/trac/boost/ticket/13019)
+		 ABI compatibility for BOOST\_THREAD\_PROVIDES\_INTERRUPTIONS incomplete
+		- [#13069](http://svn.boost.org/trac/boost/ticket/13069)
+		 Boost unit test "sync\_pq\_multi\_thread\_p\_lib.exe"
+		 hung in thread library
+		- [#13163](http://svn.boost.org/trac/boost/ticket/13163)
+		 boost::detail::heap\_new does not have a variadic variant
+		- [#13226](http://svn.boost.org/trac/boost/ticket/13226)
+		 getpagesize() is deprecated since 199506L
+		- [#132](https://github.com/boostorg/thread/issues/132)
+		 VS 2017.4 Preview deadlocks on Test 10964
+		- [#133](https://github.com/boostorg/thread/issues/133)
+		 windows - Spurious timing test failures on windows
+		- [#134](https://github.com/boostorg/thread/issues/134)
+		 VS 2017.4 Preview deadlock in sync\_pq\_multi\_thread\_p\_lib.exe
+		- [#135](https://github.com/boostorg/thread/issues/135)
+		 VS 2017.4 Preview test\_scheduled\_tp\_p.exe deadlock
+		- [#136](https://github.com/boostorg/thread/issues/136)
+		 VS 2017.4 Preview test\_scheduler\_p.exe deadlock
+		- [#137](https://github.com/boostorg/thread/issues/137)
+		 VS 2017.4 Preview executor\_ex.exe deadlock
+		- [#143](https://github.com/boostorg/thread/issues/143)
+		 Failures on msvc-12.0
+		- [#145](https://github.com/boostorg/thread/issues/145)
+		 Clang build error with BOOST\_THREAD\_ATTRIBUTE\_MAY\_ALIAS
+	+ New Experimental Feature
+	 
+		- [#116](https://github.com/boostorg/thread/issues/116)
+		 [Proposal] Add APIs for deferred set\_value/exception
+* [Utility](/libs/utility/):
+
+	+ `boost/next\_prior.hpp` has been moved to Boost.Iterator.
+	 No changes needed to the user's code.
+* [Uuid](/libs/uuid/):
+
+	+ Improvements:
+	 
+		- [26](https://github.com/boostorg/uuid/issues/26)
+		 Refactored `name\_generator`
+		 to support a configurable hash provider concept and provide
+		 an optional MD5 hash implementation per RFC-4122. This will
+		 make it easier to support whatever becomes the next standard
+		 hash algorithm.
+		- [34](https://github.com/boostorg/uuid/issues/34)
+		 Added RFC-4122 namespaces in `boost::uuids::ns`.
+	+ Bugfixes:
+	 
+		- [8630](https://svn.boost.org/trac10/ticket/8630)
+		[11482](https://svn.boost.org/trac10/ticket/11482)
+		[12253](https://svn.boost.org/trac10/ticket/12253)
+		 Various deficiencies in `string\_generator`
+		 were resolved.
+		- [10665](https://svn.boost.org/trac10/ticket/10665)
+		`name\_generator::operator()` is now const, matching docs.
+		- Detail headers were moved into the detail subdirectory. No
+		 changes needed to user's code, however you may get build warnings
+		 if you use the old header location.
+* [Variant](/libs/variant/):
+
+	+ `boost::apply\_visitor` now does perfect
+	 forwarding of visitables [#6971](https://svn.boost.org/trac/boost/ticket/6971). Great thanks to Levon Tarakchyan
+	 for implementing this feature.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 5.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 5.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.1
+	+ Clang, C++17: 5.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.2, 5.4.0, 7.2.0
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.2, 4.7.3, 4.8.5, 4.9.4, 6.4.0, 7.1.0, 7.2.0
+	+ GCC, C++14: 5.4.1, 6.3.0, 6.4.0, 7.1.0, 7.2.0, 7.2.1
+	+ GCC, C++17: 7.2.0
+	+ Intel: 18.0
+* OS X:
+ 
+	+ Clang: 9.0.0
+	+ Clang, C++11: 9.0.0
+	+ Clang, C++14: 9.0.0
+	+ Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* Android:
+ 
+	+ Clang: 3.6, 3.7, 3.8
+	+ GCC: 4.9, 5.4
+	+ GCC, C++14: 6.2
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+* QNX:
+ 
+	+ QCC, C++0x: 4.4.2
+	+ QCC, C++11: 4.7.3
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 4.0.1, 5.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 5.0.1
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.1
+	+ Clang, C++17: 5.0.1
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.7.2, 5.4.0, 7.2.0
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.2, 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 7.2.0
+	+ GCC, C++14: 5.4.1, 6.3.0, 6.4.0, 7.1.0, 7.2.0, 7.2.1, 8.0.0
+	+ GCC, C++17: 7.2.0
+	+ Intel: 18.0
+* OS X:
+ 
+	+ Clang: 9.0.0
+	+ Clang, C++11: 9.0.0
+	+ Clang, C++14: 9.0.0
+	+ Clang, C++1z: 9.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0, 7.1.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* Android:
+ 
+	+ Clang: 3.6, 3.7, 3.8
+	+ GCC: 4.9, 5.4
+	+ GCC, C++14: 6.2
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+* QNX:
+ 
+	+ QCC, C++0x: 4.4.2
+	+ QCC, C++11: 4.7.3
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Daniel James,
+ Vladimir Prus and Marshall Clow managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

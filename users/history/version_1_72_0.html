@@ -1,0 +1,526 @@
+---
+title: Version 1.72.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.72.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.72.0
+==============
+
+Version 1.72.0
+--------------
+
+
+December 11th, 2019 18:06 GMT
+
+
+[Documentation](/doc/libs/1_72_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_72\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.72.0/source/boost_1_72_0.tar.bz2) | 59c9b274bc451cf91a9ba1dd2c7fdcaf5d60b1b3aa83f2c9fa143417cc660722 |
+| [boost\_1\_72\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.72.0/source/boost_1_72_0.tar.gz) | c66e88d5786f2ca4dbebb14e06b566fb642a1a6947ad8cc9091f9f445134143f |
+| windows | [boost\_1\_72\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.72.0/source/boost_1_72_0.7z) | 247a91dd7e4d9dd3c4b954b532fbc167ba62dc15ab834e5ad893d7c3f9eb5f0f |
+| [boost\_1\_72\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.72.0/source/boost_1_72_0.zip) | 8c20440aaba21dd963c0f7149517445f50c62ce4eb689df2b5544cc89e6e621e |
+
+
+### Known Issues
+ These are patches from library authors which were found too late to be fixed
+ in the release. Be careful as they have not been through the normal testing
+ process.
+ 
+
+
+* Revert cease dependence on range
+ 
+	+ [Coroutine
+	 patch](/patches/1_72_0/0001-revert-cease-dependence-on-range.patch)
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Changed the `async\_initiate`
+	 helper function to automatically deduce its return type, for C++11
+	 or later.
+	+ Changed all asynchronous operations to use automatically deduced
+	 return types, for C++14 or later.
+	+ Introduced concepts to support `async\_initiate`.
+	+ Added the nested template type `rebind\_executor`
+	 to all I/O object types.
+	+ Changed the initiation function objects to report their associated
+	 I/O executor via the nested type `executor\_type`
+	 and member function `get\_executor()`.
+	+ Added the `default\_completion\_token`
+	 trait, giving I/O executor types an associated default completion
+	 token type for use with asynchronous operations. This trait is specialised
+	 for the `use\_awaitable`
+	 completion token, for example, to allow asynchronous operations to
+	 be used as follows: `co\_await
+	socket.async\_connect(my\_endpoint)`.
+	+ Added missing `async\_initiate`
+	 to the Windows-specific I/O objects' asynchronous operations.
+	+ Ensured that the executor type is propagated to newly accepted sockets.
+	+ Changed to require that `Protocol`
+	 copy and move operations never throw.
+	+ Changed to require that `Endpoint`
+	 default constructor and move operations never throw.
+	+ Added the `noexcept` qualifier
+	 to protocol accessors.
+	+ Added the `noexcept` qualifier
+	 to socket move constructors.
+	+ Fixed issues associated with opening serial ports on Windows:
+	 
+		- Use the correct constant to initialise the RTS control flag.
+		- Specify a default baud rate (9600).
+	+ Fixed a lost "outstanding work count" that can occur when
+	 an asynchronous accept operation is automatically restarted.
+	+ Consult the [Revision
+	 History](/doc/libs/1_72_0/doc/html/boost_asio/history.html) for further details.
+* [Atomic](/libs/atomic/):
+
+	+ Added a workaround for `\_\_float128`
+	 not being considered as a floating point type by some versions of
+	 libstdc++.
+	+ Improved compatibility with clang-win compiler.
+* [Beast](/libs/beast/):
+
+	+ This is a maintenance update containing bug fixes, and updates to
+	 use the new features delivered in Boost.Asio.
+	+ We'd love to know how you or your company use Beast, consider adding
+	 an entry to the [Companies
+	 and Individuals Using Beast](https://github.com/boostorg/beast/wiki/Companies-and-Individuals-Using-Beast) list.
+	+ See the full [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html) for a complete list of changes.
+* [Circular Buffer](/libs/circular_buffer/):
+
+	+ Fix issue [#29](https://github.com/boostorg/circular_buffer/issues/29): `max\_size()` now takes the allocator's `max\_size()`
+	 into account. (Glen Fernandes)
+* [Context](/libs/context/):
+
+	+ architecture s390x supported
+	+ execution\_context removed
+* [Endian](/libs/endian/):
+
+	+ Made `endian\_reverse`,
+	 `conditional\_reverse`
+	 and `\*\_to\_\*` `constexpr`
+	 on GCC and Clang
+	+ Added convenience load and store functions
+	+ Added floating point convenience typedefs
+	+ Added a non-const overload of `data()`; changed its return type to `unsigned char\*`
+	+ Added `\_\_int128` support
+	 to `endian\_reverse`
+	 when available
+	+ Added a convenience header `boost/endian.hpp`
+* [Filesystem](/libs/filesystem/):
+
+	+ Extracted `filesystem\_error`
+	 to `exception.hpp`; `file\_status`
+	 and associated enums and functions to `file\_status.hpp`;
+	 `directory\_entry`,
+	 `directory\_iterator`
+	 and `recursive\_directory\_iterator`
+	 to `directory.hpp`.
+	+ **Deprecated:** For backward compatibility
+	 `operations.hpp` still includes the new headers
+	 `exception.hpp`, `file\_status.hpp`
+	 and `directory.hpp`, unless `BOOST\_FILESYSTEM\_NO\_DEPRECATED`
+	 macro is defined. These implicit includes are considered deprecated
+	 and will be removed in a future release. Users are encouraged to
+	 include the new headers directly or include `filesystem.hpp`.
+	+ The `filesystem\_error`
+	 exception is now implemented in the compiled library of Boost.Filesystem.
+	 Users may need to add linking with Boost.Filesystem library in their
+	 projects.
+	+ On POSIX.1-2008 platforms, use `utimensat`
+	 instead of `utime`.
+	 `utime` is declared
+	 obsolete in POSIX.1-2008 and can be disabled e.g. in uClibc-ng. ([PR#115](https://github.com/boostorg/filesystem/pull/115))
+	+ `directory\_iterator`
+	 is now left in the end state on memory allocation errors.
+	+ In `directory\_iterator`
+	 on POSIX systems, support for `readdir`/`readdir\_r` has been reworked to
+	 avoid memory allocations for `dirent`
+	 structures when `readdir`
+	 is used. This reduces memory consumption and eliminates the possibility
+	 of buffer overruns in case if `readdir`
+	 produces a very long directory name.
+	+ On Windows, use Boost.WinAPI to select the target Windows version.
+	+ **New:** Added `directory\_options`
+	 enum, which reflects the same named enum from C++20. The enum is
+	 supported in `directory\_iterator`
+	 and `recursive\_directory\_iterator`
+	 to customize iteration behavior. In particular, the iterators now
+	 support skipping directories that can't be opened due to insufficient
+	 permissions. The `symlink\_option`
+	 enum is now deprecated and should be replaced with `directory\_options`.
+	+ By default, `recursive\_directory\_iterator`
+	 is now reset to the end state in case of errors, as required by C++20.
+	 ([#112](https://github.com/boostorg/filesystem/issues/112))
+	+ **New:** Added `directory\_options::pop\_on\_error`
+	 option, which configures `recursive\_directory\_iterator`
+	 so that it attempts to recover from iteration errors by repeatedly
+	 invoking `pop()`
+	 until it succeeds or the end state is reached. ([#113](https://github.com/boostorg/filesystem/issues/113))
+	+ **New:** Added `directory\_options::skip\_dangling\_symlinks`
+	 option, which configures `recursive\_directory\_iterator`
+	 so that it doesn't follow dangling directory symlinks and continues
+	 iteration instead of reporting an error.
+	+ **Deprecated:** The following members
+	 of `recursive\_directory\_iterator`
+	 are now marked as deprecated: `level()`, `no\_push\_pending()`, `no\_push\_request()`, `no\_push()`. Users are advised to replace their
+	 use with the standard counterparts: `depth()`, `recursion\_pending()`, `disable\_recursion\_pending()`. Note that `recursion\_pending()` has the opposite meaning compared
+	 to `no\_push\_pending()` and `no\_push\_request()`. Deprecated methods will be removed
+	 in a future release.
+	+ Fixed `path::lexically\_relative` (and any dependent
+	 algorithms) to correctly handle empty, dot and dot-dot path elements
+	 in its argument. The behavior is made closer to C++17 `std::path::lexically\_relative` in that empty
+	 and dot path elements are ignored and dot-dot path elements are accounted
+	 by decreasing the number of dot-dot path elements to generate in
+	 the resulting relative path. ([#76](https://github.com/boostorg/filesystem/issues/76))
+* [Functional/Factory](/libs/functional/factory/):
+
+	+ Glen Fernandes rewrote the implementations of `factory`
+	 and `value\_factory`
+	 to provide the following features:
+	 
+		- Support r-value arguments when possible
+		- Support arbitrary number of arguments via variadic templates
+		 when possible
+		- Support allocators that are final
+		- Support allocators that use fancy pointers
+		- Support for disabled exceptions (`BOOST\_NO\_EXCEPTIONS`)
+		- Improved compilation times
+	+ The following features have been removed:
+	 
+		- Increasing limits for C++03 compilers through `BOOST\_FUNCTIONAL\_VALUE\_FACTORY\_MAX\_ARITY`
+		- Using `boost::none\_t`
+		 in place of `void`
+		 through `BOOST\_FUNCTIONAL\_FACTORY\_SUPPORT\_NONE\_T`
+* [GIL](/libs/gil/):
+
+	+ Added
+	 
+		- GSoC 2019: Lanczos resampling for image down scaling ([PR#309](https://github.com/boostorg/gil/pull/309)).
+		- GSoC 2019: Methods for binary thresholding, inverted binary
+		 thresholding and truncation thresholding ([PR#313](https://github.com/boostorg/gil/pull/313)).
+		- GSoC 2019: Otsu thresholding method ([PR#314](https://github.com/boostorg/gil/pull/314)).
+		- GSoC 2019: Adaptive thresholding using mean or gaussian-weighted
+		 sum of the neighbourhood area ([PR#315](https://github.com/boostorg/gil/pull/315)).
+		- GSoC 2019: Harris response calculation (corner detector without
+		 non-maximum filtering) ([PR#350](https://github.com/boostorg/gil/pull/350)).
+		- GSoC 2019: Hessian corner detector ([PR#364](https://github.com/boostorg/gil/pull/364)).
+		- GSoC 2019: Types for defining 2D kernel, `kernel\_2d`
+		 and `kernel\_2d\_fixed`,
+		 in Numeric extension ([PR#361](https://github.com/boostorg/gil/pull/361)).
+		- GSoC 2019: Implementation of 2D convolution as new function
+		 `convolve\_2d`
+		 ([PR#367](https://github.com/boostorg/gil/pull/367)).
+		- GSoC 2019: Box filtering using the average filter ([PR#383](https://github.com/boostorg/gil/pull/383)).
+		- GSoC 2019: Blur function based on normalized mean filter ([PR#383](https://github.com/boostorg/gil/pull/383)).
+		- GSoC 2019: Sobel and Scharr operators ([PR#392](https://github.com/boostorg/gil/pull/392)).
+		- GSoC 2019: Median filter to remove noise from image ([PR#393](https://github.com/boostorg/gil/pull/393)).
+		- Continued adding new test cases and significantly improved
+		 overall test coverage.
+		- Documented purpose of `cached\_location\_t`
+		 ([PR#287](https://github.com/boostorg/gil/pull/287)).
+		- Function `convolve\_1d`
+		 in Numeric extension for convenient use of `convolve\_rows`
+		 and `convolve\_cols`
+		 ([PR#347](https://github.com/boostorg/gil/pull/347)) and [PR#367](https://github.com/boostorg/gil/pull/367)).
+		- Function `extend\_boundary`
+		 in Numeric extension to perform image boundary extension ([PR#386](https://github.com/boostorg/gil/pull/386)).
+		- Project release notes maintained in Markdown file `RELEASES.md` ([PR#404](https://github.com/boostorg/gil/pull/404)).
+	+ Changed
+	 
+		- Move all tests, core features and extensions, inside `test/`
+		 directory ([PR#302](https://github.com/boostorg/gil/pull/302)).
+	+ Removed
+	 
+		- Replace Boost.MPL with Boost.MP11 ([PR#274](https://github.com/boostorg/gil/pull/274)).
+		- Removed use of Boost.TypeTraits ([PR#274](https://github.com/boostorg/gil/pull/274)).
+		- Dropped support for GCC <= 4.8 ([PR#296](https://github.com/boostorg/gil/pull/296)).
+		- Remove `include/boost/gil/version.hpp`
+		 file as unused ([PR#403](https://github.com/boostorg/gil/pull/403)).
+	+ Fixed
+	 
+		- Undetermined value of default-initialized channel and pixel
+		 objects ([PR#273](https://github.com/boostorg/gil/pull/273)).
+		- Undefined behaviour due to `std::is\_trivially\_default\_constructible`
+		 specializations ([PR#284](https://github.com/boostorg/gil/pull/284)).
+		- Crash when reading PNG files with an invalid header ([PR#385](https://github.com/boostorg/gil/pull/385)).
+		- Applied the Rule of Three for numerous types.
+		- Removed uses of deprecated implicit definition of defaulted
+		 copy assignment operator or copy constructor.
+* [Histogram](/libs/histogram/):
+
+	+ Several new features and performance improvements, some bug-fixes
+	+ See the full [Release
+	 Notes](/libs/histogram/doc/html/histogram/history.html) for a complete list of changes
+* [Log](/libs/log/):
+
+	+ Improved compatibility with clang-win compiler.
+* [MPI](/libs/mpi/):
+
+	+ Documentation clarifications.
+	+ Fixed scatterv bug when using explicit input buffer offsets.
+	+ Enable usage of MPI\_Probe and friend with Intel MPI >= 2019.4
+	+ Symbol visibility on Windows
+* [Math](/libs/math/):
+
+	+ Added Hypergeometric functions 1F0, 0F1, 2F0, 1F1 and pFq.
+	+ Added Jacobi polynomial (and derivatives) evaluation.
+	+ Added Gegenbauer polynomial (and derivatives) evaluation.
+	+ Added Cardinal B-Splines (and derivatives) as polynomial functions
+	 in their own right.
+	+ Added Cardinal Trigonometric Interpolation.
+	+ Added new statistics sub-section.
+	+ Added One Sample Student's T Test.
+	+ Added Anderson Darling test for normality.
+	+ Added Ljung Box test for auto-correlation.
+	+ Added Runs test for random sequences.
+	+ The headers `boost/math/tools/univariate\_statistics.hpp`
+	 and `boost/math/tools/bivariate\_statistics.hpp`, have been deprecated in favor
+	 of `boost/math/statistics/univariate\_statistics.hpp` and `boost/math/statistics/bivariate\_statistics.hpp`.
+	+ Added The Empirical CDF distribution.
+	+ Reworked the Sterling approximation used by multiprecision gamma
+	 functions to be applicable to all the function that use the Lanczos
+	 approximation at regular precision. Also extended Lanczos approximations
+	 up to 100 decimal digit precision.
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Big `constexpr` update
+	 allows cpp\_int and float128 arithmetic to be fully `constexpr` with gcc and clang 9 or
+	 later, or any compiler supporting `std::is\_constant\_evaluated()`.
+	+ Fix bug in variable precision mpf\_float which causes it to go into
+	 a tailspin trying to select the correct precision - see https://github.com/boostorg/multiprecision/issues/164.
+* [Outcome](/libs/outcome/):
+
+	+ Enhancements:
+	 
+		- Standalone outcome is now `make
+		install`-able, and
+		 cmake `find\_package()` can find it. Note that you
+		 must separately install and `find\_package()` Outcome's dependency, quickcpplib,
+		 else `find\_package()` of Outcome will fail.
+		- The git submodule mechanism used by standalone Outcome of specifying
+		 dependent libraries has been replaced with a cmake superbuild
+		 of dependencies mechanism instead. Upon cmake configure, an
+		 internal copy of quickcpplib will be git cloned, built and
+		 installed into the build directory from where an internal
+		 `find\_package()` uses it. This breaks the
+		 use of the unconfigured Outcome repo as an implementation of
+		 Outcome, one must now do one of: 1. Add Outcome as subdirectory
+		 to cmake build. 2. Use cmake superbuild (i.e. `ExternalProject\_Add()`)
+		 to build and install Outcome into a local installation. 3.
+		 Use one of the single header editions.
+		- For standalone Outcome, the current compiler is now checked
+		 for whether it will compile code containing C++ Concepts, and
+		 if it does, all cmake consumers of Outcome will enable C++
+		 Concepts. Set the cmake variable `CXX\_CONCEPTS\_FLAGS`
+		 to an empty string to prevent auto detection and enabling of
+		 C++ Concepts support occurring.
+		- `OUTCOME\_TRY`
+		 operation now hints to the compiler that operation will be
+		 successful. [P1886 **Error speed benchmarking**](https://wg21.link/P1886) showed
+		 that there is considerable gain in very small functions by
+		 hinting to the compiler whether the expression is expected
+		 to be successful or not. `OUTCOME\_TRY`
+		 previously did not hint to the compiler at all, but now it
+		 does. A new suite of macros `OUTCOME\_TRY\_FAILURE\_LIKELY`
+		 hint to the compiler that failure is expected. If you wish
+		 to return to the previously unhinted behaviour, define `OUTCOME\_TRY\_LIKELY(expr)`
+		 to `(!!expr)`.
+		- [#199](https://github.com/ned14/outcome/issues/199)
+		 Support for C++ Coroutines has been added. This comes in two
+		 parts, firstly there is now an `OUTCOME\_CO\_TRY()` operation suitable for performing
+		 the `TRY` operation
+		 from within a C++ Coroutine. Secondly, in the header `outcome/coroutine\_support.hpp` there are implementations
+		 of `eager<OutcomeType>`
+		 and `lazy<OutcomeType>`
+		 which let you more naturally and efficiently use `basic\_result` or `basic\_outcome` from within
+		 C++ Coroutines -- specifically, if the result or outcome will
+		 construct from an exception pointer, exceptions thrown in the
+		 coroutine return an errored or excepted result with the thrown
+		 exception instead of throwing the exception through the coroutine
+		 machinery (which in current compilers, has a high likelihood
+		 of blowing up the program). Both `eager<T>` and `lazy<T>` can accept any `T` as well. Both have been
+		 tested and found working on VS2019 and clang 9.
+		- [#210](https://github.com/ned14/outcome/issues/210)
+		`make\_error\_code()` and `make\_exception\_ptr()` are now additionally considered
+		 for compatible copy and move conversions for `basic\_result<>`.
+		 This lets you construct a `basic\_result<T, E>` into a `basic\_result<T, error\_code>`, where `E`
+		 is a custom type which has implemented the ADL discovered free
+		 function `error\_code
+		make\_error\_code(E)`,
+		 but is otherwise unrelated to `error\_code`.
+		 The same availability applies for `exception\_ptr`
+		 with `make\_exception\_ptr()` being the ADL discovered
+		 free function. `basic\_outcome<>` has less support for
+		 this than `basic\_result<>` in order to keep constructor
+		 count down, but it will accept via this mechanism conversions
+		 from `basic\_result<>` and `failure\_type<>`.
+	+ Bug fixes:
+	 
+		- [#184](https://github.com/ned14/outcome/issues/184)
+		 The detection of `[[nodiscard]]`
+		 support in the compiler was very mildly broken.
+* [PolyCollection](/libs/poly_collection/):
+
+	+ Maintenance work.
+* [Preprocessor](/libs/preprocessor/):
+
+	+ Topic added which discusses emptiness
+	+ Support for the C++20 `\_\_VA\_OPT\_\_`
+	 construct
+	 
+		- `BOOST\_PP\_VARIADIC\_HAS\_OPT`
+		 whether `\_\_VA\_OPT\_\_`
+		 is supported at the C++20 level
+		- `BOOST\_PP\_CHECK\_EMPTY`
+		 test for emptiness using `\_\_VA\_OPT\_\_`
+		 at the C++20 level
+		- `BOOST\_PP\_VA\_OPT`
+		 more flexible alternative to `\_\_VA\_OPT\_\_`
+		 at the C++20 level
+* [Smart Pointers](/libs/smart_ptr/):
+
+	+ Implemented `allocate\_unique`
+	 for scalars and arrays. (Glen Fernandes)
+* [Test](/libs/test/):
+
+	+ Boost.test v3.12 see the [Changes
+	 log](/libs/test/doc/html/boost_test/change_log.html) for more details.
+	+ New feature:
+	 
+		- Support for C++17 `std::string\_view`
+		 has been added.
+		- Better diagnostic on `boost::exception`
+		 and no rtti mode (thanks to Mikhail Pilin / [pull\_request 234])
+	+ Bug fixes and pull requests:
+	 
+		- GitHub Issues: [#206](https://github.com/boostorg/test/issues/206), [#217](https://github.com/boostorg/test/issues/217), [#223](https://github.com/boostorg/test/issues/223), [#229](https://github.com/boostorg/test/issues/229)
+		- GitHub Pull Requests: [PR#227](https://github.com/boostorg/test/pull/227), [PR#231](https://github.com/boostorg/test/pull/231), [PR#232](https://github.com/boostorg/test/pull/232),
+		 [PR#234](https://github.com/boostorg/test/pull/234)
+* [VMD](/libs/vmd/):
+
+	+ `BOOST\_VMD\_IS\_EMPTY`
+	 updated to use `\_\_VA\_OPT\_\_`
+	 at the C++20 level has 100% reliability
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Marshall Clow and Michael Caisse managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

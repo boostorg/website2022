@@ -1,0 +1,186 @@
+---
+title: Version 1.37.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.37.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.37.0
+==============
+
+Version 1.37.0
+--------------
+
+
+November 3rd, 2008 12:00 GMT
+
+
+[Documentation](/doc/libs/1_37_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_37\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.37.0/boost_1_37_0.tar.bz2) |
+| [boost\_1\_37\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.37.0/boost_1_37_0.tar.gz) |
+| windows | [boost\_1\_37\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.37.0/boost_1_37_0.7z) |
+| [boost\_1\_37\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.37.0/boost_1_37_0.zip) |
+
+
+### New Libraries
+
+
+* [Proto](/libs/proto/index.html):
+
+	+ Expression template library and compiler construction toolkit for
+	 domain-specific embedded languages, from Eric Niebler.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/index.html):
+
+	+ Enhanced CompletionCondition concept with the signature `size\_t CompletionCondition(error\_code
+	ec,
+	size\_t total)`, where the return value indicates
+	 the maximum number of bytes to be transferred on the next read or
+	 write operation. (The old CompletionCondition signature is still
+	 supported for backwards compatibility).
+	+ New windows::overlapped\_ptr class to allow arbitrary overlapped I/O
+	 functions (such as TransmitFile) to be used with Asio.
+	+ On recent versions of Linux, an eventfd descriptor is now used (rather
+	 than a pipe) to interrupt a blocked select/epoll reactor.
+	+ Added const overloads of lowest\_layer().
+	+ Synchronous read, write, accept and connect operations are now thread
+	 safe (meaning that it is now permitted to perform concurrent synchronous
+	 operations on an individual socket, if supported by the OS).
+	+ Reactor-based io\_service implementations now use lazy initialisation
+	 to reduce the memory usage of an io\_service object used only as a
+	 message queue.
+* [Circular Buffer](/libs/circular_buffer/index.html):
+
+	+ Added new methods `is\_linearized()` and `rotate(const\_iterator)`.
+	+ Minor bug fixes and documentation updates.
+* [Dynamic Bitset](/libs/dynamic_bitset/):
+
+	+ Constructor "do the right thing" dispatch, a la standard
+	 sequence containers (follows the proposed resolution of [library
+	 issue 438](http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-defects.html#438), currently in the C++0x working
+	 paper).
+	+ Improvements to documentation, code examples and implementation.
+* [Exception](/libs/exception/index.html):
+
+	+ Support for non-RTTI builds.
+	+ Optimizations.
+	+ A new macro `BOOST\_THROW\_EXCEPTION`
+	 which can be used instead of `boost::throw\_exception`
+	 when throwing, to automatically record information about the location
+	 of the throw in the exception object.
+* [Hash](/libs/functional/hash/index.html):
+
+	+ Minor bug fix ([ticket
+	 2264](http://svn.boost.org/trac/boost/ticket/2264)).
+* [Interprocess](/libs/interprocess/index.html):
+
+	+ Added placement insertion (`emplace()`, `emplace\_back()`...) methods to containers.
+	+ Containers can be used now in recursive types.
+	+ Minor bug fixes.
+* [Intrusive](/libs/intrusive/index.html):
+
+	+ Intrusive now takes advantage of compilers with variadic templates.
+	+ `clone\_from` functions
+	 now copy predicates and hash functions of associative containers.
+	+ Added incremental hashing to unordered containers via `incremental<>`
+	 option.
+	+ Minor bug fixes.
+* [Math.Special
+ Functions](/libs/math/doc/sf_and_dist/html/index.html):
+ Improved accuracy and testing of the inverse hypergeometric
+ functions.
+* [Type Traits](/libs/type_traits/index.html):
+ Added
+ better support for the Codegear compiler.
+* [Unordered](/libs/unordered/index.html):
+
+	+ Rename overload of `emplace`
+	 with hint, to `emplace\_hint`
+	 as specified in [n2691](http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2691.pdf).
+	+ Provide forwarding headers at `<boost/unordered/unordered\_map\_fwd.hpp>`
+	 and `<boost/unordered/unordered\_set\_fwd.hpp>`.
+	+ Move all of the implementation inside the `boost/unordered`
+	 directory.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* GCC 4.01 on Mac OS X 10.4.10 with both Intel and Power PC
+* GCC 4.2.4 on Ubuntu Linux 8.10
+* GCC 4.3.2 on Debian Sid
+* GCC 4.2.1 on HP-UX Integrity
+* HP C/aC++ B3910B A.06.17 on HP-UX 64-bit
+* Visual C++ 9.0 SP1, 8.0, and 7.1 SP1, all on Windows XP
+ Boost's additional test compilers include:
+ 
+
+
+* GCC 4.1.2 on NetBSD
+* HP aCC on OS: HP-UX B.11.31 U ia64 and HP-UX B.11.31 9000/800 RISC
+* IBM XL C/C++ Enterprise Edition for AIX, V10.1.0.0, on AIX Version 5.3.0.40
+* Intel 9.1, 10.0, and 10.1, on Mac OS X 10.4.10
+* Compaq C++ V7.1-006 for Compaq Tru64 Unix on an OSF1 V5.1 platform.
+* Sun C++ 5.7, 5.8, 5.9 and GCC 3.4.6 on Sun Solaris 5.10.
+* On Linux:
+ 
+	+ GCC 3.4.3, 4.0.1, 4.2.1, 4.2.4, 4.3.2.
+	+ GCC 4.3.2 with C++0x extensions.
+	+ GCC 4.1.1, 4.2.1 on 64 bit linux.
+	+ Intel C++ 8.1, 9.0, 9.1 and 10.0
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.1
+	+ Sun Compiler 5.9, 5.10 with stdcxx
+* On Windows:
+ 
+	+ Several testers using Visual C++ 7.1, 8.0, 9.0 and 10.0
+	+ Visual C++ 7.1 with Apache C++ Standard Library 4.2.x branch.
+	+ Visual C++ 8.0 with STLport 5.1
+	+ Visual C++ 8.0 with STLport 5.1 cross-compiling for Windows Mobile
+	 5.0 Pocket PC SDK (ARMV4I).
+	+ Intel 10.1, with Visual C++ 9 backend.
+	+ Borland 5.9.3 and 6.10.0
+	+ 64 bit Intel 10.1, with Visual C++ 9 backend.
+	+ 64 bit Visual C++ 9.0.
+	+ 64-bit Visual C++ 9.0 with Apache C++ Standard Library 4.2.x branch.
+	+ Comeau C++ 4.3.10.1 beta 2, with Visual C++ 9 backend.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), and Daniel
+ James managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

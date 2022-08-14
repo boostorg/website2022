@@ -1,0 +1,72 @@
+---
+title: Boost Sandbox
+copyright: Rene Rivera 2007.
+revised: 
+---
+
+
+Boost Sandbox
+
+
+
+Boost Sandbox
+=============
+
+When boost was developed using subversion, the Boost Sandbox
+ contained unreviewed code that is intended to eventually become
+ a part of the Boost libraries. New libraries should be
+ developed separately as [git
+ modules](https://svn.boost.org/trac/boost/wiki/ModularBoost), and existing projects should be [moved to
+ GitHub](https://svn.boost.org/trac/boost/wiki/ExtractSandbox). The sandbox remains as a historical record.
+
+
+Accessing the Boost Sandbox
+---------------------------
+
+
+The Boost Sandbox lives at <https://svn.boost.org/svn/boost/sandbox>
+ within the old Boost Subversion repository.
+
+
+Organization
+------------
+
+
+Because there were typically many projects in the sandbox at
+ any one time (in various stages of development), the sandbox
+ should have been organized by project. Each project should have
+ had its own subdirectory inside sandbox. For example,
+ an XML library would reside in sandbox/xml. Inside
+ that project-specific subdirectory, the project would be
+ organized like any other Boost library, with a boost
+ subdirectory (for headers) and libs subdirectory (for
+ source code, build files, and documentation). Our hypothetical
+ XML project would likely have had the following structure:
+
+
+* sandbox/xml/
+	+ boost/ - Contains xml.hpp, which
+	 includes all of the headers from xml/
+		- xml/ - Contains Boost.XML headers
+	+ libs/
+		- xml/
+			* build/ - Contains Jamfiles
+			 to build Boost.XML
+			* doc/ - Contains documentation for
+			 Boost.XML
+			* src/ - Contains Boost.XML compiled
+			 source files
+
+
+Many existing projects in the sandbox didn't follow this
+ structure, opting to place headers in sandbox/boost
+ and supporting files in sandbox/libs.
+
+
+
+
+
+
+
+
+

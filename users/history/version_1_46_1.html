@@ -1,0 +1,190 @@
+---
+title: Version 1.46.1
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.46.1
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.46.1
+==============
+
+Version 1.46.1
+--------------
+
+
+March 12th, 2011 15:45 GMT
+
+
+[Documentation](/doc/libs/1_46_1/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_46\_1.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.46.1/boost_1_46_1.tar.bz2) |
+| [boost\_1\_46\_1.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.46.1/boost_1_46_1.tar.gz) |
+| windows | [boost\_1\_46\_1.7z](http://sourceforge.net/projects/boost/files/boost/1.46.1/boost_1_46_1.7z) |
+| [boost\_1\_46\_1.zip](http://sourceforge.net/projects/boost/files/boost/1.46.1/boost_1_46_1.zip) |
+
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ `EV\_ONESHOT` seems
+	 to cause problems on some versions of Mac OS X, with the `io\_service` destructor getting stuck
+	 inside the `close()` system call. Changed the kqueue
+	 backend to use `EV\_CLEAR`
+	 instead ([#5021](https://svn.boost.org/trac/boost/ticket/5021)).
+	+ Fixed compile failures with some versions of g++
+	 due to the use of anonymous enums ([#4883](https://svn.boost.org/trac/boost/ticket/4883)).
+	+ Fixed a bug on kqueue-based platforms, where some system calls that
+	 repeatedly fail with `EWOULDBLOCK`
+	 are not correctly re-registered with kqueue.
+	+ Changed `asio::streambuf` to ensure that its internal
+	 pointers are updated correctly after the data has been modified using
+	 `std::streambuf` member functions.
+	+ Fixed a bug that prevented the linger socket option from working
+	 on platforms other than Windows.
+* [Fusion](/libs/fusion/):
+
+	+ Fix `disable\_if` for
+	 Visual C++ 7.1/8.0
+* [Filesystem](/libs/filesystem/):
+
+	+ Fix for STLPort ([#5217](https://svn.boost.org/trac/boost/ticket/5217)).
+	+ PGI large file support
+* [Graph](/libs/graph/):
+
+	+ Bug fixes, including fixes for: [#5181](https://svn.boost.org/trac/boost/ticket/5181),
+	 [#5180](https://svn.boost.org/trac/boost/ticket/5180),
+	 [#5199](https://svn.boost.org/trac/boost/ticket/5199)
+	 and [#5175](https://svn.boost.org/trac/boost/ticket/5175).
+* [Icl](/libs/icl/):
+
+	+ Intersects for interval\_maps and segment\_type/element\_type ([#5207](https://svn.boost.org/trac/boost/ticket/5207)).
+	+ Fixed some ambiguous calls to functions in boost and std namespaces.
+	+ Other bug fixes, and documentation fixes.
+* [Math](/libs/math/):
+
+	+ Several minor bug fixes.
+* [Polygon](/libs/polygon/):
+
+	+ Disabled 45-degree booleans optimization.
+* [Proto](/libs/proto/):
+
+	+ Make `display\_expr`
+	 copyable ([#5096](https://svn.boost.org/trac/boost/ticket/5096)).
+	+ Fix const correctness problem in `pass\_through`.
+* [Property Tree](/libs/property_tree/):
+
+	+ Fix compile error in JSON parser.
+* [Signals2](/libs/signals2/):
+
+	+ Fix unused parameter warning.
+* [TR1](/libs/tr1/):
+
+	+ Allow specialization of `std::tr1::hash`.
+	+ Improved support for Pathscale and Sun compilers.
+* [Unordered](/libs/unordered/):
+
+	+ Add missing copy constructors and assignment operators when using
+	 rvalue references ([#5119](https://svn.boost.org/trac/boost/ticket/5119)).
+
+### Other changes
+
+
+* Update getting started guide to reflect changes to boost build.
+* In quickbook, workaround optimization bug in g++ 4.4.
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.4.1, 4.4.3, 4.4.5, 4.5.2
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.5.2
+	+ Intel: 10.1, 11.0, 11.1
+	+ Clang: 2.8
+	+ Pathscale: 3.2
+* OS X:
+ 
+	+ GCC: 4.0.1, 4.2.1, 4.4
+	+ GCC, C++0x mode: 4.4.
+	+ Intel: 11.1
+* Windows:
+ 
+	+ Visual C++: 7.1, 8.0, 9.0 and 10.0.
+	+ GCC, mingw: 4.4.0.
+* FreeBSD:
+ 
+	+ GCC: 4.2.1, 64 bit.
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ GCC: 3.4.6, 4.2.4, 4.3.4, 4.4.3, 4.4.4, 4.4.5, 4.5.2
+	+ GCC, C++0x mode: 4.3.4, 4.4.3, 4.5.2
+	+ pgCC: 11.2
+	+ Intel: 10.1, 11.0, 11.1
+	+ PathScale: 3.2, 4.0.8
+	+ Visual Age C++: 10.1
+	+ Clang from subversion
+* OS X:
+ 
+	+ Intel C++ Compiler: 10.1, 11.0, 11.1
+	+ GCC: 4.0.1, 4.2.1, 4.4.4
+	+ GCC, C++0x mode: 4.4.4
+	+ Clang from subversion, with GNU libstdc++, libc++ and libc++ in C++0x
+	 mode.
+* Windows:
+ 
+	+ Visual C++: 7.1, 9.0, 10.0
+	+ Visual C++ with STLport: 9.0
+	+ Visual C++, Windows Mobile 5, with STLport: 9.0
+	+ GCC, mingw: 4.5.1
+	+ GCC, mingw, C++0x mode: 4.5.1
+	+ Borland: 6.1.3 (2009), 6.2.1 (2010)
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition, V11.1.0.0
+* Solaris:
+ 
+	+ Sun C++: 5.10
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

@@ -1,0 +1,455 @@
+---
+title: String View
+copyright: 
+revised: 
+---
+
+
+String View
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/tr1_result_of.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/basic_string_view.html)
+
+
+### 
+[String View](string_view.html "String View")
+[Introduction](string_view.html#utility.utilities.string_view.introduction)
+[Examples](string_view.html#utility.utilities.string_view.examples)
+[Synopsis](string_view.html#utility.utilities.string_view.reference)
+[History](string_view.html#utility.utilities.string_view.history)
+[Reference](string_view.html#string_view.reference)
+[Acknowledgments](string_view.html#utility.utilities.string_view.acknowledgments)
+
+
+#### 
+[Introduction](string_view.html#utility.utilities.string_view.introduction "Introduction")
+ The class [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ and other classes derived from [`basic\_string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") represent references
+ to strings or substrings. When you are parsing/processing strings from
+ some external source, frequently you want to pass a piece of text to a
+ procedure for specialized processing. Before [`std::string\_view`](https://en.cppreference.com/w/cpp/string/basic_string_view), the canonical way
+ to do this used to be a [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string), but that has certain
+ drawbacks:
+ 
+ 1) If you are processing a buffer of text (say a HTTP response or the contents
+ of a file), then you have to create the string from the text you want to
+ pass, which involves memory allocation and copying of data.
+ 
+ 2) If a routine receives a constant [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) and wants to pass a portion
+ of that string to another routine, then it must create a new string of
+ that substring.
+ 
+ 3) If a routine receives a constant [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) and wants to return a
+ portion of the string, then it must create a new string to return.
+ 
+[`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ is designed to solve these efficiency problems. A [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") is a read-only reference
+ to a contiguous sequence of characters, and provides much of the functionality
+ of [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string). A [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") is cheap to create,
+ copy and pass by value, because it does not actually own the storage that
+ it points to.
+ 
+ A [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ is implemented as a small struct that contains a pointer to the start of
+ the character `data` and
+ a `count`. A [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") is cheap to create
+ and cheap to copy.
+ 
+[`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ acts as a container; it includes all the methods that you would expect
+ in a container, including iteration support, `operator[]`, `at`
+ and `size`. It can be used
+ with any of the iterator-based algorithms in the STL - as long as you do
+ not need to change the underlying data. For example, [`std::sort`](https://en.cppreference.com/w/cpp/algorithm/sort) and [`std::remove`](https://en.cppreference.com/w/cpp/algorithm/remove) will not work.
+ 
+ Besides generic container functionality, [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") provides a subset
+ of the interface of [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string). This makes it easy to
+ replace parameters of type `const
+[`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) &`
+ with [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view").
+ Like [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string), [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") has a static member
+ variable named `npos` to
+ denote the result of failed searches, and to mean "the end".
+ 
+
+|  |  |
+| --- | --- |
+| [Caution] | Caution |
+| 
+ Because a [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ does not own the data that it refers to, it introduces lifetime issues
+ into code that uses it. The programmer must ensure that the data that
+ a [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ refers to exists as long as the [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") does.
+  |
+
+|  |  |
+| --- | --- |
+| [Note] | Note |
+| 
+ Boost.Utility also includes the class [`string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view"):
+ 
+
+ - [`string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view")
+ is the initial implementation of Jeffrey Yaskin's [N3442:
+ string\_ref: a non-owning reference to a string](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3442.html).
+ 
+
+ - [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ is an updated implementation to reflect the Library Fundamentals TS
+ [N4480:
+ [string.view]](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4480.html).
+ 
+
+ Please prefer [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ / [`basic\_string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ over [`string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view")
+ / [`basic\_string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view"):
+ 
+
+ - The [`basic\_string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ class better matches [`std::basic\_string\_view`](https://en.cppreference.com/w/cpp/string/basic_string_view).
+ 
+
+ - [`basic\_string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ has WAY more constexpr support.
+ 
+
+ - Code that uses [`basic\_string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view") should continue
+ to work.
+ 
+
+ - Not much code depends on [`basic\_string\_ref`](../../boost/basic_string_view.html "Class template basic_string_view") anymore.
+  |
+
+#### 
+[Examples](string_view.html#utility.utilities.string_view.examples "Examples")
+ Integrating [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ into your code is fairly simple. Wherever you pass a `const
+[`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) &`
+ or [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) as a parameter, that's
+ a candidate for passing a [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view").
+ 
+```
+[`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) extract\_part ( const [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) &bar ) {
+    return bar.substr ( 2, 3 );
+}
+
+if ( extract\_part ( "ABCDEFG" ).front() == 'C' ) { /\* do something \*/ }
+
+```
+
+
+ Let's figure out what happens in this contrived example.
+ 
+
+
+* First, a temporary string is created from the string literal `"ABCDEFG"`, and it is passed
+ (by reference) to the routine `extract\_part`.
+* Then a second string is created in the call `[`std::string`](https://en.cppreference.com/w/cpp/string/basic_string)::substr` and returned to `extract\_part` (this copy may be elided
+ by RVO).
+* Then `extract\_part` returns
+ that string back to the caller (again this copy may be elided).
+* The first temporary string is deallocated, and `front`
+ is called on the second string, and then it is deallocated as well.
+
+
+ Two [`std::string`](https://en.cppreference.com/w/cpp/string/basic_string) s are created, and two
+ copy operations. That is potentially four memory allocations and deallocations,
+ and the associated copying of data.
+ 
+ Now let's look at the same code with [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view"):
+ 
+```
+[`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") extract\_part ( [`boost::string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") bar ) {
+    return bar.substr ( 2, 3 );
+}
+
+if ( extract\_part ( "ABCDEFG" ).front() == "C" ) { /\* do something \*/ }
+
+```
+
+
+ No memory allocations. No copying of character data. No changes to the
+ code other than the types. There are two [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view") s created, and two
+ [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ s copied, but those are cheap operations.
+ 
+
+#### 
+[Synopsis](string_view.html#utility.utilities.string_view.reference "Synopsis")
+ The header file [`<boost/utility/string\_view.hpp>`](../../../../../../boost/utility/string_view.hpp) defines a template [`boost::basic\_string\_view`](../../boost/basic_string_view.html "Class template basic_string_view"), and four specializations
+ [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view"),
+ [`wstring\_view`](../../boost/basic_string_view.html "Class template basic_string_view"),
+ [`u16string\_view`](../../boost/basic_string_view.html "Class template basic_string_view"),
+ [`u32string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ - for `char` / `wchar\_t` / `char16\_t`
+ / `char32\_t`.
+ 
+`#include <boost/utility/string\_view.hpp>`
+
+ Construction and copying:
+ 
+```
+constexpr basic\_string\_view ();    // Constructs an empty string\_view
+constexpr basic\_string\_view(const charT\* str); // Constructs from a NULL-terminated string
+constexpr basic\_string\_view(const charT\* str, size\_type len); // Constructs from a pointer, length pair
+template<typename Allocator>
+basic\_string\_view(const [`std::basic\_string`](https://en.cppreference.com/w/cpp/string/basic_string)<charT, traits, Allocator>& str); // Constructs from a std::string
+basic\_string\_view (const basic\_string\_view &rhs);
+basic\_string\_view& operator=(const basic\_string\_view &rhs);
+
+```
+
+
+[`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ does not define a move constructor nor a move-assignment operator because
+ copying a [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ is just a cheap as moving one.
+ 
+ Basic container-like functions:
+ 
+```
+constexpr size\_type size()     const ;
+constexpr size\_type length()   const ;
+constexpr size\_type max\_size() const ;
+constexpr bool empty()         const ;
+
+// All iterators are const\_iterators
+constexpr const\_iterator  begin() const ;
+constexpr const\_iterator cbegin() const ;
+constexpr const\_iterator    end() const ;
+constexpr const\_iterator   cend() const ;
+const\_reverse\_iterator         rbegin() const ;
+const\_reverse\_iterator        crbegin() const ;
+const\_reverse\_iterator           rend() const ;
+const\_reverse\_iterator          crend() const ;
+
+```
+
+
+ Access to the individual elements (all of which are const):
+ 
+```
+constexpr const charT& operator[](size\_type pos) const ;
+const charT& at(size\_t pos) const ;
+constexpr const charT& front() const ;
+constexpr const charT& back()  const ;
+constexpr const charT\* data()  const ;
+
+```
+
+
+ Modifying the [`string\_view`](../../boost/basic_string_view.html "Class template basic_string_view")
+ (but not the underlying data):
+ 
+```
+void clear();
+void remove\_prefix(size\_type n);
+void remove\_suffix(size\_type n);
+
+```
+
+
+ Searching:
+ 
+```
+size\_type find(basic\_string\_view s) const ;
+size\_type find(charT c) const ;
+size\_type rfind(basic\_string\_view s) const ;
+size\_type rfind(charT c) const ;
+size\_type find\_first\_of(charT c) const ;
+size\_type find\_last\_of (charT c) const ;
+
+size\_type find\_first\_of(basic\_string\_view s) const ;
+size\_type find\_last\_of(basic\_string\_view s) const ;
+size\_type find\_first\_not\_of(basic\_string\_view s) const ;
+size\_type find\_first\_not\_of(charT c) const ;
+size\_type find\_last\_not\_of(basic\_string\_view s) const ;
+size\_type find\_last\_not\_of(charT c) const ;
+
+```
+
+
+ String-like operations:
+ 
+```
+constexpr basic\_string\_view substr(size\_type pos, size\_type n=npos) const ; // Creates a new string\_view
+bool starts\_with(charT c) const ;
+bool starts\_with(basic\_string\_view x) const ;
+bool ends\_with(charT c) const ;
+bool ends\_with(basic\_string\_view x) const ;
+
+```
+#### 
+[History](string_view.html#utility.utilities.string_view.history "History")
+
+
+###### 
+
+[boost
+ 1.71](string_view.html#utility.utilities.string_view.history.boost_1_71)
+
+
+* Glen Fernandes updated the implementation of the stream insertion operator
+ to write directly to the `basic\_streambuf`
+ and refactored that functionality into a common utility.
+
+###### 
+
+[boost
+ 1.53](string_view.html#utility.utilities.string_view.history.boost_1_53)
+
+
+* Introduced
+#### 
+Reference
+##### 
+Header <[boost/utility/string\_view.hpp](../../../../../../boost/utility/string_view.hpp)>
+```
+namespace boost {
+  template<typename charT, typename traits> class [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view");
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator==([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator!=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+              [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+              [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator==([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator==(const std::basic\_string< charT, traits, Allocator > & x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator==([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator==(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator!=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator!=(const std::basic\_string< charT, traits, Allocator > & x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator!=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator!=(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator<([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+              const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator<(const std::basic\_string< charT, traits, Allocator > & x, 
+              [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator>([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+              const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator>(const std::basic\_string< charT, traits, Allocator > & x, 
+              [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator<=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator<=(const std::basic\_string< charT, traits, Allocator > & x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator<=(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator>=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, 
+               const std::basic\_string< charT, traits, Allocator > & y);
+  template<typename charT, typename traits, typename Allocator> 
+    constexpr bool 
+    operator>=(const std::basic\_string< charT, traits, Allocator > & x, 
+               [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>=([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > x, const charT \* y);
+  template<typename charT, typename traits> 
+    constexpr bool 
+    operator>=(const charT \* x, [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > y);
+  template<typename charT, typename traits> 
+    std::basic\_ostream< charT, traits > & 
+    operator<<(std::basic\_ostream< charT, traits > & os, 
+               const [basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > & str);
+  template<typename It> std::size\_t hash\_range(It, It);
+  template<typename charT, typename traits> 
+    std::size\_t hash\_value([basic\_string\_view](../../boost/basic_string_view.html "Class template basic_string_view")< charT, traits > s);
+}
+```
+
+#### 
+[Acknowledgments](string_view.html#utility.utilities.string_view.acknowledgments "Acknowledgments")
+ Author: Clow, Marshall
+ 
+ Copyright 2012 Marshall Clow
+ 
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/tr1_result_of.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/basic_string_view.html)

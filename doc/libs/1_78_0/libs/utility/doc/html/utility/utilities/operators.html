@@ -1,0 +1,2254 @@
+---
+title: Operators
+copyright: 
+revised: 
+---
+
+
+Operators
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/typed_in_idm35151228676656.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](result_of.html)
+
+
+### 
+[Operators](operators.html "Operators")
+[Introduction](operators.html#utility.utilities.operators.introduction)
+[Rationale](operators.html#utility.utilities.operators.rationale)
+[Example](operators.html#utility.utilities.operators.example)
+[Usage](operators.html#utility.utilities.operators.usage)
+[Arithmetic
+ Operators](operators.html#utility.utilities.operators.arithmetic_operators)
+[Dereference
+ Operators and Iterator Helpers](operators.html#utility.utilities.operators.dereference_operators_and_iterat)
+[Note
+ for Users of Older Versions](operators.html#utility.utilities.operators.note_for_users_of_older_versions)
+[Acknowledgments](operators.html#utility.utilities.operators.acknowledgments)
+
+
+#### 
+[Introduction](operators.html#utility.utilities.operators.introduction "Introduction")
+ The header [`<boost/operators.hpp>`](../../../../../../boost/operators.hpp)
+ supplies several sets of class templates in `namespace
+boost`. These templates define
+ operators at namespace scope in terms of a minimal number of fundamental
+ operators provided by the class.
+ 
+
+#### 
+[Rationale](operators.html#utility.utilities.operators.rationale "Rationale")
+ Overloaded operators for class types typically occur in groups. If you
+ can write `x +
+y`, you probably also want to
+ be able to write `x +=
+y`. If you can write `x < y,` you
+ also want `x >
+y`, `x
+>= y,` and `x
+<= y`.
+ 
+ Moreover, unless your class has really surprising behavior, some of these
+ related operators can be defined in terms of others (e.g. `x >= y` is equivalent to `!(x < y)`).
+ 
+ Replicating this boilerplate for multiple classes is both tedious and error-prone.
+ The [`<boost/operators.hpp>`](../../../../../../boost/operators.hpp)
+ templates help by generating operators for you at namespace scope based
+ on other operators you have defined in your class.
+ 
+ If, for example, you declare a class like this:
+ 
+```
+class MyInt
+    : boost::[`operators`](operators.html#sec:arithmetic)<MyInt>
+{
+    bool operator<(const MyInt& x) const;
+    bool operator==(const MyInt& x) const;
+    MyInt& operator+=(const MyInt& x);
+    MyInt& operator-=(const MyInt& x);
+    MyInt& operator\*=(const MyInt& x);
+    MyInt& operator/=(const MyInt& x);
+    MyInt& operator%=(const MyInt& x);
+    MyInt& operator|=(const MyInt& x);
+    MyInt& operator&=(const MyInt& x);
+    MyInt& operator^=(const MyInt& x);
+    MyInt& operator++();
+    MyInt& operator--();
+};
+
+```
+
+
+ then the [`operators`](operators.html#sec:arithmetic)<>
+ template adds more than a dozen additional operators, such as `operator>`,
+ `operator<=`,
+ `operator>=`,
+ and the binary `operator+`.
+ 
+[Two-argument forms](operators.html#sec:two_arg) of the templates
+ are also provided to allow interaction with other types.
+ 
+This is a *Summary of Template Semantics*:
+ 
+
+
+1. Each operator template completes the concept(s) it describes by defining
+ overloaded operators for its target class.
+2. The name of an operator class template indicates the [concept](operators.html#sec:concepts_note)
+ that its target class will model.
+3. Usually, the target class uses an instantiation of the operator class
+ template as a base class. Some operator templates support an [alternate method](operators.html#sec:explicit_instantiation).
+4. The concept can be compound, i.e. it may represent a common combination
+ of other, simpler concepts.
+5. Most operator templates require their target class to support operations
+ related to the operators supplied by the template. In accordance with
+ widely accepted [coding
+ style recommendations](http://www.gotw.ca/gotw/004.htm), the target class is often required to
+ supply the assignment counterpart operator of the concept's "main
+ operator." For example, the `addable`
+ template requires `operator+=(T const&)`
+ and in turn supplies `operator+(T const&,
+T const&)`.
+
+
+*Note on the use of concepts*:
+ The discussed concepts are not necessarily the standard library's concepts,
+ such as [*CopyConstructible*](https://en.cppreference.com/w/cpp/named_req/CopyConstructible),
+ although some of them could be; they are what we call *concepts
+ with a small 'c'*. In particular, they are different from the
+ former ones in that they *do not* describe precise semantics
+ of the operators they require to be defined, except the requirements that
+ (a) the semantics of the operators grouped in one concept should be consistent
+ (e.g. effects of evaluating of `a
++= b`
+ and `a =
+a +
+b` expressions should be the same),
+ and (b) that the return types of the operators should follow semantics
+ of return types of corresponding operators for built-in types (e.g. `operator<`
+ should return a type convertible to `bool`,
+ and `T::operator-=`
+ should return type convertible to `T`).
+ Such "loose" requirements make `operators`
+ library applicable to broader set of target classes from different domains,
+ i.e. eventually more useful.
+ 
+
+#### 
+[Example](operators.html#utility.utilities.operators.example "Example")
+ This example shows how some of the [arithmetic
+ operator templates](operators.html#sec:arithmetic) can be used with a geometric point class template.
+ 
+```
+template <class T>
+class point    // note: private inheritance is OK here!
+    : boost::addable< point<T>          // point + point
+    , boost::subtractable< point<T>     // point - point
+    , boost::dividable2< point<T>, T    // point / T
+    , boost::multipliable2< point<T>, T // point \* T, T \* point
+      > > > >
+{
+public:
+    point(T, T);
+    T x() const;
+    T y() const;
+
+    point operator+=(const point&);
+    // point operator+(point, const point&) automatically
+    // generated by addable.
+
+    point operator-=(const point&);
+    // point operator-(point, const point&) automatically
+    // generated by subtractable.
+
+    point operator\*=(T);
+    // point operator\*(point, const T&) and
+    // point operator\*(const T&, point) auto-generated
+    // by multipliable.
+
+    point operator/=(T);
+    // point operator/(point, const T&) auto-generated
+    // by dividable.
+private:
+    T x\_;
+    T y\_;
+};
+
+// now use the point<> class:
+template <class T>
+T length(const point<T> p)
+{
+    return sqrt(p.x()\*p.x() + p.y()\*p.y());
+}
+
+const point<float> right(0, 1);
+const point<float> up(1, 0);
+const point<float> pi\_over\_4 = up + right;
+const point<float> pi\_over\_4\_normalized = pi\_over\_4 / length(pi\_over\_4);
+
+```
+#### 
+[Usage](operators.html#utility.utilities.operators.usage "Usage")
+
+
+###### 
+
+[Two-Argument
+ Template Forms](operators.html#utility.utilities.operators.usage.two_argument_template_forms)
+The arguments to a binary operator commonly
+ have identical types, but it is not unusual to want to define operators
+ which combine different types. For [example](operators.html#sec:example),
+ one might want to multiply a mathematical vector by a scalar. The two-argument
+ template forms of the arithmetic operator templates are supplied for this
+ purpose. When applying the two-argument form of a template, the desired
+ return type of the operators typically determines which of the two types
+ in question should be derived from the operator template.
+ 
+ For example, if the result of `T
++ U`
+ is of type `T`, then `T` (not `U`)
+ should be derived from [`addable<T, U>`](operators.html#table:addable2).
+ The comparison templates [`less\_than\_comparable<T,U>`](operators.html#table:less_than_comparable2), [`equality\_comparable<T, U>`](operators.html#table:equality_comparable2), [`equivalent<T, U>`](operators.html#table:equivalent2), and [`partially\_ordered<T, U>`](operators.html#table:partially_ordered2) are exceptions to this guideline,
+ since the return type of the operators they define is `bool`.
+ 
+ On compilers which do not support partial specialization, the two-argument
+ forms must be specified by using the names shown below with the trailing
+ `'2'`. The single-argument forms
+ with the trailing `'1'` are provided
+ for symmetry and to enable certain applications of the [base
+ class chaining](operators.html#sec:chaining) technique.
+ 
+*Mixed Arithmetics*:
+ Another application of the two-argument template forms is for mixed arithmetics
+ between a type `T` and a
+ type `U` that is convertible
+ to `T`. In this case there
+ are two ways where the two-argument template forms are helpful: one is
+ to provide the respective signatures for operator overloading, the second
+ is performance.
+ 
+ With respect to the operator overloading assume e.g. that `U` is `int`,
+ that `T` is an user-defined
+ unlimited integer type, and that `double
+operator-(double, const T&)` exists.
+ 
+ If one wants to compute `int - T` and
+ does not provide `T operator-(int,
+const T&)`, the compiler will consider `double operator-(double, const T&)`
+ to be a better match than `T operator-(const T&, const T&)`,
+ which will probably be different from the user's intention.
+ 
+ To define a complete set of operator signatures, additional 'left' forms
+ of the two-argument template forms are provided [`subtractable2\_left<T, U>`](operators.html#table:subtractable2_left), [`dividable2\_left<T, U>`](operators.html#table:dividable2_left), and [`modable2\_left<T, U>`](operators.html#table:modable2_left) that define the signatures for
+ non-commutative operators where `U`
+ appears on the left hand side (`operator-(const U&, const T&)`, `operator/(const U&, const T&)`, `operator%(const U&, const T&)`).
+ 
+ With respect to the performance observe that when one uses the single type
+ binary operator for mixed type arithmetics, the type `U`
+ argument has to be converted to type `T`.
+ In practice, however, there are often more efficient implementations of,
+ say `T::operator-=(const U&)` that avoid unnecessary conversions
+ from `U` to `T`.
+ 
+ The two-argument template forms of the arithmetic operator create additional
+ operator interfaces that use these more efficient implementations. There
+ is, however, no performance gain in the 'left' forms: they still need a
+ conversion from `U` to `T` and have an implementation equivalent
+ to the code that would be automatically created by the compiler if it considered
+ the single type binary operator to be the best match.
+ 
+
+
+###### 
+
+[Base
+ Class Chaining and Object Size](operators.html#utility.utilities.operators.usage.base_class_chaining_and_object_s)
+ Every operator class template, except the [arithmetic
+ examples](operators.html#sec:ex_oprs) and the [iterator helpers](operators.html#sec:iterator),
+ has an additional, but optional, template type parameter `B`. This parameter will be a publicly-derived
+ base class of the instantiated template. This means it must be a class
+ type. It can be used to avoid the bloating of object sizes that is commonly
+ associated with multiple-inheritance from several empty base classes. See
+ the [note for users of older versions](operators.html#sec:old_lib_note)
+ for more details.
+ 
+ To provide support for a group of operators, use the `B`
+ parameter to chain operator templates into a single-base class hierarchy,
+ demostrated in the [usage example](operators.html#sec:example). The
+ technique is also used by the composite operator templates to group operator
+ definitions. If a chain becomes too long for the compiler to support, try
+ replacing some of the operator templates with a single grouped operator
+ template that chains the old templates together; the length limit only
+ applies to the number of templates directly in the chain, not those hidden
+ in group templates.
+ 
+*Caveat*: to chain to a base class which is *not*
+ a Boost operator template when using the [single-argument
+ form](operators.html#sec:two_arg) of a Boost operator template, you must specify the operator
+ template with the trailing `'1'`
+ in its name. Otherwise the library will assume you mean to define a binary
+ operation combining the class you intend to use as a base class and the
+ class you're deriving.
+ 
+
+
+###### 
+
+[Separate
+ Explicit Instantiation](operators.html#utility.utilities.operators.usage.separate_explicit_instantiation)
+ On some compilers (e.g. Borland, GCC) even single-inheritance seems to
+ cause an increase in object size in some cases. If you are not defining
+ a class template, you may get better object-size performance by avoiding
+ derivation altogether, and instead explicitly instantiating the operator
+ template as follows:
+ 
+```
+class my\_class // lose the inheritance...
+{
+    //...
+};
+
+// explicitly instantiate the operators I need.
+template struct less\_than\_comparable<my\_class>;
+template struct equality\_comparable<my\_class>;
+template struct incrementable<my\_class>;
+template struct decrementable<my\_class>;
+template struct addable<my\_class,long>;
+template struct subtractable<my\_class,long>;
+
+```
+
+
+ Note that some operator templates cannot use this workaround and must be
+ a base class of their primary operand type. Those templates define operators
+ which must be member functions, and the workaround needs the operators
+ to be independent `friend` functions.
+ The relevant templates are:
+ 
+
+
+* [`dereferenceable<>`](operators.html#table:dereferenceable)
+* [`indexable<>`](operators.html#table:indexable)
+* Any composite operator template that includes at least one of the above
+
+
+ As Daniel Krugler pointed out, this technique violates C++11 §14.6.5/2 [temp.inject]
+ and is thus non-portable. The reasoning is, that the operators injected
+ by the instantiation of e.g. `less\_than\_comparable<my\_class>` can not be found by ADL according to
+ the rules given by C++11 §3.4.2/2 [basic.lookup.argdep], since `my\_class` is not an associated class of
+ `less\_than\_comparable<my\_class>`.
+ Thus only use this technique if all else fails.
+ 
+
+
+###### 
+
+[Requirement
+ Portability](operators.html#utility.utilities.operators.usage.requirement_portability)
+ Many compilers (e.g. MSVC 6.3, GCC 2.95.2) will not enforce the requirements
+ in the operator template tables unless the operations which depend on them
+ are actually used. This is not standard-conforming behavior. In particular,
+ although it would be convenient to derive all your classes which need binary
+ operators from the [`operators<>`](operators.html#table:operators1) and [`operators2<>`](operators.html#table:operators2)
+ templates, regardless of whether they implement all the requirements of
+ those templates, this shortcut is not portable. Even if this currently
+ works with your compiler, it may not work later.
+ 
+
+#### 
+[Arithmetic
+ Operators](operators.html#utility.utilities.operators.arithmetic_operators "Arithmetic Operators")
+ The arithmetic operator templates ease the task of creating a custom numeric
+ type. Given a core set of operators, the templates add related operators
+ to the numeric class. These operations are like the ones the standard arithmetic
+ types have, and may include comparisons, adding, incrementing, logical
+ and bitwise manipulations, etc. Further, since most numeric types need
+ more than one of these operators, some templates are provided to combine
+ several of the basic operator templates in one declaration.
+ 
+ The requirements for the types used to instantiate the simple operator
+ templates are specified in terms of expressions which must be valid and
+ the expression's return type. The composite operator templates only list
+ what other templates they use. The supplied operations and requirements
+ of the composite operator templates can be inferred from the operations
+ and requirements of the listed components.
+ 
+
+
+###### 
+
+[Simple
+ Arithmetic Operators](operators.html#utility.utilities.operators.arithmetic_operators.simple_arithmetic_operators)
+ These templates are "simple" since they provide operators based
+ on a single operation the base type has to provide. They have an additional
+ optional template parameter `B`,
+ which is not shown, for the [base class chaining](operators.html#sec:chaining)
+ technique.
+ 
+ The primary operand type `T`
+ needs to be of class type, built-in types are not supported.
+ 
+**Table 1.6. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ primary operand type
+  |
+| 
+`t,t1`
+ | 
+ values of type `T`
+ |
+| 
+`U`
+ | 
+ alternate operand type
+  |
+| 
+`u`
+ | 
+ value of type `U`
+ |
+  
+
+**Table 1.7. Simple Arithmetic Operator Template Classes**
+
+
+
+| 
+ Template
+  | 
+ Supplied Operations
+  | 
+ Requirements
+  | 
+ Propagates constexpr
+  |
+| --- | --- | --- | --- |
+| 
+`less\_than\_comparable<T>`
+
+
+[`less\_than\_comparable1`](operators.html#sec:arithmetic)`<T>`
+ | 
+`bool operator>(const
+T&,
+const T&)`
+
+
+`bool operator<=(const
+T&,
+const T&)`
+
+
+`bool operator>=(const
+T&,
+const T&)`
+ | 
+`t <
+t1`.
+ 
+
+ Return convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering)
+ | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`less\_than\_comparable<T,U>`
+
+
+[`less\_than\_comparable2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+`bool operator<=(const
+T&,
+const U&)`
+
+
+`bool operator>=(const
+T&,
+const U&)`
+
+
+`bool operator>(const
+U&,
+const T&)`
+
+
+`bool operator<(const
+U&,
+const T&)`
+
+
+`bool operator<=(const
+U&,
+const T&)`
+
+
+`bool operator>=(const
+U&,
+const T&)`
+ | 
+`t <
+u`. `t
+> u`.
+ 
+
+ Returns convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering).
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`equality\_comparable<T>`
+
+
+[`equality\_comparable1`](operators.html#sec:arithmetic)`<T>`
+ | 
+`bool operator!=(const
+T&,
+const T&)`
+ | 
+`t ==
+t1`.
+ 
+
+ Return convertible to `bool`.
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`equality\_comparable<T,U>`
+
+
+[`equality\_comparable2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+`bool operator==(const
+U&,
+const T&)`
+
+
+`bool operator!=(const
+U&,
+const T&)`
+
+
+`bool operator!=(const
+T&,
+const U&)`
+ | 
+`t ==
+u`.
+ 
+
+ Return convertible to `bool`.
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`addable<T>`
+
+
+`addable1<T>`
+ | 
+`T operator+(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
++= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`addable<T, U>`
+
+
+`addable2<T,
+U>`
+ | 
+`T operator+(const
+T&,
+const U&)`
+
+
+`T operator+(const
+U&,
+const T& )`
+ | 
+`T temp(t); temp
++= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`subtractable<T>`
+
+
+`subtractable1<T>`
+ | 
+`T operator-(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+-= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`subtractable<T,U>`
+
+
+`subtractable2<T, U>`
+ | 
+`T operator-(const
+T&,
+const U&)`
+ | 
+`T temp(t); temp
+-= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`subtractable2\_left<T,U>`
+ | 
+`T operator-(const
+U&,
+const T&)`
+ | 
+`T temp(u); temp
+-= t`.
+ 
+
+ Return convertible to `T`.
+  | 
+ No
+  |
+| 
+`multipliable<T>`
+
+
+`multipliable1<T>`
+ | 
+`T operator\*(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+\*= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`multipliable<T,U>`
+
+
+`multipliable2<T, U>`
+ | 
+`T operator\*(const
+T&,
+const U&)`
+
+
+`T operator\*(const
+U&,
+const T&)`
+ | 
+`T temp(t); temp
+\*= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`dividable<T>`
+
+
+`dividable1<T>`
+ | 
+`T operator/(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+/= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`dividable<T, U>`
+
+
+`dividable2<T,
+U>`
+ | 
+`T operator/(const
+T&,
+const U&)`
+ | 
+`T temp(t); temp
+/= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`dividable2\_left<T,U>`
+ | 
+`T operator/(const
+U&,
+const T&)`
+ | 
+`T temp(u); temp
+/= t`.
+ 
+
+ Return convertible to `T`.
+  | 
+ No
+  |
+| 
+`modable<T>`
+
+
+`modable1<T>`
+ | 
+`T operator%(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+%= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`modable<T, U>`
+
+
+`modable2<T,
+U>`
+ | 
+`T operator%(const
+T&,
+const U&)`
+ | 
+`T temp(t); temp
+%= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`modable2\_left<T,U>`
+ | 
+`T operator%(const
+U&,
+const T&)`
+ | 
+`T temp(u); temp
+%= t`.
+ 
+
+ Return convertible to `T`.
+  | 
+ No
+  |
+| 
+`orable<T>`
+
+
+`orable1<T>`
+ | 
+`T operator|(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+|= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`orable<T, U>`
+
+
+`orable2<T,
+U>`
+ | 
+`T operator|(const
+T&,
+const U&)`
+
+
+`T operator|(const
+U&,
+const T&)`
+ | 
+`T temp(t); temp
+|= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`andable<T>`
+
+
+`andable1<T>`
+ | 
+`T operator&(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+&= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`andable<T, U>`
+
+
+`andable2<T,
+U>`
+ | 
+`T operator&(const
+T&,
+const U&)`
+
+
+`T operator&(const
+U&,
+const T&)`
+ | 
+`T temp(t); temp
+&= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`xorable<T>`
+
+
+`xorable1<T>`
+ | 
+`T operator^(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+^= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`xorable<T, U>`
+
+
+`xorable2<T,
+U>`
+ | 
+`T operator^(const
+T&,
+const U&)`
+
+
+`T operator^(const
+U&,
+const T&)`
+ | 
+`T temp(t); temp
+^= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`incrementable<T>`
+ | 
+`T operator++(T&, int)`
+ | 
+`T temp(t); ++t`
+
+
+ Return convertible to `T`.
+  | 
+ No
+  |
+| 
+`decrementable<T>`
+ | 
+`T operator--(T&, int)`
+ | 
+`T temp(t); --t;`
+
+
+ Return convertible to `T`.
+  | 
+ No
+  |
+| 
+`left\_shiftable<T>`
+
+
+`left\_shiftable1<T>`
+ | 
+`T operator<<(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+<<= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`left\_shiftable<T,U>`
+
+
+`left\_shiftable2<T, U>`
+ | 
+`T operator<<(const
+T&,
+const U&)`
+ | 
+`T temp(t); temp
+<<= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`right\_shiftable<T>`
+
+
+`right\_shiftable1<T>`
+ | 
+`T operator>>(const
+T&,
+const T&)`
+ | 
+`T temp(t); temp
+>>= t1`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`right\_shiftable<T,U>`
+
+
+`right\_shiftable2<T, U>`
+ | 
+`T operator>>(const
+T&,
+const U&)`
+ | 
+`T temp(t); temp
+>>= u`.
+ 
+
+ Return convertible to `T`.
+ See the [Symmetry Note](operators.html#sec:symmetry).
+  | 
+ No
+  |
+| 
+`equivalent<T>`
+
+
+[`equivalent1`](operators.html#sec:arithmetic)`<T>`
+ | 
+`bool operator==(const
+T&,
+const T&)`
+ | 
+`t <
+t1`.
+ 
+
+ Return convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering).
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`equivalent<T, U>`
+
+
+[`equivalent2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+`bool operator==(const
+T&,
+const U&)`
+ | 
+`t <
+u`. `t
+> u`.
+ 
+
+ Returns convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering).
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`partially\_ordered<T>`
+
+
+[`partially\_ordered1`](operators.html#sec:arithmetic)`<T>`
+ | 
+`bool operator>(const
+T&,
+const T&)`
+
+
+`bool operator<=(const
+T&,
+const T&)`
+
+
+`bool operator>=(const
+T&,
+const T&)`
+ | 
+`t <
+t1`. `t
+== t1`.
+ 
+
+ Returns convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering).
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+| 
+`partially\_ordered<T,U>`
+
+
+[`partially\_ordered2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+`bool operator<=(const
+T&,
+const U&)`
+
+
+`bool operator>=(const
+T&,
+const U&)`
+
+
+`bool operator>(const
+U&,
+const T&)`
+
+
+`bool operator<(const
+U&,
+const T&)`
+
+
+`bool operator<=(const
+U&,
+const T&)`
+
+
+`bool operator>=(const
+U&,
+const T&)`
+ | 
+`t <
+u`. `t
+> u`.
+ `t ==
+u`.
+ 
+
+ Returns convertible to `bool`.
+ See the [Ordering Note](operators.html#sec:ordering).
+  | 
+ Since `C++11`, except [MSVC
+ < v19.22](https://developercommunity.visualstudio.com/content/problem/414193/rejects-valid-constexpr-marked-friend-function-def.html)
+ |
+  
+
+*Ordering Note*: The [`less\_than\_comparable<T>`](operators.html#table:less_than_comparable1) and [`partially\_ordered<T>`](operators.html#table:partially_ordered1)
+ templates provide the same set of operations. However, the workings of
+ [`less\_than\_comparable<T>`](operators.html#table:less_than_comparable1) assume that all values of type
+ `T` can be placed in a total
+ order. If that is not true (e.g. Not-a-Number values in IEEE floating point
+ arithmetic), then [`partially\_ordered<T>`](operators.html#table:partially_ordered1)
+ should be used. The [`partially\_ordered<T>`](operators.html#table:partially_ordered1)
+ template can be used for a totally-ordered type, but it is not as efficient
+ as [`less\_than\_comparable<T>`](operators.html#table:less_than_comparable1). This rule also applies for
+ [`less\_than\_comparable<T, U>`](operators.html#table:less_than_comparable2)
+ and [`partially\_ordered<T,U>`](operators.html#table:partially_ordered2)
+ with respect to the ordering of all `T`
+ and `U` values, and for both
+ versions of [`equivalent<>`](operators.html#table:equivalent1). The solution for [`equivalent<>`](operators.html#table:equivalent1) is to write a custom `operator==`
+ for the target class.
+ 
+*Symmetry Note*: Before talking
+ about symmetry, we need to talk about optimizations to understand the reasons
+ for the different implementation styles of operators. Let's have a look
+ at `operator+`
+ for a class `T` as an example:
+ 
+```
+T operator+( const T& lhs, const T& rhs )
+{
+    return T( lhs ) += rhs;
+}
+
+```
+
+
+ This would be a normal implementation of `operator+`, but it is not an efficient one. An unnamed
+ local copy of `lhs` is created,
+ `operator+=`
+ is called on it and it is copied to the function return value (which is
+ another unnamed object of type `T`).
+ The standard doesn't generally allow the intermediate object to be optimized
+ away:
+ 
+> 
+> *C++11 §3.7.3/3 [basic.stc.auto]: Automatic storage duration:*
+>  If a variable with automatic storage duration has initialization or a
+>  destructor with side effects, it shall not be destroyed before the end
+>  of its block, nor shall it be eliminated as an optimization even if it
+>  appears to be unused, except that a class object or its copy/move may
+>  be eliminated as specified in 12.8.
+>  
+> 
+> 
+ The reference to §12.8 is important for us:
+ 
+> 
+> 
+> *C++11 §12.8/31 [class.copy]: Copying and moving class objects:*
+>  When certain criteria are met, an implementation is allowed to omit the
+>  copy/move construction of a class object, even if the copy/move constructor
+>  and/or destructor for the object have side effects. (…) This elision of
+>  copy/move operations, called *copy elision*, is permitted
+>  in the following circumstances (which may be combined to eliminate multiple
+>  copies):
+>  
+> 
+> 
+> 
+>  — in a `return` statement in
+>  a function with a class return type, when the expression is the name
+>  of a non-volatile automatic object (other than a function or catch-clause
+>  parameter) with the same cv- unqualified type as the function return
+>  type, the copy/move operation can be omitted by constructing the automatic
+>  object directly into the function's return value
+>  
+> 
+> 
+> 
+>  (…)
+>  
+> 
+> 
+> 
+ This optimization is known as the named return value optimization ([NRVO](https://en.cppreference.com/w/cpp/language/copy_elision#Non-mandatory_elision_of_copy.2Fmove_.28since_C.2B.2B11.29_operations)),
+ which leads us to the following implementation for `operator+`:
+ 
+```
+T operator+( const T& lhs, const T& rhs )
+{
+    T nrv( lhs );
+    nrv += rhs;
+    return nrv;
+}
+
+```
+
+
+ Given this implementation, the compiler is allowed to remove the intermediate
+ object. Sadly, not all compilers implement the NRVO, some even implement
+ it in an incorrect way which makes it useless here. Without the NRVO, the
+ NRVO-friendly code is no worse than the original code showed above, but
+ there is another possible implementation, which has some very special properties:
+ 
+```
+T operator+( T lhs, const T& rhs )
+{
+    return lhs += rhs;
+}
+
+```
+
+
+ The difference to the first implementation is that `lhs`
+ is not taken as a constant reference used to create a copy; instead, `lhs` is a by-value parameter, thus it
+ is already the copy needed. This allows another optimization (C++11 §12.2/2
+ [class.temporary]) for some cases.
+ 
+ Consider `a +
+b +
+c` where the result of `a + b` is not copied when used as `lhs` when adding `c`.
+ This is more efficient than the original code, but not as efficient as
+ a compiler using the NRVO. For most people, it is still preferable for
+ compilers that don't implement the NRVO, but the `operator+` now has a different function signature.
+ Also, the number of objects created differs for `(a + b ) + c` and
+ `a +
+( b
++ c
+)`.
+ 
+ Most probably, this won't be a problem for you, but if your code relies
+ on the function signature or a strict symmetric behaviour, you should set
+ `BOOST\_FORCE\_SYMMETRIC\_OPERATORS`
+ in your user-config. This will force the NRVO-friendly implementation to
+ be used even for compilers that do not implement the NRVO.
+ 
+
+
+###### 
+
+[Grouped
+ Arithmetic Operators](operators.html#utility.utilities.operators.arithmetic_operators.grouped_arithmetic_operators)
+ The following templates provide common groups of related operations. For
+ example, since a type which is addable is usually also subtractable, the
+ [`additive`](operators.html#table:additive1)
+ template provides the combined operators of both. The grouped operator
+ templates have an additional optional template parameter `B`, which is not shown, for the [base class chaining](operators.html#sec:chaining) technique.
+ 
+**Table 1.8. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ primary operand type
+  |
+| 
+`U`
+ | 
+ alternate operand type
+  |
+  
+
+**Table 1.9. Grouped Arithmetic Operator Template Classes**
+
+| 
+ Template
+  | 
+ Component Operator Templates
+  |
+| --- | --- |
+| 
+`totally\_ordered<T>`
+
+
+[`totally\_ordered1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`less\_than\_comparable<T>`](operators.html#table:less_than_comparable1)
+
+
+[`equality\_comparable<T>`](operators.html#table:equality_comparable1)
+ |
+| 
+`totally\_ordered<T,U>`
+
+
+[`totally\_ordered2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`less\_than\_comparable<T,U>`](operators.html#table:less_than_comparable2)
+
+
+[`equality\_comparable<T,U>`](operators.html#table:equality_comparable2)
+ |
+| 
+`additive<T>`
+
+
+[`additive1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`addable<T>`](operators.html#table:addable1)
+
+
+[`subtractable<T>`](operators.html#table:subtractable1)
+ |
+| 
+`additive<T, U>`
+
+
+[`additive2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`addable<T, U>`](operators.html#table:addable2)
+
+
+[`subtractable<T,U>`](operators.html#table:subtractable2)
+ |
+| 
+`multiplicative<T>`
+
+
+[`multiplicative1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`multipliable<T>`](operators.html#table:multipliable1)
+
+
+[`dividable<T>`](operators.html#table:dividable1)
+ |
+| 
+`multiplicative<T,U>`
+
+
+[`multiplicative2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`multipliable<T,U>`](operators.html#table:multipliable2)
+
+
+[`dividable<T,U>`](operators.html#table:dividable2)
+ |
+| 
+`integer\_multiplicative<T>`
+
+
+[`integer\_multiplicative1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`multiplicative<T>`](operators.html#table:multiplicative1)
+
+
+[`modable<T>`](operators.html#table:modable1)
+ |
+| 
+`integer\_multiplicative<T,U>`
+
+
+[`integer\_multiplicative2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`multiplicative<T,U>`](operators.html#table:multiplicative2)
+
+
+[`modable<T, U>`](operators.html#table:modable2)
+ |
+| 
+`arithmetic<T>`
+
+
+[`arithmetic1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`additive<T>`](operators.html#table:additive1)
+
+
+[`multiplicative<T>`](operators.html#table:multiplicative1)
+ |
+| 
+`arithmetic<T, U>`
+
+
+[`arithmetic2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`additive<T,U>`](operators.html#table:additive2)
+
+
+[`multiplicative<T,U>`](operators.html#table:multiplicative2)
+ |
+| 
+`integer\_arithmetic<T>`
+
+
+[`integer\_arithmetic1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`additive<T>`](operators.html#table:additive1)
+
+
+[`integer\_multiplicative<T>`](operators.html#table:integer_multiplicative1)
+ |
+| 
+`integer\_arithmetic<T, U>`
+
+
+[`integer\_arithmetic2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`additive<T,U>`](operators.html#table:additive2)
+
+
+[`integer\_multiplicative<T,U>`](operators.html#table:integer_multiplicative2)
+ |
+| 
+`bitwise<T>`
+
+
+[`bitwise1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`xorable<T>`](operators.html#table:xorable1)
+
+
+[`andable<T>`](operators.html#table:andable1)
+
+
+[`orable<T>`](operators.html#table:orable1)
+ |
+| 
+`bitwise<T, U>`
+
+
+[`bitwise2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`xorable<T, U>`](operators.html#table:xorable2)
+
+
+[`andable<T, U>`](operators.html#table:andable2)
+
+
+[`orable<T, U>`](operators.html#table:orable2)
+ |
+| 
+`unit\_steppable<T>`
+ | 
+[`incrementable<T>`](operators.html#table:incrementable)
+
+
+[`decrementable<T>`](operators.html#table:decrementable)
+ |
+| 
+`shiftable<T>`
+
+
+[`shiftable1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`left\_shiftable<T>`](operators.html#table:left_shiftable1)
+
+
+[`right\_shiftable<T>`](operators.html#table:right_shiftable1)
+ |
+| 
+`shiftable<T, U>`
+
+
+[`shiftable2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`left\_shiftable<T,U>`](operators.html#table:left_shiftable2)
+
+
+[`right\_shiftable<T,U>`](operators.html#table:right_shiftable2)
+ |
+| 
+`ring\_operators<T>`
+
+
+[`ring\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`additive<T>`](operators.html#table:additive1)
+
+
+[`multipliable<T>`](operators.html#table:multipliable1)
+ |
+| 
+`ring\_operators<T,U>`
+
+
+[`ring\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`additive<T,U>`](operators.html#table:additive2)
+
+
+[`subtractable2\_left<T,U>`](operators.html#table:subtractable2_left)
+
+
+[`multipliable<T,U>`](operators.html#table:multipliable2)
+ |
+| 
+`ordered\_ring\_operators<T>`
+
+
+[`ordered\_ring\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`ring\_operators<T>`](operators.html#table:ring_operators1)
+
+
+[`totally\_ordered<T>`](operators.html#table:totally_ordered1)
+ |
+| 
+`ordered\_ring\_operators<T,U>`
+
+
+[`ordered\_ring\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`ring\_operators<T,U>`](operators.html#table:ring_operators2)
+
+
+[`totally\_ordered<T,U>`](operators.html#table:totally_ordered2)
+ |
+| 
+`field\_operators<T>`
+
+
+[`field\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`ring\_operators<T>`](operators.html#table:ring_operators1)
+
+
+[`dividable<T>`](operators.html#table:dividable1)
+ |
+| 
+`field\_operators<T,U>`
+
+
+[`field\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`ring\_operators<T,U>`](operators.html#table:ring_operators2)
+
+
+[`dividable<T,U>`](operators.html#table:dividable2)
+
+
+[`dividable2\_left<T,U>`](operators.html#table:dividable2_left)
+ |
+| 
+`ordered\_field\_operators<T>`
+
+
+[`ordered\_field\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`field\_operators<T>`](operators.html#table:field_operators1)
+
+
+[`totally\_ordered<T>`](operators.html#table:totally_ordered1)
+ |
+| 
+`ordered\_field\_operators<T,U>`
+
+
+[`ordered\_field\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`field\_operators<T,U>`](operators.html#table:field_operators2)
+
+
+[`totally\_ordered<T,U>`](operators.html#table:totally_ordered2)
+ |
+| 
+`euclidean\_ring\_operators<T>`
+
+
+[`euclidean\_ring\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`ring\_operators<T>`](operators.html#table:ring_operators1)
+
+
+[`dividable<T>`](operators.html#table:dividable1)
+
+
+[`modable<T>`](operators.html#table:modable1)
+ |
+| 
+`euclidean\_ring\_operators<T,U>`
+
+
+[`euclidean\_ring\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`ring\_operators<T,U>`](operators.html#table:ring_operators2)
+
+
+[`dividable<T,U>`](operators.html#table:dividable2)
+
+
+[`dividable2\_left<T,U>`](operators.html#table:dividable2_left)
+
+
+[`modable<T, U>`](operators.html#table:modable2)
+
+
+[`modable2\_left<T,U>`](operators.html#table:modable2_left)
+ |
+| 
+`ordered\_euclidean\_ring\_operators<T>`
+
+
+[`ordered\_euclidean\_ring\_operators1`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`euclidean\_ring\_operators<T>`](operators.html#table:euclidean_ring_operators1)
+
+
+[`totally\_ordered<T>`](operators.html#table:totally_ordered1)
+ |
+| 
+`ordered\_euclidean\_ring\_operators<T,U>`
+
+
+[`ordered\_euclidean\_ring\_operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`euclidean\_ring\_operators<T,U>`](operators.html#table:euclidean_ring_operators2)
+
+
+[`totally\_ordered<T,U>`](operators.html#table:totally_ordered2)
+ |
+  
+
+*Spelling: euclidean vs. euclidian*: Older versions
+ of the Boost.Operators library used "`euclidian`",
+ but it was pointed out that "`euclidean`"
+ is the more common spelling. To be compatible with older version, the library
+ now supports both spellings.
+ 
+
+
+###### 
+
+[Example
+ Templates](operators.html#utility.utilities.operators.arithmetic_operators.example_templates)
+ The arithmetic operator class templates [`operators<>`](operators.html#table:operators1)
+ and [`operators2<>`](operators.html#table:operators2) are examples of non-extensible
+ operator grouping classes. These legacy class templates, from previous
+ versions of the header, cannot be used for [base
+ class chaining](operators.html#sec:chaining).
+ 
+**Table 1.10. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ primary operand type
+  |
+| 
+`U`
+ | 
+ alternate operand type
+  |
+  
+
+**Table 1.11. Final Arithmetic Operator Template Classes**
+
+| 
+ Template
+  | 
+ Component Operator Templates
+  |
+| --- | --- |
+| 
+[`operators`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`totally\_ordered<T>`](operators.html#table:totally_ordered1)
+
+
+[`integer\_arithmetic<T>`](operators.html#table:integer_arithmetic1)
+
+
+[`bitwise<T>`](operators.html#table:bitwise1)
+
+
+[`unit\_steppable<T>`](operators.html#table:unit_steppable)
+ |
+| 
+[`operators`](operators.html#sec:arithmetic)`<T, U>`
+
+
+[`operators2`](operators.html#sec:arithmetic)`<T, U>`
+ | 
+[`totally\_ordered<T,U>`](operators.html#table:totally_ordered2)
+
+
+[`integer\_arithmetic<T,U>`](operators.html#table:integer_arithmetic2)
+
+
+[`bitwise<T, U>`](operators.html#table:bitwise2)
+ |
+  
+
+*Arithmetic Operators Demonstration and
+ Test Program*: The [`operators\_test.cpp`](../../../../../test/operators_test.cpp) program demonstrates the
+ use of the arithmetic operator templates, and can also be used to verify
+ correct operation. Check the compiler status report for the test results
+ with selected platforms.
+ 
+
+#### 
+[Dereference
+ Operators and Iterator Helpers](operators.html#utility.utilities.operators.dereference_operators_and_iterat "Dereference Operators and Iterator Helpers")
+ The [iterator helper](operators.html#sec:iterator) templates ease
+ the task of creating a custom iterator. Similar to arithmetic types, a
+ complete iterator has many operators that are "redundant" and
+ can be implemented in terms of the core set of operators.
+ 
+ The [dereference operators](operators.html#sec:dereference) were motivated
+ by the [iterator helpers](operators.html#sec:iterator), but are often
+ useful in non-iterator contexts as well. Many of the redundant iterator
+ operators are also arithmetic operators, so the iterator helper classes
+ borrow many of the operators defined above. In fact, only two new operators
+ need to be defined: the pointer-to-member `operator->` and the subscript `operator[]`.
+ 
+ The requirements for the types used to instantiate the dereference operators
+ are specified in terms of expressions which must be valid and their return
+ type. The composite operator templates list their component templates,
+ which the instantiating type must support, and possibly other requirements.
+ 
+
+
+###### 
+
+[Dereference
+ Operators](operators.html#utility.utilities.operators.dereference_operators_and_iterat.dereference_operators)
+ All the dereference operator templates in this table accept an optional
+ template parameter (not shown) to be used for [base
+ class chaining](operators.html#sec:chaining).
+ 
+**Table 1.12. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ operand type
+  |
+| 
+`D`
+ | 
+`difference\_type`
+ |
+| 
+`i`
+ | 
+ object of type `T`
+ (an iterator)
+  |
+| 
+`P`
+ | 
+`pointer` type
+  |
+| 
+`R`
+ | 
+`reference` type
+  |
+| 
+`n`
+ | 
+ object of type `D`
+ (an index)
+  |
+  
+
+**Table 1.13. Dereference Operator Template Classes**
+
+
+| 
+ Template
+  | 
+ Supplied Operations
+  | 
+ Requirements
+  |
+| --- | --- | --- |
+| 
+[`dereferenceable`](operators.html#sec:arithmetic)`<T,P>`
+ | 
+`P operator->() const`
+ | 
+`\*i`.
+ Address of the returned value convertible to `P`.
+  |
+| 
+[`indexable`](operators.html#sec:arithmetic)`<T, D, R>`
+ | 
+`R operator[](D
+n)
+const`
+ | 
+`\*(i
++ n)`. Return of type `R`.
+  |
+  
+###### 
+
+[Grouped
+ Iterator Operators](operators.html#utility.utilities.operators.dereference_operators_and_iterat.grouped_iterator_operators)
+ There are five iterator operator class templates, each for a different
+ category of iterator. The following table shows the operator groups for
+ any category that a custom iterator could define. These class templates
+ have an additional optional template parameter `B`,
+ which is not shown, to support [base class
+ chaining](operators.html#sec:chaining).
+ 
+**Table 1.14. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ operand type
+  |
+| 
+`D`
+ | 
+`difference\_type`
+ |
+| 
+`V`
+ | 
+`value\_type`
+ |
+| 
+`P`
+ | 
+`pointer` type
+  |
+| 
+`R`
+ | 
+`reference` type
+  |
+  
+
+**Table 1.15. Iterator Operator Class Templates**
+
+| 
+ Template
+  | 
+ Component Operator Templates
+  |
+| --- | --- |
+| 
+[`input\_iteratable`](operators.html#sec:arithmetic)`<T, P>`
+ | 
+[`equality\_comparable<T>`](operators.html#table:equality_comparable1)
+
+
+[`incrementable<T>`](operators.html#table:incrementable)
+
+
+[`dereferenceable<T,P>`](operators.html#table:dereferenceable)
+ |
+| 
+[`output\_iteratable`](operators.html#sec:arithmetic)`<T>`
+ | 
+[`incrementable<T>`](operators.html#table:incrementable)
+ |
+| 
+[`forward\_iteratable`](operators.html#sec:arithmetic)`<T, P>`
+ | 
+[`input\_iteratable<T,P>`](operators.html#table:input_iteratable)
+ |
+| 
+[`bidirectional\_iteratable`](operators.html#sec:arithmetic)`<T,P>`
+ | 
+[`forward\_iteratable<T, P>`](operators.html#table:forward_iteratable)
+
+
+[`decrementable<T>`](operators.html#table:decrementable)
+ |
+| 
+[`random\_access\_iteratable`](operators.html#sec:arithmetic)`<T, P, D, R>`
+ | 
+[`bidirectional\_iteratable<T,
+P>`](operators.html#table:bidirectional_iteratable)
+
+
+[`totally\_ordered<T>`](operators.html#table:totally_ordered1)
+
+
+[`additive<T, D>`](operators.html#table:additive2)
+
+
+[`indexable<T, D, R>`](operators.html#table:indexable)
+ |
+  
+###### 
+
+[Iterator
+ Helpers](operators.html#utility.utilities.operators.dereference_operators_and_iterat.iterator_helpers)
+ There are also five iterator helper class templates, each corresponding
+ to a different iterator category. These classes cannot be used for [base class chaining](operators.html#sec:chaining). The following summaries
+ show that these class templates supply both the iterator operators from
+ the [iterator operator class templates](operators.html#sec:grpd_iter_oprs)
+ and the iterator `typedef`s
+ required by the C++ standard, such as `iterator\_category`
+ and `value\_type`.
+ 
+**Table 1.16. Notation**
+
+| 
+ Key
+  | 
+ Description
+  |
+| --- | --- |
+| 
+`T`
+ | 
+ operand type
+  |
+| 
+`D`
+ | 
+`difference\_type`
+ |
+| 
+`V`
+ | 
+`value\_type`
+ |
+| 
+`P`
+ | 
+`pointer` type
+  |
+| 
+`R`
+ | 
+`reference` type
+  |
+| 
+`x1`, `x2`
+ | 
+ objects of type `T`
+ |
+  
+
+**Table 1.17. Helper Class Templates**
+
+| 
+ Template
+  | 
+ Operations and Requirements
+  |
+| --- | --- |
+| 
+[`input\_iterator\_helper`](operators.html#sec:arithmetic)`<T, V, D, P, R>`
+ | 
+ Supports the operations and has the requirements of [`input\_iteratable<T,
+P>`](operators.html#table:input_iteratable)
+ |
+| 
+[`output\_iterator\_helper`](operators.html#sec:arithmetic)`<T>`
+ | 
+ Supports the operations and has the requirements of [`output\_iteratable<T>`](operators.html#table:output_iteratable)
+
+
+ See also [[1](operators.html#note:1)], [[2](operators.html#note:2)].
+  |
+| 
+[`forward\_iterator\_helper`](operators.html#sec:arithmetic)`<T, V, D, P, R>`
+ | 
+ Supports the operations and has the requirements of [`forward\_iteratable<T,
+P>`](operators.html#table:forward_iteratable)
+ |
+| 
+[`bidirectional\_iterator\_helper`](operators.html#sec:arithmetic)`<T, V, D, P, R>`
+ | 
+ Supports the operations and has the requirements of [`bidirectional\_iteratable<T,
+P>`](operators.html#table:bidirectional_iteratable)
+ |
+| 
+[`random\_access\_iterator\_helper`](operators.html#sec:arithmetic)`<T, V, D, P, R>`
+ | 
+ Supports the operations and has the requirements of [`random\_access\_iteratable<T,
+P,
+D,
+R>`](operators.html#table:random_access_iteratable)
+
+
+ To satisfy [*RandomAccessIterator*](https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator),
+ `x1 -
+x2` with return convertible
+ to `D` is also
+ required.
+  |
+  
+
+*Iterator Helper Notes*:
+ 
+
+
+1. Unlike other iterator helpers templates, [`output\_iterator\_helper`](operators.html#sec:arithmetic)
+ takes only one template parameter - the type of its target class. Although
+ to some it might seem like an unnecessary restriction, the standard
+ requires `difference\_type`
+ and `value\_type` of any
+ output iterator to be `void`
+ (C++11 §24.4.1 [lib.iterator.traits]), and [`output\_iterator\_helper`](operators.html#sec:arithmetic) template
+ respects this requirement. Also, output iterators in the standard have
+ void `pointer` and `reference` types, so the [`output\_iterator\_helper`](operators.html#sec:arithmetic) does
+ the same.
+2. As self-proxying is the easiest and most common
+ way to implement output iterators (see, for example, insert (C++11
+ §24.5.2 [insert.iterators]) and stream iterators (C++11 §24.6 [stream.iterators])
+ in the standard library), [`output\_iterator\_helper`](operators.html#sec:arithmetic) supports
+ the idiom by defining `operator\*` and `operator++` member functions which just return
+ a non-const reference to the iterator itself. Support for self-proxying
+ allows us, in many cases, to reduce the task of writing an output iterator
+ to writing just two member functions - an appropriate constructor and
+ a copy-assignment operator. For example, here is a possible implementation
+ of [`boost::function\_output\_iterator`](../../../../../../libs/iterator/doc/function_output_iterator.html)
+ adaptor:
+
+
+```
+template<class UnaryFunction>
+struct function\_output\_iterator
+    : boost::[`output\_iterator\_helper`](operators.html#sec:arithmetic)< function\_output\_iterator<UnaryFunction> >
+{
+    explicit function\_output\_iterator(UnaryFunction const& f = UnaryFunction())
+        : func(f) {}
+
+    template<typename T>
+    function\_output\_iterator& operator=(T const& value)
+    {
+        this->func(value);
+        return \*this;
+    }
+
+private:
+    UnaryFunction func;
+};
+
+```
+
+
+ Note that support for self-proxying does not prevent you from using [`output\_iterator\_helper`](operators.html#sec:arithmetic)
+ to ease any other, different kind of output iterator's implementation.
+ If [`output\_iterator\_helper`](operators.html#sec:arithmetic)'s
+ target type provides its own definition of `operator\*` or/and `operator++`, then these operators will get used and
+ the ones supplied by [`output\_iterator\_helper`](operators.html#sec:arithmetic)
+ will never be instantiated.
+ 
+
+
+###### 
+
+[Iterator
+ Demonstration and Test Program](operators.html#utility.utilities.operators.dereference_operators_and_iterat.iterator_demonstration_and_test_)
+ The [`iterators\_test.cpp`](../../../../../test/iterators_test.cpp)
+ program demonstrates the use of the iterator templates, and can also be
+ used to verify correct operation. The following is the custom iterator
+ defined in the test program. It demonstrates a correct (though trivial)
+ implementation of the core operations that must be defined in order for
+ the iterator helpers to "fill in" the rest of the iterator operations.
+ 
+```
+template <class T, class R, class P>
+struct test\_iter
+    : public boost::[`random\_access\_iterator\_helper`](operators.html#sec:arithmetic)<
+                test\_iter<T, R, P>, T, [`std::ptrdiff\_t`](https://en.cppreference.com/w/cpp/types/ptrdiff_t), P, R
+             >
+{
+    typedef test\_iter self;
+    typedef R Reference;
+    typedef [`std::ptrdiff\_t`](https://en.cppreference.com/w/cpp/types/ptrdiff_t) Distance;
+
+public:
+    explicit test\_iter(T\* i =0);
+    test\_iter(const self& x);
+    self& operator=(const self& x);
+    Reference operator\*() const;
+    self& operator++();
+    self& operator--();
+    self& operator+=(Distance n);
+    self& operator-=(Distance n);
+    bool operator==(const self& x) const;
+    bool operator<(const self& x) const;
+    friend Distance operator-(const self& x, const self& y);
+};
+
+```
+
+
+ Check the [compiler
+ status report](http://www.boost.org/development/testing.html) for the test results with selected platforms.
+ 
+
+#### 
+[Note
+ for Users of Older Versions](operators.html#utility.utilities.operators.note_for_users_of_older_versions "Note for Users of Older Versions")
+ The [changes in the library interface and recommended
+ usage](operators.html#sec:chaining) were motivated by some practical issues described below. The
+ new version of the library is still backward-compatible with the former
+ one, so you are not *forced* to change any existing
+ code, but the old usage is deprecated.
+ 
+ Though it was arguably simpler and more intuitive than using [base
+ class chaining](operators.html#sec:chaining), it has been discovered that the old practice of
+ deriving from multiple operator templates can cause the resulting classes
+ to be much larger than they should be. Most modern C++ compilers significantly
+ bloat the size of classes derived from multiple empty base classes, even
+ though the base classes themselves have no state. For instance, the size
+ of `point<int>`
+ from the [example](operators.html#sec:example) above was 12-24 bytes
+ on various compilers for the Win32 platform, instead of the expected 8
+ bytes.
+ 
+ Strictly speaking, it was not the library's fault – the language rules allow
+ the compiler to apply the [empty
+ base class optimization](https://en.cppreference.com/w/cpp/language/ebo) in that situation. In principle an arbitrary
+ number of empty base classes can be allocated at the same offset, provided
+ that none of them have a common ancestor (see §10 [class.derived] paragraph
+ 8 of the C++11 standard).
+ 
+ But the language definition also does not *require*
+ implementations to do the optimization, and few if any of today's compilers
+ implement it when multiple inheritance is involved. What's worse, it is
+ very unlikely that implementors will adopt it as a future enhancement to
+ existing compilers, because it would break binary compatibility between
+ code generated by two different versions of the same compiler. As Matt
+ Austern said, "One of the few times when you have the freedom to do
+ this sort of thing is when you are targeting a new architecture…".
+ On the other hand, many common compilers will use the empty base optimization
+ for single inheritance hierarchies.
+ 
+ Given the importance of the issue for the users of the library (which aims
+ to be useful for writing light-weight classes like `MyInt`
+ or `point<>`),
+ and the forces described above, we decided to change the library interface
+ so that the object size bloat could be eliminated even on compilers that
+ support only the simplest form of the empty base class optimization. The
+ current library interface is the result of those changes. Though the new
+ usage is a bit more complicated than the old one, we think it's worth it
+ to make the library more useful in real world. Alexy Gurtovoy contributed
+ the code which supports the new usage idiom while allowing the library
+ to remain backward-compatible.
+ 
+
+#### 
+[Acknowledgments](operators.html#utility.utilities.operators.acknowledgments "Acknowledgments")
+
+
+* [Dave Abrahams](http://www.boost.org/people/dave_abrahams.htm):
+ Started the library and contributed the arithmetic operators in [`boost/operators.hpp`](../../../../../../boost/operators.hpp).
+* [Jeremy Siek](http://www.boost.org/people/jeremy_siek.htm):
+ Contributed the [dereference operators and
+ iterator helpers](operators.html#sec:deref) in [boost/operators.hpp](../../../../../../boost/operators.hpp).
+ Also contributed [iterators\_test.cpp](../../../../../test/iterators_test.cpp).
+* [Aleksey
+ Gurtovoy](http://www.boost.org/people/aleksey_gurtovoy.htm): Contributed the code to support [base
+ class chaining](operators.html#sec:chaining) while remaining backward-compatible with old
+ versions of the library.
+* [Beman Dawes](http://www.boost.org/people/beman_dawes.html):
+ Contributed [`operators\_test.cpp`](../../../../../test/operators_test.cpp).
+* [Daryle
+ Walker](http://www.boost.org/people/daryle_walker.html): Contributed classes for the shift operators, equivalence,
+ partial ordering, and arithmetic conversions. Added the grouped operator
+ classes. Added helper classes for input and output iterators.
+* Helmut Zeisel: Contributed the 'left' operators and added some grouped
+ operator classes.
+* Daniel Frey: Contributed the NRVO-friendly and symmetric implementation
+ of arithmetic operators.
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/typed_in_idm35151228676656.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](result_of.html)

@@ -1,0 +1,171 @@
+---
+title: Version 1.33.1
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.33.1
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.33.1
+==============
+
+Version 1.33.1
+--------------
+
+
+December 5th, 2006 12:00 GMT
+
+
+[Documentation](/doc/libs/1_33_1/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_33\_1.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.33.1/boost_1_33_1.tar.bz2) |
+| [boost\_1\_33\_1.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.33.1/boost_1_33_1.tar.gz) |
+| windows | [boost\_1\_33\_1.exe](http://sourceforge.net/projects/boost/files/boost/1.33.1/boost_1_33_1.exe) |
+| [boost\_1\_33\_1.zip](http://sourceforge.net/projects/boost/files/boost/1.33.1/boost_1_33_1.zip) |
+
+
+### Updated Libraries
+
+
+* [Any Library](/doc/libs/1_33_1/doc/html/any.html): Cast
+ to reference types introduced in 1.33.0 is now documented on `any\_cast` documentation page.
+* [Bind Library](/doc/libs/1_33_1/libs/bind/bind.html): Bind
+ expressions now support [comparisons
+ and negation](/doc/libs/1_33_1/libs/bind/bind.html#operators). Example: `bind(&X::name, \_1) < bind(&X::name, \_2)`.
+* [Config Library](/doc/libs/1_33_1/libs/config/index.html): Don't
+ undef `BOOST\_LIB\_TOOLSET`
+ after use.
+* [Boost.Python](/doc/libs/1_33_1/libs/python/doc/index.html):
+
+	+ The build now assumes Python 2.4 by default, rather than 2.2
+	+ Support Python that's built without Unicode support
+	+ Support for wrapping classes with overloaded address-of (`&`) operators
+* [Smart Pointer
+ Library](/doc/libs/1_33_1/libs/smart_ptr/index.html): Fixed problems under Metrowerks CodeWarrior on PowerPC
+ (Mac OS X) with inlining on, GNU GCC on PowerPC 64.
+* [Regex Library](/doc/libs/1_33_1/libs/regex/doc/index.html): Fixed
+ the supplied makefiles, and other small compiler specific changes. Refer
+ to the [regex
+ history page](/doc/libs/1_33_1/libs/regex/doc/history.html) for more information on these and other small changes.
+* [Iostreams
+ Library](/doc/libs/1_33_1/libs/iostreams/doc/index.html):
+ Improved the interface for accessing a chain's components,
+ added `is\_open` members to
+ the file and file descriptor devices, fixed memory-mapped files on Windows,
+ and made minor changes to the documentation.
+* [Boost.Python](/doc/libs/1_33_1/libs/python/doc/index.html):
+
+	+ Added support for docstrings on nonstatic properties.
+	+ We now export the client-provided docstrings for `init<optional<> >`
+	 and *XXX*`\_FUNCTION\_OVERLOADS()` for only the last overload.
+	+ Support for Embedded VC++ 4 and GCC-3.3 on MacOS added
+	+ Introduced better support for rvalue from-python conversions of shared\_ptr.
+	+ Support for exposing `vector<T\*>` with the indexing suite.
+	+ updated visual studio project build file.
+	+ Added search feature to the index page.
+* [Functional/Hash
+ Library](/doc/libs/1_33_1/libs/functional/hash/index.html):
+ Fixed the points example.
+* [Multi-index
+ Containers Library](/doc/libs/1_33_1/libs/multi_index/doc/index.html):
+ Fixed a problem with multithreaded code, and
+ other minor changes. Refer to the library [release
+ notes](/doc/libs/1_33_1/libs/multi_index/doc/release_notes.html#boost_1_33_1) for further details.
+* [Graph
+ Library](/doc/libs/1_33_1/libs/graph/doc/table_of_contents.html):
+
+	+ Fixed a problem with the relaxed heap on x86 Linux (fixes bug in
+	 `dijkstra\_shortest\_paths`).
+	+ Fixed problems with [`cuthill\_mckee\_ordering`](/doc/libs/1_33_1/libs/graph/doc/cuthill_mckee_ordering.html)
+	 and [`king\_ordering`](/doc/libs/1_33_1/libs/graph/doc/king_ordering.html) producing
+	 no results.
+	+ Added `color\_map` parameter
+	 to `dijkstra\_shortest\_paths`.
+* [Signals
+ Library](/doc/libs/1_33_1/libs/signals/doc/index.html): Fixed problems with the use of Signals across shared library
+ boundaries.
+* [Thread
+ library](/doc/libs/1_33_1/libs/thread/doc/index.html):
+`read\_write\_mutex`
+ has been removed due to problems with deadlocks.
+* [Wave library](/doc/libs/1_33_1/libs/wave/index.html)
+ (V1.2.1): Fixed a couple of problems, refer to the [change
+ log](/doc/libs/1_33_1/libs/wave/ChangeLog) for further details.
+
+### Supported Compilers
+ Boost is tested on a wide range of compilers and platforms. Since Boost libraries
+ rely on modern C++ features not available in all compilers, not all Boost libraries
+ will work with every compiler. The following compilers and platforms have been
+ extensively tested with Boost, although many other compilers and platforms
+ will work as well. For more information, see the [regression
+ test results](https://www.boost.org/regression/release/user/).
+ 
+*New for this release*: Support for building with the newest
+ STLport-5.0 was added. The support includes building with MinGW Runtime 3.8
+ plus STLport-5.0 improved to support wide character operations. Apple GCC 4.0,
+ HP Tru64 C++, and Microsoft Visual C++ 8.0 are supported platforms. We have
+ added an experimental autoconf-like configure script for
+ Unix-like systems: run configure --help for more information.
+ 
+
+
+* [Apple GCC](http://developer.apple.com/) 3.3, 4.0 on
+ Mac OS X.
+* [Borland C++](http://www.codegear.com/products/cppbuilder)
+ 5.6.4 on Windows.
+* [GNU C++](http://gcc.gnu.org) 2.95.3 (with and without
+ STLport), 3.2.x., 3.3.x, 3.4.x, 4.0.x on Windows, Linux and Solaris.
+* [HP C++ for Tru64 UNIX 7.1](http://h30097.www3.hp.com/cplus/).
+* [Intel
+ C++](http://www.intel.com/cd/software/products/asmo-na/eng/compilers/index.htm) 8.1, 9.0 on Windows, Linux.
+* [Metrowerks CodeWarrior](http://www.metrowerks.com) 8.3,
+ 9.4, 9.5 on Mac OS X and Windows.
+* [Microsoft Visual C++](http://msdn.microsoft.com/visualc/)
+ 6.0 (sp5, with and without STLport), 7.0, 7.1, 8.0. Note: Boost does not
+ support the non-standard "Safe" C++ Library shipping with Visual
+ C++ 8.0, which may result in many spurious warnings from Boost headers
+ and other standards-conforming C++ code. To suppress these warnings, define
+ the macro `\_SCL\_SECURE\_NO\_DEPRECATE`.
+
+### Acknowledgements
+![Medieval Mr. Gregor](/gfx/boost_1_33_0.jpg)
+[Douglas
+ Gregor](/users/people/doug_gregor.html) managed this release.
+ 
+ A great number of people contributed their time and expertise to make this
+ release possible. Special thanks go to Aleksey Gurtovoy and Misha Bergal, who
+ managed to keep the regression testing system working throughout the release
+ process; David Abrahams, Beman Dawes, Aleksey Gurtovoy, Bronek Kozicki, Rene
+ Rivera and Jonathan Turkanis for greatly improving the quality of this release;
+ Rene Rivera for the new Boost web page design; and Zoltan "cad" Juhasz
+ for the new Boost logo.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

@@ -1,0 +1,104 @@
+---
+title: Version 1.34.1
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.34.1
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.34.1
+==============
+
+Version 1.34.1
+--------------
+
+
+July 24th, 2007 12:00 GMT
+
+
+[Documentation](/doc/libs/1_34_1/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_34\_1.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.34.1/boost_1_34_1.tar.bz2) |
+| [boost\_1\_34\_1.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.34.1/boost_1_34_1.tar.gz) |
+| windows | [boost\_1\_34\_1.7z](http://sourceforge.net/projects/boost/files/boost/1.34.1/boost_1_34_1.7z) |
+| [boost\_1\_34\_1.zip](http://sourceforge.net/projects/boost/files/boost/1.34.1/boost_1_34_1.zip) |
+
+
+ This is a bug fix release addressing many problems with the 1.34.0 release. It
+ is a recommended upgrade for all users of Boost 1.34.0. For a complete list of
+ fixes see [Boost
+ Trac](http://svn.boost.org/trac/boost/query?status=closed&milestone=Boost+1.34.1).
+ 
+### Supported Compilers
+ New in this release is improved support for the IBM XL C/C++ compiler.
+ 
+ Boost is tested on a wide range of compilers and platforms. Since Boost libraries
+ rely on modern C++ features not available in all compilers, not all Boost libraries
+ will work with every compiler. New in this release The following compilers
+ and platforms have been extensively tested with Boost, although many other
+ compilers and platforms will work as well. For more information, see the [regression test results](https://www.boost.org/regression/release/user/).
+ 
+
+
+* [Apple GCC](http://developer.apple.com/) 4.0.1 on Mac
+ OS X.
+* [Borland C++](http://www.codegear.com/products/cppbuilder)
+ 5.8.2 on Windows.
+* [GNU C++](http://gcc.gnu.org/)
+
+	+ 3.2.x., 3.3.x, 3.4.x, 4.0.x, 4.1.x on Linux
+	+ 4.1.x on Solaris
+	+ 3.4.x on Windows
+* [HP C++ for Tru64 UNIX 7.1](http://h30097.www3.hp.com/cplus/).
+* [HP aC++ A.06.14](http://www.hp.com/go/c++).
+* [Intel
+ C++](http://www.intel.com/cd/software/products/asmo-na/eng/compilers/index.htm) 9.1 on Windows, 9.0 on Linux.
+* [Metrowerks CodeWarrior](http://www.metrowerks.com/)
+ 9.4 on Windows.
+* [Microsoft Visual C++](http://msdn.microsoft.com/visualc/)
+ 6.0 (sp5, with and without STLport), 7.0, 7.1, 8.0. Note: Boost does not
+ support the non-standard "Safe" C++ Library shipping with Visual
+ C++ 8.0, which may result in many spurious warnings from Boost headers
+ and other standards-conforming C++ code. To suppress these warnings, define
+ the macro `\_SCL\_SECURE\_NO\_DEPRECATE`.
+* [Sun Studio 11](http://developers.sun.com/sunstudio/index.jsp)
+ on Solaris.
+
+### Acknowledgements
+[Thomas Witt](/users/people/thomas_witt.html) managed this
+ release.
+ 
+ A great number of people contributed their time and expertise to make this
+ release possible. Special thanks go to Kim Barrett consolidating Boost.Iostreams
+ changes from various branches and Rene Rivera for general build and installation
+ support.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

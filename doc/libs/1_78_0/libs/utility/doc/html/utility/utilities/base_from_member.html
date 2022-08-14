@@ -1,0 +1,441 @@
+---
+title: Base from Member
+copyright: 
+revised: 
+---
+
+
+Base from Member
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../utilities.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/base_from_member.html)
+
+
+### 
+[Base from Member](base_from_member.html "Base from Member")
+[Introduction](base_from_member.html#utility.utilities.base_from_member.introduction)
+[Synopsis](base_from_member.html#utility.utilities.base_from_member.synopsis)
+[Basic
+ Usage](base_from_member.html#utility.utilities.base_from_member.basic_usage)
+[Multiple
+ Sub-Objects](base_from_member.html#utility.utilities.base_from_member.multiple_sub_objects)
+[Reference](base_from_member.html#base_from_member.reference)
+[Acknowledgments](base_from_member.html#utility.utilities.base_from_member.acknowledgments)
+
+
+#### 
+[Introduction](base_from_member.html#utility.utilities.base_from_member.introduction "Introduction")
+ The class templates [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member") support the base-from-member
+ idiom. When developing a class, sometimes a base class needs to be initialized
+ with a member of the current class. As a naïve example:
+ 
+```
+#include <streambuf>  /\* for std::streambuf \*/
+#include <ostream>    /\* for std::ostream \*/
+
+class fdoutbuf
+  : public [`std::streambuf`](https://en.cppreference.com/w/cpp/header/streambuf)
+{
+public:
+    explicit fdoutbuf( int fd );
+    //...
+};
+
+class fdostream
+  : public [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)
+{
+protected:
+    fdoutbuf buf;
+public:
+    explicit fdostream( int fd )
+      : buf( fd ), [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)( &buf ) {}
+    //...
+};
+
+```
+
+
+ This is undefined because C++'s initialization order mandates that the
+ base class is initialized before the member it uses. [R.
+ Samuel Klatchko](http://www.moocat.org) developed a way around this by using the initialization
+ order in his favor. Base classes are initialized in order of declaration,
+ so moving the desired member to another base class, that is initialized
+ before the desired base class, can ensure proper initialization.
+ 
+ A custom base class can be made for this idiom:
+ 
+```
+#include <streambuf>  /\* for std::streambuf \*/
+#include <ostream>    /\* for std::ostream \*/
+
+class fdoutbuf
+  : public [`std::streambuf`](https://en.cppreference.com/w/cpp/header/streambuf)
+{
+public:
+    explicit fdoutbuf( int fd );
+    //...
+};
+
+struct fdostream\_pbase
+{
+    fdoutbuf sbuffer;
+
+    explicit fdostream\_pbase( int fd )
+      : sbuffer( fd ) {}
+};
+
+class fdostream
+  : private fdostream\_pbase
+  , public [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)
+{
+    typedef fdostream\_pbase  pbase\_type;
+    typedef [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)     base\_type;
+
+public:
+    explicit fdostream( int fd )
+      : pbase\_type( fd ), base\_type( &sbuffer ) {}
+    //...
+};
+
+```
+
+
+ Other projects can use similar custom base classes. The technique is basic
+ enough to make a template, with a sample template class in this library.
+ The main template parameter is the type of the enclosed member. The template
+ class has several (explicit) constructor member templates, which implicitly
+ type the constructor arguments and pass them to the member. The template
+ class uses implicit copy construction and assignment, cancelling them if
+ the enclosed member is non-copyable.
+ 
+ Manually coding a base class may be better if the construction and/or copying
+ needs are too complex for the supplied template class, or if the compiler
+ is not advanced enough to use it.
+ 
+ Since base classes are unnamed, a class cannot have multiple (direct) base
+ classes of the same type. The supplied template class has an extra template
+ parameter, an integer, that exists solely to provide type differentiation.
+ This parameter has a default value so a single use of a particular member
+ type does not need to concern itself with the integer.
+ 
+
+#### 
+[Synopsis](base_from_member.html#utility.utilities.base_from_member.synopsis "Synopsis")
+```
+#include <type\_traits>  /\* exposition only \*/
+
+#ifndef BOOST\_BASE\_FROM\_MEMBER\_MAX\_ARITY
+#define BOOST\_BASE\_FROM\_MEMBER\_MAX\_ARITY  10
+#endif
+
+template < typename MemberType, int UniqueID = 0 >
+class [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")
+{
+protected:
+    MemberType  member;
+
+#if *C++11 is in use*
+    template< typename ...T >
+    explicit constexpr [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")( T&& ...x )
+     noexcept( [`std::is\_nothrow\_constructible`](https://en.cppreference.com/w/cpp/types/is_constructible)<MemberType, T...>::value );
+#else
+    [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")();
+
+    template< typename T1 >
+    explicit  [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")( T1 x1 );
+
+    template< typename T1, typename T2 >
+    [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")( T1 x1, T2 x2 );
+
+    //...
+
+    template< typename T1, typename T2, typename T3, typename T4,
+     typename T5, typename T6, typename T7, typename T8, typename T9,
+     typename T10 >
+    [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")( T1 x1, T2 x2, T3 x3, T4 x4, T5 x5, T6 x6, T7 x7,
+     T8 x8, T9 x9, T10 x10 );
+#endif
+};
+
+template < typename MemberType, int UniqueID >
+class [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<MemberType&, UniqueID>
+{
+protected:
+    MemberType& member;
+
+    explicit constexpr [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")( MemberType& x )
+        noexcept;
+};
+
+```
+
+
+ The class template has a first template parameter `MemberType`
+ representing the type of the based-member. It has a last template parameter
+ `UniqueID`, that is an `int`, to differentiate between multiple base
+ classes that use the same based-member type. The last template parameter
+ has a default value of zero if it is omitted. The class template has a
+ protected data member called `member`
+ that the derived class can use for later base classes or itself.
+ 
+ If the appropriate features of C++11 are present, there will be a single
+ constructor template. It implements *perfect forwarding*
+ to the best constructor call of `member`
+ if any. The constructor template is marked both `constexpr`
+ and `explicit`. The former will
+ be ignored if the corresponding inner constructor call of `member` does not have the marker. The
+ latter binds the other way; always taking effect, even when the inner constructor
+ call does not have the marker. The constructor template propagates the
+ `noexcept` status of the inner
+ constructor call. The constructor template has a trailing parameter with
+ a default value that disables the template when its signature is too close
+ to the signatures of the automatically-defined non-template copy- and/or
+ move-constructors of [`base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member").
+ 
+ On earlier-standard compilers, there is a default constructor and several
+ constructor member templates. These constructor templates can take as many
+ arguments (currently up to ten) as possible and pass them to a constructor
+ of the data member.
+ 
+ A specialization for member references offers a single constructor taking
+ a `MemberType&`,
+ which is the only way to initialize a reference.
+ 
+ Since C++ does not allow any way to explicitly state the template parameters
+ of a templated constructor, make sure that the arguments are already close
+ as possible to the actual type used in the data member's desired constructor.
+ Explicit conversions may be necessary.
+ 
+ The `BOOST\_BASE\_FROM\_MEMBER\_MAX\_ARITY`
+ macro constant specifies the maximum argument length for the constructor
+ templates. The constant may be overridden if more (or less) argument configurations
+ are needed. The constant may be read for code that is expandable like the
+ class template and needs to maintain the same maximum size. (Example code
+ would be a class that uses this class template as a base class for a member
+ with a flexible set of constructors.) This constant is ignored when C++11
+ features are present.
+ 
+
+#### 
+[Basic
+ Usage](base_from_member.html#utility.utilities.base_from_member.basic_usage "Basic Usage")
+ With the starting example, the `fdoutbuf`
+ sub-object needs to be encapsulated in a base class that is inherited before
+ `[`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)`.
+ 
+```
+#include <boost/utility/base\_from\_member.hpp>
+
+#include <streambuf>  // for std::streambuf
+#include <ostream>    // for \_\_std\_ostream\_\_
+
+class fdoutbuf
+  : public [`std::streambuf`](https://en.cppreference.com/w/cpp/header/streambuf)
+{
+public:
+    explicit fdoutbuf( int fd );
+    //...
+};
+
+class fdostream
+  : private [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<fdoutbuf>
+  , public [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)
+{
+    // Helper typedef's
+    typedef [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<fdoutbuf>  pbase\_type;
+    typedef [`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)                        base\_type;
+
+public:
+    explicit fdostream( int fd )
+      : pbase\_type( fd ), base\_type( &member ){}
+    //...
+};
+
+```
+
+
+ The base-from-member idiom is an implementation detail, so it should not
+ be visible to the clients (or any derived classes) of `fdostream`.
+ Due to the initialization order, the `fdoutbuf`
+ sub-object will get initialized before the `[`[`std::ostream`](https://en.cppreference.com/w/cpp/io/basic_ostream)`](https://en.cppreference.com/w/cpp/io/basic_ostream)`
+ sub-object does, making the former sub-object safe to use in the latter
+ sub-object's construction. Since the `fdoutbuf`
+ sub-object of the final type is the only sub-object with the name `member` that name can be used unqualified
+ within the final class.
+ 
+
+#### 
+[Multiple
+ Sub-Objects](base_from_member.html#utility.utilities.base_from_member.multiple_sub_objects "Multiple Sub-Objects")
+ The base-from-member class templates should commonly involve only one base-from-member
+ sub-object, usually for attaching a stream-buffer to an I/O stream. The
+ next example demonstrates how to use multiple base-from-member sub-objects
+ and the resulting qualification issues.
+ 
+```
+#include <boost/utility/base\_from\_member.hpp>
+
+#include <cstddef>  /\* for NULL \*/
+
+struct an\_int
+{
+    int  y;
+
+    an\_int( float yf );
+};
+
+class switcher
+{
+public:
+    switcher();
+    switcher( double, int \* );
+    //...
+};
+
+class flow\_regulator
+{
+public:
+    flow\_regulator( switcher &, switcher & );
+    //...
+};
+
+template < unsigned Size >
+class fan
+{
+public:
+    explicit fan( switcher );
+    //...
+};
+
+class system
+  : private [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<an\_int>
+  , private [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher>
+  , private [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher, 1>
+  , private [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher, 2>
+  , protected flow\_regulator
+  , public fan<6>
+{
+    // Helper typedef's
+    typedef [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<an\_int>       pbase0\_type;
+    typedef [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher>     pbase1\_type;
+    typedef [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher, 1>  pbase2\_type;
+    typedef [`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<switcher, 2>  pbase3\_type;
+
+    typedef flow\_regulator  base1\_type;
+    typedef fan<6>          base2\_type;
+
+public:
+    system( double x );
+    //...
+};
+
+system::system( double x )
+  : pbase0\_type( 0.2 )
+  , pbase1\_type()
+  , pbase2\_type( -16, &this->pbase0\_type::member.y )
+  , pbase3\_type( x, static\_cast<int \*>(NULL) )
+  , base1\_type( pbase3\_type::member, pbase1\_type::member )
+  , base2\_type( pbase2\_type::member )
+{
+    //...
+}
+
+```
+
+
+ The final class has multiple sub-objects with the name `member`,
+ so any use of that name needs qualification by a name of the appropriate
+ base type. Using `typedef`s
+ ease mentioning the base types.
+ 
+ However, the fix introduces a new problem when a pointer is needed. Using
+ the address operator with a sub-object qualified with its class's name
+ results in a pointer-to-member (here, having a type of `an\_int
+[`boost::base\_from\_member`](../../boost/base_from_member.html "Class template base_from_member")<an\_int, 0>::\*`)
+ instead of a pointer to the member (having a type of `an\_int\*`). The new problem is fixed by qualifying
+ the sub-object with `this->`
+ and is needed just for pointers, and not for references or values.
+ 
+ There are some argument conversions in the initialization. The constructor
+ argument for `pbase0\_type`
+ is converted from `double` to
+ `float`. The first constructor
+ argument for `pbase2\_type`
+ is converted from `int` to
+ `double`.
+ 
+ The second constructor argument for `pbase3\_type`
+ is a special case of necessary conversion; all forms of the null-pointer
+ literal in C++ (except `nullptr`
+ from C++11) also look like compile-time integral expressions, so C++ always
+ interprets such code as an integer when it has overloads that can take
+ either an integer or a pointer.
+ 
+ The last conversion is necessary for the compiler to call a constructor
+ form with the exact pointer type used in `switcher`'s
+ constructor. (If C++11's [`nullptr`](https://en.cppreference.com/w/cpp/language/nullptr) is used, it still needs
+ a conversion if multiple pointer types can be accepted in a constructor
+ call but `[`std::nullptr\_t`](https://en.cppreference.com/w/cpp/types/nullptr_t)` cannot.)
+ 
+
+#### 
+Reference
+##### 
+Header <[boost/utility/base\_from\_member.hpp](../../../../../../boost/utility/base_from_member.hpp)>
+```
+
+
+[BOOST\_BASE\_FROM\_MEMBER\_MAX\_ARITY](../../BOOST_BA_idm35151229096240.html "Macro BOOST_BASE_FROM_MEMBER_MAX_ARITY")
+```
+
+
+```
+namespace boost {
+  template<typename MemberType, int UniqueID = 0> class [base\_from\_member](../../boost/base_from_member.html "Class template base_from_member");
+
+  template<typename MemberType, int UniqueID> 
+    class [base\_from\_member](../../boost/base_fro_idm35151229100080.html "Class template base_from_member<MemberType &, UniqueID>")<MemberType &, UniqueID>;
+}
+```
+
+#### 
+[Acknowledgments](base_from_member.html#utility.utilities.base_from_member.acknowledgments "Acknowledgments")
+ Author: Walker, Daryle
+ 
+ Copyright 2001, 2003, 2004, 2012 Daryle Walker
+ 
+
+
+* [Ed Brey](http://www.boost.org/people/ed_brey.htm)
+ suggested some interface changes.
+* [R. Samuel Klatchko](http://www.moocat.org) ([rsk@moocat.org](mailto:rsk%40moocat.org), [rsk@brightmail.com](mailto:rsk%40brightmail.com))
+ invented the idiom of how to use a class member for initializing a
+ base class.
+* [Dietmar
+ Kuehl](http://www.boost.org/people/dietmar_kuehl.htm) popularized the base-from-member idiom in his [IOStream
+ example classes](http://www.informatik.uni-konstanz.de/~kuehl/c++/iostream/).
+* Jonathan Turkanis supplied an implementation of generating the constructor
+ templates that can be controlled and automated with macros. The implementation
+ uses the [Preprocessor
+ library](../../../../../../libs/preprocessor/index.html).
+* [Walker](http://www.boost.org/people/daryle_walker.html%22%3eDaryle)
+ started the library. Contributed the test file [base\_from\_member\_test.cpp](../../../../../test/base_from_member_test.cpp).
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../utilities.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/base_from_member.html)

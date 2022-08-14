@@ -1,0 +1,137 @@
+---
+title: Compressed Pair
+copyright: 
+revised: 
+---
+
+
+Compressed Pair
+
+
+
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| Boost C++ Libraries | [Home](../../../../../../index.html) | [Libraries](../../../../../../libs/libraries.htm) | [People](http://www.boost.org/users/people.html) | [FAQ](http://www.boost.org/users/faq.html) | [More](../../../../../../more/index.htm) |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/call_tra_idm35151228605104.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/compressed_pair.html)
+
+
+### 
+[Compressed Pair](compressed_pair.html "Compressed Pair")
+[Introduction](compressed_pair.html#utility.utilities.compressed_pair.introduction)
+[Synopsis](compressed_pair.html#utility.utilities.compressed_pair.synopsis)
+[Reference](compressed_pair.html#compressed_pair.reference)
+[Acknowledgments](compressed_pair.html#utility.utilities.compressed_pair.acknowledgments)
+
+
+#### 
+[Introduction](compressed_pair.html#utility.utilities.compressed_pair.introduction "Introduction")
+ All of the contents of [`<boost/compressed\_pair.hpp>`](../../../../../../boost/compressed_pair.hpp) are defined inside `namespace boost`.
+ 
+ The class [`compressed\_pair`](../../boost/compressed_pair.html "Class template compressed_pair")
+ is very similar to [`std::pair`](https://en.cppreference.com/w/cpp/utility/pair). However, if either of the
+ template arguments are empty classes, then the [*empty
+ base-class optimisation*](https://en.cppreference.com/w/cpp/language/ebo) is applied to compress the size
+ of the pair.
+ 
+
+#### 
+[Synopsis](compressed_pair.html#utility.utilities.compressed_pair.synopsis "Synopsis")
+```
+cpp
+template <class T1, class T2>
+class [`compressed\_pair`](../../boost/compressed_pair.html "Class template compressed_pair")
+{
+public:
+    typedef T1                                                 first\_type;
+    typedef T2                                                 second\_type;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<first\_type>::param\_type       first\_param\_type;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<second\_type>::param\_type      second\_param\_type;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<first\_type>::reference        first\_reference;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<second\_type>::reference       second\_reference;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<first\_type>::const\_reference  first\_const\_reference;
+    typedef typename [`call\_traits`](../../boost/call_traits.html "Struct template call_traits")<second\_type>::const\_reference second\_const\_reference;
+
+             compressed\_pair() : base() {}
+             compressed\_pair(first\_param\_type x, second\_param\_type y);
+    explicit compressed\_pair(first\_param\_type x);
+    explicit compressed\_pair(second\_param\_type y);
+
+    compressed\_pair& operator=(const compressed\_pair&);
+
+    first\_reference       first();
+    first\_const\_reference first() const;
+
+    second\_reference       second();
+    second\_const\_reference second() const;
+
+    void swap(compressed\_pair& y);
+};
+
+```
+
+
+ The two members of the pair can be accessed using the member functions
+ `first()`
+ and `second()`.
+ Note that not all member functions can be instantiated for all template
+ parameter types. In particular [`compressed\_pair`](../../boost/compressed_pair.html "Class template compressed_pair") can be instantiated
+ for reference and array types, however in these cases the range of constructors
+ that can be used is limited. If types `T1`
+ and `T2` are the same type,
+ then there is only one version of the single-argument constructor, and
+ this constructor initialises both values in the pair to the passed value.
+ 
+ Note that if either member is a [POD](https://en.cppreference.com/w/cpp/named_req/PODType)
+ type, then that member is not zero-initialized by the [`compressed\_pair`](../../boost/compressed_pair.html "Class template compressed_pair") default constructor:
+ it is up to you to supply an initial value for these types if you want
+ them to have a default value.
+ 
+ Note that [`compressed\_pair`](../../boost/compressed_pair.html "Class template compressed_pair")
+ can not be instantiated if either of the template arguments is a union
+ type, unless there is compiler support for [`boost::is\_union`](../../../../../../libs/type_traits/index.html), or if [`boost::is\_union`](../../../../../../libs/type_traits/index.html) is specialised for the
+ union type.
+ 
+ Finally, a word of caution for Visual C++ 6 users: if either argument is
+ an empty type, then assigning to that member will produce memory corruption,
+ unless the empty type has a "do nothing" assignment operator
+ defined. This is due to a bug in the way VC6 generates implicit assignment
+ operators.
+ 
+
+#### 
+Reference
+##### 
+Header <[boost/detail/compressed\_pair.hpp](../../../../../../boost/detail/compressed_pair.hpp)>
+```
+namespace boost {
+  template<typename T1, typename T2> class [compressed\_pair](../../boost/compressed_pair.html "Class template compressed_pair");
+
+  template<typename T> class [compressed\_pair](../../boost/compress_idm35151228634288.html "Class template compressed_pair<T, T>")<T, T>;
+  template<typename T1, typename T2> 
+    void swap([compressed\_pair](../../boost/compressed_pair.html "Class template compressed_pair")< T1, T2 > & x, [compressed\_pair](../../boost/compressed_pair.html "Class template compressed_pair")< T1, T2 > & y);
+}
+```
+
+#### 
+[Acknowledgments](compressed_pair.html#utility.utilities.compressed_pair.acknowledgments "Acknowledgments")
+ Based on contributions by Steve Cleary, Beman Dawes, Howard Hinnant and
+ John Maddock.
+ 
+ Maintained by [John Maddock](mailto:john%40johnmaddock.co.uk).
+ 
+
+
+
+|  |  |
+| --- | --- |
+|  | Copyright © 2001 Beman Dawes
+ Distributed under the Boost Software License, Version 1.0. (See accompanying
+ file LICENSE\_1\_0.txt or copy at <http://www.boost.org/LICENSE_1_0.txt>)
+ 
+ |
+
+---
+[![Prev](../../../../../../doc/src/images/prev.png)](../../boost/call_tra_idm35151228605104.html)[![Up](../../../../../../doc/src/images/up.png)](../utilities.html)[![Home](../../../../../../doc/src/images/home.png)](../../index.html)[![Next](../../../../../../doc/src/images/next.png)](../../boost/compressed_pair.html)

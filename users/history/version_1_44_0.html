@@ -1,0 +1,425 @@
+---
+title: Version 1.44.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.44.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.44.0
+==============
+
+Version 1.44.0
+--------------
+
+
+August 13th, 2010 17:00 GMT
+
+
+[Documentation](/doc/libs/1_44_0/)
+
+
+Downloads| Platform | File |
+| unix | [boost\_1\_44\_0.tar.bz2](http://sourceforge.net/projects/boost/files/boost/1.44.0/boost_1_44_0.tar.bz2) |
+| [boost\_1\_44\_0.tar.gz](http://sourceforge.net/projects/boost/files/boost/1.44.0/boost_1_44_0.tar.gz) |
+| windows | [boost\_1\_44\_0.7z](http://sourceforge.net/projects/boost/files/boost/1.44.0/boost_1_44_0.7z) |
+| [boost\_1\_44\_0.zip](http://sourceforge.net/projects/boost/files/boost/1.44.0/boost_1_44_0.zip) |
+
+
+### New Libraries
+
+
+* [Meta State Machine](/libs/msm/index.html):
+ High-performance
+ expressive UML2 finite state machines, from Christophe Henry
+* [Polygon](/libs/polygon/index.html):
+ Booleans/clipping,
+ resizing/offsetting and more for planar polygons with integral coordinates,
+ from Lucanus Simonson.
+
+### Updated Libraries
+
+
+* [Accumulators](/libs/accumulators/index.html):
+
+	+ Correct miscellaneous documentation inaccuracies
+* [Asio](/libs/asio/index.html):
+
+	+ Reduced compile times. (Note that some programs may need to add additional
+	 `#include`s, e.g.
+	 if the program uses `boost::array`
+	 but does not explicitly include `<boost/array.hpp>`.)
+	+ Reduced the size of generated code.
+	+ Refactored `deadline\_timer`
+	 implementation to improve performance.
+	+ Improved multiprocessor scalability on Windows by using a dedicated
+	 hidden thread to wait for timers.
+	+ Improved performance of `asio::streambuf`
+	 with `async\_read()`
+	 and `async\_read\_until()`. These read operations now use
+	 the existing capacity of the `streambuf`
+	 when reading, rather than limiting the read to 512 bytes.
+	+ Added optional separate compilation. To enable, add `#include <boost/asio/impl/src.cpp>`
+	 to one source file in a program, then build the program with `BOOST\_ASIO\_SEPARATE\_COMPILATION`
+	 defined in the project/compiler settings. Alternatively, `BOOST\_ASIO\_DYN\_LINK` may be defined
+	 to build a separately-compiled Asio as part of a shared library.
+	+ Added new macro `BOOST\_ASIO\_DISABLE\_FENCED\_BLOCK`
+	 to permit the disabling of memory fences around completion handlers,
+	 even if thread support is enabled.
+	+ Reworked timeout examples to better illustrate typical use cases.
+	+ Ensured that handler arguments are passed as `const`
+	 types.
+	+ Fixed incorrect parameter order in `null\_buffers`
+	 variant of `async\_send\_to`
+	 ([#4170](https://svn.boost.org/trac/boost/ticket/4170)).
+	+ Ensured `unsigned char`
+	 is used with `isdigit`
+	 in `getaddrinfo` emulation
+	 ([#4201](https://svn.boost.org/trac/boost/ticket/4201)).
+	+ Fixed handling of very small but non-zero timeouts ([#4205](https://svn.boost.org/trac/boost/ticket/4205)).
+	+ Fixed crash that occurred when an empty buffer sequence was passed
+	 to a composed read or write operation.
+	+ Added missing `operator+` overload in `buffers\_iterator`
+	 ([#4382](https://svn.boost.org/trac/boost/ticket/4382)).
+	+ Implemented cancellation of `null\_buffers`
+	 operations on Windows.
+* [Config](/libs/config/index.html):
+
+	+ Added new defect macro, `BOOST\_NO\_COMPLETE\_VALUE\_INITIALIZATION`.
+	+ Added new defect macro `BOOST\_NO\_0X\_HDR\_TYPEINDEX`,
+	 fixes issue [#4274](https://svn.boost.org/trac/boost/ticket/4274).
+	+ Added support for code visibility in GCC.
+	+ Fixed issues [#4385](https://svn.boost.org/trac/boost/ticket/4385),
+	 [#4324](https://svn.boost.org/trac/boost/ticket/4324),
+	 [#4221](https://svn.boost.org/trac/boost/ticket/4221),
+	 [#4182](https://svn.boost.org/trac/boost/ticket/4182),
+	 [#4178](https://svn.boost.org/trac/boost/ticket/4178),
+	 [#4152](https://svn.boost.org/trac/boost/ticket/4152),
+	 [#4115](https://svn.boost.org/trac/boost/ticket/4182).
+	 [#4112](https://svn.boost.org/trac/boost/ticket/4112),
+	 [#4059](https://svn.boost.org/trac/boost/ticket/4059),
+	 [#4041](https://svn.boost.org/trac/boost/ticket/4041),
+	 [#4012](https://svn.boost.org/trac/boost/ticket/4012).
+* [Filesystem](/libs/filesystem/index.html):
+
+	+ This release contains both version 2 and version 3 of the library.
+	 Version 3 is a major upgrade that will break some existing user code,
+	 so version 2 is the default. Users are encouraged to migrate to version
+	 3. See '[Version 2](/libs/filesystem/v2/doc/index.htm)'
+	 and '[Version 3](/libs/filesystem/v3/doc/index.htm)'
+	 for more information.
+	+ Fix problems with symbol visibility for shared libraries.
+	+ Fix various minor problems.
+	+ Fixed issues: [#3863](https://svn.boost.org/trac/boost/ticket/3863),
+	 [#4248](https://svn.boost.org/trac/boost/ticket/4248).
+* [Foreach](/libs/foreach/index.html):
+
+	+ Add `boost/foreach\_fwd.hpp` for forward declarations of
+	 foreach's customization points, fixes [#3998](https://svn.boost.org/trac/boost/ticket/3998).
+	+ Remove out-of-date work-arounds for sun compilers, fixes [#4306](https://svn.boost.org/trac/boost/ticket/4306).
+* [Fusion](/libs/fusion/index.html):
+
+	+ Added `fusion::reverse\_fold`, `fusion::iter\_fold`
+	 and `fusion::reverse\_iter\_fold` ([#1623](https://svn.boost.org/trac/boost/ticket/1623)).
+* [Hash](/libs/functional/hash/index.html):
+
+	+ Option to prevent implicit casts when calling the hash function by
+	 defining the macro `BOOST\_HASH\_NO\_IMPLICIT\_CASTS`,
+	 which can avoid some subtle problems. This might be activated by
+	 default in a future version.
+* [Iostreams](/libs/iostreams/index.html):
+
+	+ Several fixes for file descriptors class, including a breaking change
+	 to the constructors and `open`
+	 methods for `file\_descriptor`,
+	 `file\_descriptor\_source`
+	 and `file\_descriptor\_sink`.
+	 See [the
+	 documentation](/libs/iostreams/doc/classes/file_descriptor.html) for details. The old methods are still available
+	 if you define `BOOST\_IOSTREAMS\_USE\_DEPRECATED`
+	 ([#3323](https://svn.boost.org/trac/boost/ticket/3323),
+	 [#3517](https://svn.boost.org/trac/boost/ticket/3517),
+	 [#4335](https://svn.boost.org/trac/boost/ticket/4335)).
+	+ Fix several issues with compression and decompression ([#2318](https://svn.boost.org/trac/boost/ticket/2318),
+	 [#4091](https://svn.boost.org/trac/boost/ticket/4091),
+	 [#3348](https://svn.boost.org/trac/boost/ticket/3348),
+	 [#2783](https://svn.boost.org/trac/boost/ticket/2783),
+	 [#1579](https://svn.boost.org/trac/boost/ticket/1579),
+	 [#3853](https://svn.boost.org/trac/boost/ticket/3853)).
+	+ And a load more miscellaneous fixes ([#3851](https://svn.boost.org/trac/boost/ticket/3851),
+	 [#3279](https://svn.boost.org/trac/boost/ticket/3279),
+	 [#3689](https://svn.boost.org/trac/boost/ticket/3689),
+	 [#2356](https://svn.boost.org/trac/boost/ticket/2356),
+	 [#2996](https://svn.boost.org/trac/boost/ticket/2996),
+	 [#4102](https://svn.boost.org/trac/boost/ticket/4102),
+	 [#2998](https://svn.boost.org/trac/boost/ticket/2998),
+	 [#1612](https://svn.boost.org/trac/boost/ticket/1612),
+	 [#2325](https://svn.boost.org/trac/boost/ticket/2325)).
+	+ Thanks to Steven Watanabe for almost all these fixes. For more detail
+	 see the [release
+	 notes](/libs/iostreams/doc/release_notes.html).
+* [Math](/libs/math/index.html):
+
+	+ Fixed incorrect range and support for Rayleigh distribution.
+* [MPL](/libs/mpl/index.html):
+
+	+ Make `mpl::string` work with `mpl::transform`.
+* [Multi-index Containers](/libs/multi_index/doc/index.html):
+
+	+ Fixed a bug preventing the use of `modify\_key`
+	 with rollback in [ordered](/libs/multi_index/doc/reference/ord_indices.html#modify_key)
+	 and [hashed](/libs/multi_index/doc/reference/hash_indices.html#modify_key)
+	 indices when `Modifier`
+	 and `Rollback` are
+	 different types (ticket [#4130](https://svn.boost.org/trac/boost/ticket/4130)).
+* [Proto](/libs/proto/index.html):
+
+	+ **Minor change in behavior:** when using
+	 `proto::and\_` as a transform, apply *all*
+	 transforms but only return the result of applying the last. See Proto's
+	 [Release
+	 Notes](/doc/html/proto/appendices.html#boost_proto.appendices.release_notes.boost_1_44) for details.
+	+ **Minor change in behavior:** `proto::as\_expr` and `proto::as\_child`
+	 no longer run objects that are already proto expressions through
+	 the expression domain's generator. See Proto's [Release
+	 Notes](/doc/html/proto/appendices.html#boost_proto.appendices.release_notes.boost_1_44) for details.
+	+ **Minor change in behavior:** Proto
+	 uses `proto::basic\_expr` instead of `proto::expr` when possible for better compile
+	 times. See Proto's [Release
+	 Notes](/doc/html/proto/appendices.html#boost_proto.appendices.release_notes.boost_1_44) for details.
+	+ Add support for sub-domains.
+	+ Introduce per-domain `as\_expr`
+	 and `as\_child` customization
+	 points to allow for domain-specific customization of variable capture
+	 behavior.
+	+ The `proto::\_default` transform is also a grammar
+	 that matches the expressions the transform knows how to handle.
+	+ Add `proto::\_void`, a no-op primitive transform
+	 that does nothing and returns `void`.
+	+ The `proto::pass\_through` transform doesn't
+	 strip expression wrappers, fixes [#4175](https://svn.boost.org/trac/boost/ticket/4175).
+	+ Const-correctness fixes when invoking proto domains.
+* [Regex](/libs/regex/index.html):
+
+	+ Fixed issues: [#4309](https://svn.boost.org/trac/boost/ticket/4309),
+	 [#4215](https://svn.boost.org/trac/boost/ticket/4215),
+	 [#4212](https://svn.boost.org/trac/boost/ticket/4212),
+	 [#4191](https://svn.boost.org/trac/boost/ticket/4191),
+	 [#4132](https://svn.boost.org/trac/boost/ticket/4132),
+	 [#4123](https://svn.boost.org/trac/boost/ticket/4123),
+	 [#4114](https://svn.boost.org/trac/boost/ticket/4114),
+	 [#4036](https://svn.boost.org/trac/boost/ticket/4036),
+	 [#4020](https://svn.boost.org/trac/boost/ticket/4020),
+	 [#3941](https://svn.boost.org/trac/boost/ticket/3941),
+	 [#3902](https://svn.boost.org/trac/boost/ticket/3902),
+	 [#3890](https://svn.boost.org/trac/boost/ticket/3890).
+* [Spirit](/libs/spirit/index.html):
+ Spirit V2.4,
+ see the '[What's
+ New](/doc/libs/1_44_0/libs/spirit/doc/html/spirit/what_s_new/spirit_2_4.html)' section for details.
+* [System](/libs/system/index.html):
+
+	+ Change system\_category and generic\_category to functions, to conform
+	 to the C++0x FCD. This change may cause compile errors some user
+	 code; the fix is add "()" to references to system\_category
+	 and generic\_category, so that they become function calls.
+	+ Fix problems with symbol visibility for shared libraries.
+	+ Fixed issues: [#4254](https://svn.boost.org/trac/boost/ticket/4254),
+	 [#3994](https://svn.boost.org/trac/boost/ticket/3994),
+	 [#3474](https://svn.boost.org/trac/boost/ticket/3474).
+* [Thread](/libs/thread/index.html):
+
+	+ Fixes for miscellaneous trac issues ([#2501](https://svn.boost.org/trac/boost/ticket/2501),
+	 [#4341](https://svn.boost.org/trac/boost/ticket/4341),
+	 [#4363](https://svn.boost.org/trac/boost/ticket/4363),
+	 [#3760](https://svn.boost.org/trac/boost/ticket/3760),
+	 [#3761](https://svn.boost.org/trac/boost/ticket/3761),
+	 [#3611](https://svn.boost.org/trac/boost/ticket/3611),
+	 [#2955](https://svn.boost.org/trac/boost/ticket/2955),
+	 [#4071](https://svn.boost.org/trac/boost/ticket/4071),
+	 [#3195](https://svn.boost.org/trac/boost/ticket/3195),
+	 [#3097](https://svn.boost.org/trac/boost/ticket/3097),
+	 [#2874](https://svn.boost.org/trac/boost/ticket/2874),
+	 [#4316](https://svn.boost.org/trac/boost/ticket/4316),
+	 [#4317](https://svn.boost.org/trac/boost/ticket/4317),
+	 [#4322](https://svn.boost.org/trac/boost/ticket/4322),
+	 [#3244](https://svn.boost.org/trac/boost/ticket/3244),
+	 [#2747](https://svn.boost.org/trac/boost/ticket/2747),
+	 [#4305](https://svn.boost.org/trac/boost/ticket/4305),
+	 [#3195](https://svn.boost.org/trac/boost/ticket/3195),
+	 [#2704](https://svn.boost.org/trac/boost/ticket/2704),
+	 [#2293](https://svn.boost.org/trac/boost/ticket/2293),
+	 [#868](https://svn.boost.org/trac/boost/ticket/868),
+	 [#2918](https://svn.boost.org/trac/boost/ticket/2918),
+	 [#4238](https://svn.boost.org/trac/boost/ticket/4238),
+	 [#3269](https://svn.boost.org/trac/boost/ticket/3269),
+	 [#3178](https://svn.boost.org/trac/boost/ticket/3178),
+	 [#3195](https://svn.boost.org/trac/boost/ticket/3195)).
+	+ Fixes for other miscellaneous issues (remove warnings, support newer
+	 compilers, etc.)
+* [TR1](/libs/tr1/index.html):
+
+	+ Fixed VC10 support.
+	+ `std::tr1::result\_of` always uses the TR1 ResultOf
+	 protocol, even on compilers that support the C++0x `decltype`-based implementation.
+* [Type Traits](/libs/type_traits/index.html):
+
+	+ Added support for rvalue references throughout the library, plus
+	 two new traits classes is\_rvalue\_reference and is\_lvalue\_reference.
+	 Fixes [#4407](https://svn.boost.org/trac/boost/ticket/4407)
+	 and [#3804](https://svn.boost.org/trac/boost/ticket/3804).
+	+ Fixed ticket [#3621](https://svn.boost.org/trac/boost/ticket/3621).
+* [uBLAS](/libs/numeric/ublas/index.html):
+
+	+ New assignment operators to feed in vectors and matrices in many
+	 nice ways ([#4034](http://svn.boost.org/trac/boost/ticket/4034)).
+	 Thank you Nasos
+	+ New doxygen-based [documentation](/libs/numeric/ublas/doc/html/index.html)
+	+ Enable arithmetic operators (+,-,\*,/) to work between ublas containers
+	 of std::complex and integral types ([#3649](http://svn/boost/org/trac/boost/ticket/3649)).
+	 Thank you Neal
+	+ Removed unused variables in functional.hpp ([#4377](http://svn.boost.org/trac/boost/ticket/4377)).
+	 Thank you Marco
+	+ New matrix\_indirect and vector\_indirect views to access elements
+	 with a matrix or vector of indices
+* [Utility](/libs/utility/index.html):
+
+	+ Added a new template class, [`boost::initialized<T>`](/libs/utility/value_init.htm#initialized),
+	 in order to fix [#3472](https://svn.boost.org/trac/boost/ticket/3472).
+	+ New version of `value\_initialized<T>` no longer calls `memset` when the compiler has implemented
+	 value-initialization completely ([#3869](https://svn.boost.org/trac/boost/ticket/3869)).
+	+ New template `boost::tr1\_result\_of`
+	 that implements the TR1 ResultOf protocol even if `boost::result\_of`
+	 uses the C++0x `decltype`-based
+	 implementation.
+* [Uuid](/libs/uuid/index.html):
+
+	+ Define `BOOST\_UUID\_NO\_TYPE\_TRAITS`
+	 to remove the dependency on Boost.TypeTraits.
+	+ Stream `operator<<`
+	 handles left, internal, and right manipulators.
+	+ Added `to\_string`,
+	 `to\_wstring` to convert
+	 a uuid to a string.
+	+ Fixed minor bugs in documentation.
+* [Wave](/libs/wave/index.html):
+ See the [Changelog](/libs/wave/ChangeLog)
+ for details.
+* [Xpressive](/libs/xpressive/index.html):
+
+	+ Replace non-portable `using`
+	 declarations with `typedef`s
+	 in `nested\_results`.
+	+ Support user-defined assertions with placeholders for non-local variables.
+
+### Updated tools
+
+
+* [Boostbook](/tools/boostbook/index.html):
+
+	+ Significantly faster.
+	+ Improved syntax highlighter.
+* [Quickbook](/tools/quickbook/index.html):
+
+	+ Use the cygwin 1.7 API for better path handling.
+	+ Improved boostbook generation.
+	+ Tweak the grammar to clean up some edge cases.
+	+ For more detail see the [change
+	 log](/doc/libs/1_44_0/doc/html/quickbook/change_log.html#quickbook.change_log.version_1_5_2___boost_1_44_0).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* OS X:
+ 
+	+ GCC 4.0.1 on Intel Leopard.
+* Linux:
+ 
+	+ GCC 4.4 on 64-bit Suse.
+* Windows:
+ 
+	+ Visual C++ 7.1 SP1, 8.0 SP1, 9.0 SP1 and 10.0.
+	+ GCC 4.3.3, using Mingw.
+* FreeBSD:
+ 
+	+ GCC 4.2.1, 32 and 64 bit.
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Intel 10.1 on 32 bit Red Hat Enterprise Linux.
+	+ Intel 10.1, 11.0, 11.1 on 64 bit Red Hat Enterprise Linux.
+	+ GCC 3.4.6, 4.2.4, 4.3.4, 4.4.3, 4.5 on Red Hat Enterprise Linux.
+	+ GCC, with C++0x extensions, 4.3.4, 4.4.3, 4.5 on Red Hat Enterprise
+	 Linux.
+	+ GCC 4.4 on 64 bit Suse.
+	+ QLogic PathScale(TM) Compiler Suite: Version 3.2 on Red Hat Enterprise
+	 Linux.
+	+ Clang from subversion (will be released with LLVM 2.8).
+* OS X:
+ 
+	+ Intel C++ Compiler 10.1, 11.0, 11.1 on Leopard.
+	+ GCC 4.0.1, 4.2.1 (Apple build).
+	+ GCC 4.4
+	+ GCC, with C++0x extensions, 4.4
+	+ Clang from subversion (will be released with LLVM 2.8).
+* Windows:
+ 
+	+ Visual C++ 7.1 SP, 8.0, 9.0 on 32-bit XP.
+	+ Visual C++ 9.0 using STLport 5.2 on XP and Windows Mobile 5.0.
+	+ Visual C++ 10.0 on XP.
+	+ Visual C++ 10.0 on 64-bit Windows 7.
+	+ Borland/Codegear C++ 5.9.3, 6.1.3 (2009), 6.2.1 (2010).
+	+ Intel C++ 11.1, with a Visual C++ 9.0 backend, on Vista 32-bit.
+	+ GCC 4.3.3, 4.5 on Mingw.
+	+ GCC, with C++0x extensions, 4.5 on Mingw.
+* AIX:
+ 
+	+ IBM XL C/C++ Enterprise Edition, V11.1.0.0, on AIX Version 5.3.0.40.
+* FreeBSD:
+ 
+	+ GCC 4.2.1 on FreeBSD 7.2, 64 bit.
+	+ GCC 4.2.1 on FreeBSD 8.0, 32 bit.
+* Solaris:
+ 
+	+ Sun C++ 5.10 on Solaris 5.10.
+
+### Acknowledgements
+[Beman Dawes](/users/people/beman_dawes.html), Eric Niebler,
+ [Rene Rivera](/users/people/rene_rivera.html), Daniel James
+ and Vladimir Prus managed this release.
+ 
+ Thanks to Marshall Clow for organizing the bug sprint and to everyone who took
+ part.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

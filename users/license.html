@@ -1,0 +1,342 @@
+---
+title: Boost Software License
+copyright: <i>Joe Coder 2004 - 2006</i>. Beman Dawes, Daniel Frey, David Abrahams, 2003-2004. Rene Rivera 2004-2005.
+revised: 
+---
+
+
+Boost Software License
+
+
+
+Boost Software License
+======================
+
+* [License text](../LICENSE_1_0.txt)
+* [Introduction](#Introduction)
+* [History](#History)
+* [Rationale](#Rationale)
+* [FAQ](#FAQ)
+* [Transition](#Transition)
+* [Acknowledgements](#Acknowledgements)
+
+
+Introduction
+------------
+
+
+The [Boost Software License](../LICENSE_1_0.txt)
+ specifies the terms and conditions of use for all Boost
+ libraries and tools.
+
+
+History
+-------
+
+
+As Boost grew, it became unmanageable for each Boost file to
+ have its own license. Users complained that each license needed
+ to be reviewed, and that reviews were difficult or impossible
+ if Boost libraries contained many different licenses. Boost
+ moderators and maintainers spent excessive time dealing with
+ license issues. Boost developers often copied existing licenses
+ without actually knowing if the license wording met legal
+ needs.
+
+
+To clarify these licensing issues, the Boost moderators
+ asked for help from the [Berkman Center for Internet & Society](http://cyber.law.harvard.edu)
+ at Harvard Law School, Cambridge, Massachusetts, USA. It was requested that a
+ single Boost license be developed that met the traditional
+ requirements that Boost licenses, particularly:
+
+
+* Must be simple to read and understand.
+* Must grant permission without fee to copy, use and modify
+ the software for any use.
+* Must require that the license appear with all copies
+ [including redistributions] of the software source code.
+* Must not require that the license appear with executables
+ or other binary uses of the library.
+* Must not require that the source code be available for
+ execution or other binary uses of the library.
+
+
+Additionally, other common open source licenses were studied
+ to see what additional issues were being treated, and additions
+ representing good legal practice were also requested. The
+ result is the [Boost Software
+ License](../LICENSE_1_0.txt):
+```
+```
+
+Rationale
+---------
+
+
+The following rationale was provided by Devin Smith, the
+ lawyer who wrote the Boost Software License. It has been edited
+ slightly for brevity. Editorial additions are shown in square
+ brackets.
+
+
+### Benefit of Common Software License
+
+
+If one of Boost's goals is to ease use and adoption of the
+ various libraries made available by Boost, it does make sense
+ to try to standardize the licenses under which the libraries
+ are made available to users. (I make some recommendations about
+ a possible short-form license below.)
+
+
+[Standardizing the license will not] necessarily address the
+ issue of satisfying corporate licensees. Each corporation will
+ have its own concerns, based on their own experiences with
+ software licensing and distribution and, if they're careful,
+ will want to carefully review each license, even if they've
+ been told that they're all standard. I would expect that,
+ unless we're remarkably brilliant (or lucky) in drafting the
+ standard Boost license, the standard license won't satisfy the
+ legal departments of all corporations. I imagine that some
+ will, for instance, absolutely insist that licensors provide a
+ warranty of title and provide indemnification for third-party
+ intellectual property infringement claims. Others may want
+ functional warranties. (If I were advising the corporations, I
+ would point out that they're not paying anything for the code
+ and getting such warranties from individual programmers, who
+ probably do not have deep pockets, is not that valuable anyway,
+ but other lawyers may disagree.)
+
+
+But this can be addressed, not by trying to craft the
+ perfect standard license, but by informing the corporations
+ that they can, if they don't like the standard license,
+ approach the authors to negotiate a different, perhaps even
+ paid, license.
+
+
+One other benefit of adopting a standard license is to help
+ ensure that the license accomplishes, from a legal perspective,
+ what the authors intend. For instance, many of the [original]
+ licenses for the libraries available on boost.org do not
+ disclaim the warranty of title, meaning that the authors could,
+ arguably, be sued by a user if the code infringes the rights of
+ a third party and the user is sued by that third party. I think
+ the authors probably want to disclaim this kind of
+ liability.
+
+
+### Short-Form License
+
+
+Without in anyway detracting from the draft license that's
+ been circulated [to Boost moderators], I'd like to propose an
+ alternative "short-form" license that Boost could have the
+ library authors adopt. David [Abrahams] has expressed a desire
+ to keep things as simple as possible, and to try to move away
+ from past practice as little as possible, and this is my
+ attempt at a draft.
+
+
+This license, which is very similar to the BSD license and
+ the MIT license, should satisfy the Open Source Initiative's
+ Open Source Definition: (i) the license permits free
+ redistribution, (ii) the distributed code includes source code,
+ (iii) the license permits the creation of derivative works,
+ (iv) the license does not discriminate against persons or
+ groups, (v) the license does not discriminate against fields of
+ endeavor, (vi) the rights apply to all to whom the program is
+ redistributed, (vii) the license is not specific to a product,
+ and (viii) the license is technologically neutral (i.e., it
+ does not [require] an explicit gesture of assent in order to
+ establish a contract between licensor and licensee).
+
+
+This license grants all rights under the owner's copyrights
+ (as well as an implied patent license), disclaims all liability
+ for use of the code (including intellectual property
+ infringement liability), and requires that all subsequent
+ copies of the code [except machine-executable object code],
+ including partial copies and derivative works, include the
+ license.
+
+
+FAQ
+---
+
+
+How should Boost
+ programmers apply the license to source and header
+ files? Add a comment based on
+ the following template, substituting appropriate text for the
+ italicized portion:
+```
+
+//          
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE\_1\_0.txt or copy at
+//          https://www.boost.org/LICENSE\_1\_0.txt)
+
+```
+
+Please leave an empty line before and after the above
+ comment block. It is fine if the copyright and license messages
+ are not on different lines; in no case there should be other
+ intervening text. Do not include "All rights reserved"
+ anywhere.
+
+
+Other ways of licensing source files have been considered,
+ but some of them turned out to unintentionally nullify legal
+ elements of the license. Having fixed language for referring to
+ the license helps corporate legal departments evaluate the
+ boost distribution. Creativity in license reference language is
+ strongly discouraged, but judicious changes in the use of
+ whitespace are fine.
+
+
+How should the
+ license be applied to documentation files, instead?
+Very similarly to the way it is
+ applied to source files: the user should see the very same text
+ indicated in the template above, with the only difference that
+ both the local and the web copy of LICENSE\_1\_0.txt should be
+ linked to. Refer to the HTML source code of this page in case
+ of doubt.
+
+
+How should Boost
+ programmers maintain the copyright messages?
+Copyright is only claimed for changes
+ meeting a certain threshold of originality. Therefore, the copyright
+ message only covers expressions of creativity. It is up to authors of
+ changes to add themselves to the copyright message if they so decide.
+ Typically, new claimant is added when someone takes over maintenance
+ of a library or new version of an existing library is developed.
+ In principle, do not ever remove previous copyright claims -
+ just add new claims and/or claimants.
+
+
+How is the Boost
+ license different from the [GNU General Public License (GPL)](https://opensource.org/licenses/gpl-license.php)?
+The Boost license permits the creation
+ of derivative works for any use with
+ no legal requirement to release your source code. Other
+ differences include Boost not requiring reproduction of
+ copyright messages for object code redistribution, and the fact
+ that the Boost license is not "viral": if you distribute your
+ own code along with some Boost code, the Boost license applies
+ only to the Boost code (and modified versions thereof); you are
+ free to license your own code under any terms you like. The GPL
+ is also much longer, and thus may be harder to understand.
+
+
+Why the phrase
+ "machine-executable object code generated by a source language
+ processor"? To distinguish
+ cases where we do not require reproduction of the copyrights
+ and license, such as object libraries, shared libraries, and
+ final program executables, from cases where reproduction is
+ still required, such as distribution of self-extracting
+ archives of source code or precompiled header files. More
+ detailed wording was rejected as not being legally necessary,
+ and reducing readability.
+
+
+Why is the
+ "disclaimer" paragraph of the license entirely in
+ uppercase? Capitalization of
+ these particular provisions is a US legal mandate for consumer
+ protection. (Diane Cabell)
+
+
+Does the copyright
+ and license cover interfaces too? The conceptual interface to a library isn't
+ covered. The particular representation expressed in the header
+ is covered, as is the documentation, examples, test programs,
+ and all the other material that goes with the library. A
+ different implementation is free to use the same logical
+ interface, however. Interface issues have been fought out in
+ court several times; ask a lawyer for details.
+
+
+Why doesn't the
+ license prohibit the copyright holder from patenting the
+ covered software? No one who
+ distributes their code under the terms of this license could
+ turn around and sue a user for patent infringement. (Devin
+ Smith)
+
+
+Boost's lawyers were well aware of patent provisions in
+ licenses like the GPL and CPL, and would have included such
+ provisions in the Boost license if they were believed to be
+ legally useful.
+
+
+Why doesn't the
+ copyright message say "All rights reserved"?
+Devin Smith says "I don't think it
+ belongs in the copyright notice for anything (software,
+ electronic documentation, etc.) that is being licensed. It
+ belongs in books that are sold where, in fact, all rights
+ (e.g., to reproduce the book, etc.) are being reserved in the
+ publisher or author. I think it shouldn't be in the BSD
+ license."
+
+
+Do I have to
+ copyright/license trivial files? Even a test file that just contains an empty
+ `main()` should have a copyright. Files without
+ copyrights make corporate lawyers nervous, and that's a barrier
+ to adoption. The more of Boost is uniformly copyrighted and
+ licensed, the less problem people will have with mounting a
+ Boost release CD on a corporate server.
+
+
+Can I use the Boost
+ license for my own projects outside Boost? Sure; there are no restrictions on the use of the
+ license itself.
+
+
+[![Open Source (OSI) Logo](https://opensource.org/trademarks/opensource/web/opensource-110x95.png)](https://opensource.org/docs/definition.php)Is the Boost
+ license "[Open Source](https://opensource.org/docs/osd)"? Yes. The [Open Source Initiative](https://opensource.org/) certified the
+ [Boost Software License 1.0](https://opensource.org/licenses/bsl1.0.html) in early
+ 2008.
+
+
+Transition
+----------
+
+
+To ease the transition of the code base towards the new
+ common license, several people decided to give a [blanket
+ permission](/doc/libs/release/more/blanket-permission.txt) for all their contributions to use the new
+ license. This hopefully helps maintainers to switch to the new
+ license once the list contains enough names without asking over
+ and over again for each change. Please consider adding your
+ name to the list.
+
+
+Acknowledgements
+----------------
+
+
+Dave Abrahams led the Boost effort to develop better
+ licensing. The legal team was led by [Diane Cabell](https://cyber.harvard.edu/people/dcabell), Director, Clinical Programs,
+ [Berkman Center for Internet & Society](https://cyber.harvard.edu/),
+ Harvard Law School. Devin Smith, attorney, [Nixon Peabody
+ LLP](https://www.nixonpeabody.com/), wrote the Boost License. Eva Chan, Harvard Law School,
+ contributed analysis of Boost issues and drafts of various
+ legal documents. Boost members reviewed drafts of the license.
+ Beman Dawes wrote this web page.
+
+
+
+
+
+
+
+
+

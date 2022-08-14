@@ -1,0 +1,75 @@
+---
+title: A Special Note for Boost 1.52.0 and Higher
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+A Special Note for Boost 1.52.0 and Higher
+
+
+ 
+
+
+
+A Special Note for Boost 1.52.0 and Higher
+==========================================
+
+A Special Note for Boost 1.52.0 and Higher
+------------------------------------------
+
+
+November 6th, 2012 09:27 GMT
+
+
+ Starting with Boost 1.52.0, the `boost::result\_of`
+ component defaults to an implementation that uses the C++11 `decltype`
+ keyword to deduce the return type of callables on compilers with strong `decltype` support. As `boost::result\_of`
+ is a key piece of library infrastructure, we at Boost have found this change
+ to be moderately disruptive. You should be aware of the issue when making the
+ decision to upgrade from an older version of Boost.
+ 
+### Why
+ the Change Was Made
+`boost::result\_of` has been changed to use `decltype` to make it more consistent with `std::result\_of`
+ (when sufficient compiler support is available). Also, the use of `decltype` should help to improve compile times
+ and increase the accuracy of the type computation.
+ 
+
+### Who
+ is Affected
+ If you use a compiler with sufficiently bug-free `decltype`
+ support (including [N3276](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3276.pdf)),
+ then you will get the new behavior. At the time of writing (Nov 4, 2012), the
+ only compiler in that category is Clang 3.1, but as other compilers improve,
+ this will change.
+ 
+
+### What
+ Problems Can the Change Cause?
+ The use of `decltype` in `result\_of` can result in a different type
+ being computed than with the now-obsolete TR1 `result\_of`
+ protocol. This will often be the case for incorrectly written TR1-style function
+ objects that misreport their result types. This is unfortunately too common.
+ But it can even happen for some correctly written function objects.
+ 
+
+### Where
+ Can I Learn More?
+ Please see the documentation for [`boost::result\_of`](https://www.boost.org/doc/libs/1_52_0/libs/utility/utility.htm#result_of)
+ to understand the differences between TR1 `result\_of`
+ and `decltype` `result\_of`,
+ and to find out how you can write your code to accommodate both.
+ 
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+

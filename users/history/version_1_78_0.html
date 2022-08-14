@@ -1,0 +1,507 @@
+---
+title: Version 1.78.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.78.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.78.0
+==============
+
+Version 1.78.0
+--------------
+
+
+December 8th, 2021 03:45 GMT
+
+
+[Documentation](/doc/libs/1_78_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_78\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.bz2) | 8681f175d4bdb26c52222665793eef08490d7758529330f98d3b29dd0735bccc |
+| [boost\_1\_78\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.gz) | 94ced8b72956591c4775ae2207a9763d3600b30d9d7446562c552f0a14a63be7 |
+| windows | [boost\_1\_78\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.7z) | 090cefea470bca990fa3f3ed793d865389426915b37a2a3258524a7258f0790c |
+| [boost\_1\_78\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip) | f22143b5528e081123c3c5ed437e92f648fe69748e95fa6e2bd41484e2986cc3 |
+
+
+### Known Issues
+ These are patches from library authors which were found too late to be fixed
+ in the release.
+ 
+
+
+* Boost.Build silently skips installation of library headers and binaries
+ in some cases, see [#104](https://github.com/bfgroup/b2/issues/104).
+ 
+	+ Fixed in [PR#113](https://github.com/bfgroup/b2/pull/113),
+	 [patch](/patches/1_78_0/0001-b2-fix-install.patch).
+* Boost.Atomic fails to build when targeting UWP, see [#54](https://github.com/boostorg/atomic/issues/54). [Patch](/patches/1_78_0/0002-atomic-fix-uwp-build.patch).
+
+### New Libraries
+
+
+* No new libraries.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Added an io\_uring backend that may optionally be used for all I/O
+	 objects, including sockets, timers, and posix descriptors.
+	+ Added support for files, with new new classes for stream-oriented
+	 and random-access files. This feature currently supports I/O completion
+	 ports on Windows, and io\_uring on Linux.
+	+ Added support for portable pipes on POSIX and Windows (when I/O completion
+	 ports are available).
+	+ Added support for registered buffers, which are optimised when using
+	 the io\_uring backend.
+	+ Added experimental support for channels, that may be used to send
+	 and queue completions as messages.
+	+ Implemented improvements to `experimental::coro`.
+	+ Disabled `aligned\_alloc`
+	 on clang when using an MSVC runtime.
+	+ Changed to use a faster implementation for `ip::network\_v4::canonical()`.
+	+ Added template specialisations for common uses to improve compile
+	 time.
+	+ Reduced the size of `io\_context`
+	 executors to a single pointer.
+	+ Increased the small object buffer size for `execution::any\_executor`
+	 and `any\_io\_executor`.
+	+ Fixed multi-signature handling when variadic templates are disabled.
+	+ Fixed compatibility with new versions of gcc and
+	 clang.
+	+ Fixed compilation on Solaris.
+	+ Fixed defence against Qt-defined macros when building with MSVC.
+	+ Improved error messages emitted by `ssl`
+	 facilities.
+	+ Fixed `bind\_executor`
+	 compatibility with completion tokens.
+	+ Fixed build errors when `BOOST\_ASIO\_USE\_TS\_EXECUTOR\_AS\_DEFAULT`
+	 is defined.
+	+ Added missing move assignment operator to `awaitable<>`.
+	+ Fixed an access violation when using coroutines with MSVC, due to
+	 incorrect alignment of allocated memory.
+	+ Fixed a cleanup issue in `experimental::parallel\_group`
+	 that occured when the execution context was shut down with parallel
+	 operations still pending.
+	+ Added clarifications to the documentation on concurrency hints.
+	+ Added documentation on error handling techniques for C++20 coroutines.
+	+ Fixed various warnings.
+	+ Consult the [Revision
+	 History](/doc/libs/1_78_0/doc/html/boost_asio/history.html) for further details.
+* [Assert](/libs/assert/):
+
+	+ Added `source\_location::to\_string`.
+* [Atomic](/libs/atomic/):
+
+	+ Use process-local futex operations on Android for non-IPC waiting
+	 and notifying operations.
+	+ Added support for Linux targets that only define `SYS\_futex\_time64`
+	 syscall, such as riscv32.
+	+ Added a workaround for incorrect result of `std::alignment\_of`
+	 on clang 8 for 64-bit types on 32-bit x86 targets.
+	+ Added a ulock backend for waiting and notifying operations on Darwin
+	 systems since Mac OS 10.12, iOS 10.0, tvOS 10.0 or watchOS 3.0.
+	+ On Windows, corrected discrepancy between *atomic-type*::always\_has\_native\_wait\_notify
+	 and the corresponding capability macros when targeting Windows 8
+	 or later. The library will now directly use `WaitOnAddress`
+	 and related APIs from public headers and therefore require user to
+	 link with `synchronization.lib`
+	 if the user requires Windows 8 or later by defining `BOOST\_USE\_WINAPI\_VERSION`, `\_WIN32\_WINNT` or similar macros.
+	 The library is linked automatically on compilers that support auto-linking
+	 (e.g. MSVC).
+	+ Added support for types with padding bits, except unions, on compilers
+	 that provide a way to clear the padding bits. This feature is supported
+	 by gcc 11 and MSVC 14.2 (compiler version 19.27) and newer, as well
+	 as other compilers supporting similar intrinsics. On compilers that
+	 don't allow to clear the padding bits, types with padding are still
+	 generally not supported with the exception of 80-bit `long double`
+	 on x86 targets. A new `BOOST\_ATOMIC\_NO\_CLEAR\_PADDING`
+	 capability macro is defined to indicate when clearing the padding
+	 is not supported.
+	+ Initializing constructors of `atomic\_ref`
+	 and `ipc\_atomic\_ref`
+	 no longer use atomic instructions to clear the padding bits in the
+	 referenced object. This reduces the cost of the atomic reference
+	 construction.
+	+ Initializing constructors of `atomic`
+	 and `ipc\_atomic` are
+	 now `constexpr` for enums,
+	 classes and floating point types. For classes and floating point
+	 types, the constructors are `constexpr`
+	 if the compiler supports `constexpr`
+	`std::bit\_cast`, the type has no padding
+	 bytes and no padding is required to implement native atomic operations.
+	+ In accordance with C++20, default constructors of `atomic`
+	 and `ipc\_atomic` now
+	 perform value initialization of the contained object. For types without
+	 a user-defined default constructor, this means the default-constructed
+	 atomic will be zero-initialized.
+	+ Added a workaround for compilation error on AIX caused by the assembler
+	 tool not supporting numeric labels. ([PR#50](https://github.com/boostorg/atomic/pull/50))
+	+ Added a workaround for compilation error with Visual Studio 2015
+	 prior to Update 3. ([#52](https://github.com/boostorg/atomic/issues/52))
+	+ See [changelog](/doc/html/atomic/changelog.html)
+	 for more details.
+* [Beast](/libs/beast/):
+
+	+ This maintenance update brings minor bug fixes and updated CI reporting.
+	+ Fixed security vulnerability CVE-2016-9840 in zlib implementation.
+	+ Fixed WebSocket permessage\_deflate implementation. This should result
+	 in an increase in compression performance when using Beast WebSockets.
+	+ Removed the test stream and test framework's dependency on RTTI.
+	 You can now use our handy test stream to check your embedded asynchronous
+	 communications code!
+	+ We'd love to know how you or your company use Beast, consider adding
+	 an entry to the [Companies
+	 and Individuals Using Beast](https://github.com/boostorg/beast/wiki/Companies-and-Individuals-Using-Beast) list.
+	+ See the full [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html) for a complete list of changes.
+* [Core](/libs/core/):
+
+	+ Added a generic implementation to `<boost/core/cmath.hpp>`,
+	 enabled when `BOOST\_CORE\_USE\_GENERIC\_CMATH`
+	 is defined or when the platform does not provide the necessary facilities
+	 in `<cmath>`.
+	+ Added `boost::core::type\_name`, a utility function that
+	 returns the name of a type as a string.
+	+ Added `boost::span`, a C++11 implementation of
+	 C++20's `std::span` (Glen Fernandes).
+* [Describe](/libs/describe/):
+
+	+ Added `has\_describe\_enumerators`,
+	 `has\_describe\_bases`,
+	 `has\_describe\_members`.
+	+ Added `enum\_to\_string`,
+	 `enum\_from\_string`.
+	+ Added relational and stream insertion operators.
+	+ Added `descriptor\_by\_name`,
+	 `descriptor\_by\_pointer`.
+* [DLL](/libs/dll/):
+
+	+ Fixed missing #include, thanks to Denis Blank ([PR#54](https://github.com/boostorg/dll/pull/54))
+	+ Dropped TravisCI in favor of GithubAction CI
+* [Filesystem](/libs/filesystem/):
+
+	+ **v4:** `path::filename`
+	 and `path::iterator` no longer return an implicit
+	 trailing dot (".") element if the path ends with a directory
+	 separator. Instead, an empty path is returned, similar to C++17 std::filesystem.
+	 This also affects other methods that are defined in terms of iterators
+	 or filename, such as `path::stem`,
+	 `path::compare` or `lexicographical\_compare`.
+	 For example, `path("a/b/") == path("a/b/.")`
+	 no longer holds true. ([#193](https://github.com/boostorg/filesystem/issues/193))
+	+ **v4:** `path::lexically\_normal`
+	 no longer produce a trailing dot (".") element and omits
+	 a directory separator after a trailing dot-dot ("..") element
+	 in the normalized paths.
+	+ **v4:** `path`
+	 append operations now consider root name and root directory in the
+	 appended path. If the appended path is absolute, or root name is
+	 present and differs from the source path, the resulting path is equivalent
+	 to the appended path. If root directory is present, the result is
+	 the root directory and relative path rebased on top of the root name
+	 of the source path. Otherwise, the behavior is similar to v3. ([#214](https://github.com/boostorg/filesystem/issues/214))
+	+ `path::lexically\_normal` now converts directory
+	 separators to preferred separators in the root name of the normalized
+	 paths.
+	+ Optimized overloads of `path::assign`,
+	 `path::append`, `path::concat`
+	 and the corresponding operators to avoid unnecessary path copying
+	 and reduce the amount of code redundancy.
+	+ On POSIX systems, fixed `absolute(p, base)` returning a path with root name
+	 `base.root\_name()`
+	 if `p` starts with
+	 a root directory. In such a case `p`
+	 is already an absolute path and should be returned as is.
+	+ `create\_directories`
+	 no longer reports an error if the input path consists entirely of
+	 dot (".") and dot-dot ("..") elements. The implementation
+	 is no longer using recursion internally and therefore is better protected
+	 from stack overflow on extremely long paths.
+	+ On Windows, `remove`
+	 now supports deleting read-only files. The operation will attempt
+	 to reset the read-only attribute prior to removal. Note that this
+	 introduces a possibility of the read-only attribute being left unset,
+	 if the operation fails and the original value of the attribute fails
+	 to be restored. This also affects `remove\_all`.
+	 ([#216](https://github.com/boostorg/filesystem/issues/216))
+	+ `remove\_all` now returns
+	 `static\_cast<
+	uintmax\_t >(-1)`
+	 in case of error, similar to C++17 std::filesystem.
+	+ Fixed a linking error about unresolved references to Boost.ContainerHash
+	 functions when user's code includes `boost/filesystem/path.hpp`
+	 but not `boost/container\_hash/hash.hpp` and the compiler is set to
+	 preserve unused inline functions. ([#215](https://github.com/boostorg/filesystem/issues/215))
+	+ Added a workaround for MSVC and compatible compilers eliminating
+	 path globals cleanup in release builds. This could lead to a memory
+	 leak if Boost.Filesystem shared library was repeatedly loaded and
+	 unloaded in the process. ([#217](https://github.com/boostorg/filesystem/issues/217))
+* [Geometry](/libs/geometry/):
+
+	+ Improvements
+	 
+		- [PR#894](https://github.com/boostorg/geometry/pull/894) Optimization and refactoring of rtree queries.
+		- [PR#913](https://github.com/boostorg/geometry/pull/913) DynamicGeometry and GeometryCollection support
+		 in various algorithms (undocumented for now).
+		- [PR#922](https://github.com/boostorg/geometry/pull/922) DynamicGeometry and GeometryCollection support
+		 in distance (undocumented for now).
+	+ Solved issues
+	 
+		- [#867](https://github.com/boostorg/geometry/issues/867) Poor performance of rtree query iterator with
+		 nearest predicate for big k.
+		- [#870](https://github.com/boostorg/geometry/issues/870) Compilation error in boost::geometry::self\_turns.
+		- [#896](https://github.com/boostorg/geometry/issues/896) Assertion failure in get\_turns with BOOST\_GEOMETRY\_NO\_ROBUSTNESS.
+	+ Bugfixes
+	 
+		- [PR#906](https://github.com/boostorg/geometry/pull/906) Invalid result of buffer on macos-11 with
+		 clang-12.
+		- [PR#921](https://github.com/boostorg/geometry/pull/921) Compilation errors with c++20 (various compilers)
+		 and gcc-5.
+		- Various fixes in set operations and buffer.
+* [JSON](/libs/json/):
+
+	+ Standalone mode of the library is deprecated.
+	+ Allow external libraries to forward declare `value\_to`
+	 and `value\_from`.
+	+ Fixed signed integer overflow in number parsing.
+	+ Add support for `/Zc:implicitNoexcept-` on MSVC.
+* [Lambda2](/libs/lambda2/):
+
+	+ Added special cases in `operator<<` and `operator>>` when the first argument is
+	 a stream, to allow `std::cout
+	<< \_1`.
+	+ Added `operator->\*`.
+	+ Added `first`, `second`.
+* [Log](/libs/log/):
+
+	+ General changes:
+	 
+		- Updated detection of `std::codecvt`
+		 specializations for `char16\_t`
+		 and `char32\_t` for
+		 compatibility with C++17 and later. ([PR#159](https://github.com/boostorg/log/pull/159))
+		- Added support for C++17 `std::byte`
+		 type to receive methods of the inter-process message queue.
+		- On Windows, when building the library for Windows 8 or later,
+		 the library will use `nt62`
+		 tag in the version namespace to denote the target OS ABI. For
+		 example, the version namespace could be named as `v2\_mt\_nt62`. This name will
+		 be part of all symbols exported by the library. Use the `BOOST\_USE\_WINAPI\_VERSION`
+		 macro consistenly when building Boost and your code to request
+		 the minimum target Windows version.
+		- Improved performance of SSSE3 and AVX2 implementations of the
+		 `dump` stream
+		 manipulator.
+		- Added support for CMake build system. Only library build is
+		 supported at this moment, Boost.Build is still used for running
+		 tests.
+	+ Bug fixes:
+	 
+		- Fixed a race condition on POSIX systems in `reliable\_message\_queue::open\_or\_create`
+		 or the equivalent constructor. Multiple threads or processes
+		 calling `open\_or\_create`
+		 concurrently with sending or receiving messages from the same
+		 queue could end up corrupting the queue contents and potentially
+		 crashing the process. ([#162](https://github.com/boostorg/log/issues/162))
+		- Added a workaround for `b2
+		install` failing on
+		 Windows because of missing `boost\_log\_setup`
+		 library if `BOOST\_LOG\_WITHOUT\_SETTINGS\_PARSERS`
+		 is defined. ([#164](https://github.com/boostorg/log/issues/164))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Math](/libs/math/):
+
+	+ Add support for cubic roots.
+	+ Add support for `constexpr`
+	 versions of various standard library math routines.
+	+ Add support for Bezier polynomials.
+	+ Improve worst-case tanh-sinh integration performance.
+	+ Disable inadvertant use of integral types in integration routines.
+	+ Minor update for erf approximations when the result is with 2ulp
+	 of 1.
+	+ Allow Bernoulli code to be used on platforms with no atomic integers.
+	+ Improve the mode of the non-central Chi Squared distribution.
+	+ Improve certain edge cases for <cstdfloat> complex-valued elementary
+	 functions, see [#507](https://github.com/boostorg/math/issues/507).
+* [Multi-index Containers](/libs/multi_index/):
+
+	+ Added `contains` to
+	 key-based indices (issue [#35](https://github.com/boostorg/multi_index/issues/35)).
+	+ Added `merge` operations
+	 to key-based indices. The functionality goes beyond the standard
+	 specification for (unordered) associative containers in a number
+	 of ways, most notably:
+	 
+		- The source index can be of any type, including non key-based
+		 indices.
+		- Partial merge is provided: for instance, `x.merge(y,first,last)` merges only the elements of
+		 `y` within [`first`,`last`).
+	+ Previous versions of `splice`
+	 for sequenced and random access indices were destructive, i.e. elements
+	 were copy-inserted into the destination and then erased from the
+	 source. Now, `splice`
+	 is based on node transfer much as `merge`
+	 in key-based indices, and has been similarly extended to accept source
+	 indices of any type: in fact, `splice`
+	 can be regarded as a frontend to the same functionality provided
+	 by `merge` in key-based
+	 indices. For reasons of backwards compatibility, the destructive
+	 behavior of `splice`
+	 has been retained in the case that the source and destination containers
+	 have unequal allocators.
+	+ The fact has been documented that index iterator types do only depend
+	 on `node\_type` and
+	 the position of the index in its `multi\_index\_container`,
+	 (except for hashed indices, where uniqueness/non-uniqueness is also
+	 a dependency). This has implications on the validity of iterators
+	 to elements transferred by `merge`
+	 or `splice`. This property
+	 is a variant of what has been called [SCARY
+	 iterators](https://wg21.link/n2980) in the C++ standard mailing lists. SCARYness is
+	 currently (August 2021) not mandated for standard containers.
+	+ Iterator SCARYness is now also preserved in [safe
+	 mode](/libs/multi_index/doc/tutorial/debug.html#safe_mode).
+* [Multiprecision](/libs/multiprecision/):
+
+	+ Rework rational\_adaptor to remove dependency on Boost.Rational and
+	 improve performance.
+	+ Fix issue with type\_traits and clang, see [#383](https://github.com/boostorg/multiprecision/issues/383).
+	+ Fixed buggy Lehmer's GCD routine, see [#370](https://github.com/boostorg/multiprecision/issues/370).
+	+ Fix mpc\_complex constructors so that lossy conversions are explicit,
+	 see [#363](https://github.com/boostorg/multiprecision/issues/363).
+	+ Correct miscellaneous configuration issues (Intel intrinsic usage
+	 and Apple clang).
+	+ Correct some iostream operators for unsigned char types.
+	+ Correct mpq\_rational conversions to integer types, see [#342](https://github.com/boostorg/multiprecision/issues/342).
+* [Nowide](/libs/nowide/):
+
+	+ Breaking Change: `do\_unshift`
+	 for the UTF-32 specialization of `utf8\_codecvt`
+	 now correctly returns `noconv`
+	 instead of `ok`
+	+ Remove unnecessary branch in `utf8\_codecvt`
+	 for UTF-16 output
+	+ Suppress deprecation warnings in MSVC when using `utf8\_codecvt`
+	 with unicode char types
+	+ Fix possible double-free when setting a custom buffer (`setbuf`) after `filebuf`
+	 already allocated an internal buffer
+* [PFR](/libs/pfr/):
+
+	+ Added missing `#include
+	<memory>` for inclusion of `std::addressof`
+	+ Fixed -Wzero-length-array warning when dealing with empty aggregates
+	+ Fixed compilation on msvc compilers <= 1920 (thanks to Alexey
+	 Romanov aka @alexey-romanov)
+	+ Added basic CMakeLists.txt support (thanks to @pdimov aka Peter Dimov)
+	+ Multiple improvements for docs, including links to https://github.com/apolukhin/pfr\_non\_boost
+	+ Added misc/strip\_boost\_namespace.sh script to remove `boost::`
+	 and `BOOST\_` prefixes
+* [Predef](/libs/predef/):
+
+	+ Version 1.13.1
+	+ Fix spelling of "epoch".
+	+ Add missing parenthesis in sparc.h (from tkoecker).
+	+ Update documentation to use Rouge code styling and Amber general
+	 style.
+* [Regex](/libs/regex/):
+
+	+ **Breaking Change:** Change \B to be
+	 the opposite of \b as per Perl behaviour.
+	+ Change w32\_regex\_traits.hpp so that windows.h is no longer included.
+	+ Fxed fuzzing related issues [#151](https://github.com/boostorg/regex/issues/151),
+	 [#152](https://github.com/boostorg/regex/issues/152),
+	 [#153](https://github.com/boostorg/regex/issues/153),
+	 [#156](https://github.com/boostorg/regex/issues/156).
+* [System](/libs/system/):
+
+	+ Added support for source locations to `error\_code`.
+	+ Added `error\_code::to\_string`,
+	 `error\_condition::to\_string`, `error\_code::what`.
+	+ `system\_error::what()`
+	 now contains the source location, if present.
+	+ Added `result<T, E = error\_code>`,
+	 a class holding either a value or an error, defined in `<boost/system/result.hpp>`.
+* [Utility](/libs/utility/):
+
+	+ Library documentation converted to QuickBook (thanks to Alan de Freitas,
+	 [PR#79](https://github.com/boostorg/utility/pull/79)).
+* [Variant2](/libs/variant2/):
+
+	+ Added `<boost/variant2.hpp>`.
+	+ Added `unsafe\_get<I>`.
+	+ Added `visit\_by\_index`.
+	+ Added `operator<<`.
+
+### Updated Tools
+
+
+* [Build](/tools/build/):
+
+	+ Includes release of [B2
+	 version 4.7.2](/tools/build/doc/html/#_version_4_7_2).
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 12.0.0
+	+ Clang, C++11: 3.4, 11.0.0
+	+ Clang, C++14: 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 5.0, 12.0.0
+	+ Clang, C++17: 6.0.1, 7.0.0, 8.0.0, 9.0.0, 10.0.0, 11.0.0, 12.0.0
+	+ Clang, C++20: 11.0.0, 12.0.0, 13.0.0
+	+ GCC: 4.6.3, 11
+	+ GCC, C++11: 4.7.3, 4.8.5, 11
+	+ GCC, C++14: 5.4.0, 6.4.0, 7.3.0, 8.0.1, 9.1.0, 11
+	+ GCC, C++17: 7.3.0, 8.0.1, 9.1.0, 11
+	+ GCC, C++20: 8.0.1, 9.1.0, 10, 11
+* OS X:
+ 
+	+ Apple Clang: 11.0.3
+	+ Apple Clang, C++11: 11.0.3
+	+ Apple Clang, C++14: 11.0.3
+	+ Apple Clang, C++17: 11.0.3
+	+ Apple Clang, C++20: 11.0.3
+* Windows:
+ 
+	+ Visual C++: 10.0, 11.0, 12.0, 14.0, 14.1, 14.2
+
+### Acknowledgements
+ Marshall Clow, Michael Caisse and Glen Fernandes managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

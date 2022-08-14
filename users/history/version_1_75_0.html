@@ -1,0 +1,527 @@
+---
+title: Version 1.75.0
+copyright: Rene Rivera 2006-2007.
+revised: 
+---
+
+
+Version 1.75.0
+
+/\*<![CDATA[\*/
+ #content .news-description ul {
+ list-style: none;
+ }
+ #content .news-description ul ul {
+ list-style: circle;
+ }
+ /\*]]>\*/
+ 
+
+
+ 
+
+
+
+Version 1.75.0
+==============
+
+Version 1.75.0
+--------------
+
+
+December 11th, 2020 19:50 GMT
+
+
+[Documentation](/doc/libs/1_75_0/)
+
+
+Downloads| Platform | File | SHA256 Hash |
+| unix | [boost\_1\_75\_0.tar.bz2](https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2) | 953db31e016db7bb207f11432bef7df100516eeb746843fa0486a222e3fd49cb |
+| [boost\_1\_75\_0.tar.gz](https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz) | aeb26f80e80945e82ee93e5939baebdca47b9dee80a07d3144be1e1a6a66dd6a |
+| windows | [boost\_1\_75\_0.7z](https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.7z) | 3a8b314871646e7404886736273c053278ba71b11347f72d4751411d65d6d1a5 |
+| [boost\_1\_75\_0.zip](https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.zip) | caf36d7c13b3d8ce62282a64a695113945a13b0f1796a45160726d04295f95ed |
+
+
+### Known Issues
+ Boost.Operators is currently **incompatible with C++20**
+ compilers, which in some cases may manifest as an infinite recursion or infinite
+ loop in runtime when a comparison operator is called. The problem is caused
+ by the new operator rewriting behavior introduced in C++20. As a workaround,
+ users are advised to target C++17 or older C++ standard. More details can be
+ found in [#65](https://github.com/boostorg/utility/issues/65).
+ 
+
+### New Libraries
+
+
+* [JSON](/libs/json/): JSON parsing, serialization,
+ and DOM in C++11, from Vinnie Falco and Krystian Stasiowski.
+ 
+	+ Fast compilation requiring only C++11
+	+ Easy and safe modern API with allocator support
+	+ Compile without Boost, define `BOOST\_JSON\_STANDALONE`
+	+ Optional header-only, without linking to a library
+* [LEAF](/libs/leaf/): A lightweight error-handling
+ library for C++11, from Emil Dotchevski.
+ 
+	+ Small single-header format, no dependencies.
+	+ Designed for maximum efficiency ("happy" path and "sad"
+	 path).
+	+ No dynamic memory allocations, even with heavy payloads.
+	+ O(1) transport of arbitrary error types (independent of call stack
+	 depth).
+	+ Can be used with or without exception handling.
+* [PFR](/libs/pfr/): Basic reflection without macro
+ or boilerplate code for user defined types, from Antony Polukhin.
+
+### Updated Libraries
+
+
+* [Asio](/libs/asio/):
+
+	+ Enabled support for UNIX domain sockets on Windows.
+	+ Added executor-converting construction and assignment to `ip::basic\_resolver`.
+	+ Added compatibility between polymorphic executors and the (deprecated)
+	 handler invocation hook.
+	+ Added the `experimental::as\_single`
+	 completion token adapter.
+	+ Added support for `MSG\_NOSIGNAL`
+	 on more platforms by using `\_POSIX\_VERSION`
+	 to detect whether it is supported.
+	+ Added the ability to compile using libpthread on Windows.
+	+ Added workarounds for the Intel C++ compiler.
+	+ Added more support for detecting and optimising for handlers that
+	 have no custom executor.
+	+ Reduced lock contention for timer cancellation on Windows.
+	+ Reinstated a previously removed null-pointer check, as it had a measurable
+	 impact on performance.
+	+ Fixed the `executor`
+	 concept to test for a const-qualified `execute()`.
+	+ Fixed `any\_executor`
+	 support for builds without RTTI support.
+	+ Fixed the `thread\_pool`
+	 unit test to work without RTTI support.
+	+ Fixed C++20 coroutines compatibility with clang on Windows.
+	+ Fixed some compatibility issues with Windows Runtime.
+	+ Fixed shadow name warnings caused by addition of `asio::query`.
+	+ Fixed a "logical ‘or’ of equal expressions" warning
+	 on linux.
+	+ Fixed a benign switch fallthrough warning.
+	+ Added missing `push/pop\_options.hpp`
+	 includes.
+	+ Suppressed zero-as-null-pointer-constant warnings.
+	+ Fixed a comma-operator warning.
+	+ Updated the documentation to clarify when the select
+	 reactor is used on Windows.
+	+ Fixed potential ambiguity caused by `any\_executor`
+	 comparisons and conversion.
+	+ Added detection of non-experimental C++20 coroutines on MSVC 19.8.
+	+ Fixed compatibility with uClibc.
+	+ Fixed `strand<>`
+	 adaptation of Networking TS executors when targeting older C++ versions
+	 or less conformant compilers.
+	+ Consult the [Revision
+	 History](/doc/libs/1_75_0/doc/html/boost_asio/history.html) for further details.
+* [Atomic](/libs/atomic/):
+
+	+ Implemented SSE2 and SSE4.1 versions of address lookup algorithm,
+	 which is used in the internal lock pool implementation. This may
+	 improve performance of waiting and notifying operations in heavily
+	 contended cases.
+	+ Fixed a possible compilation error on AArch64 targets caused by incorrect
+	 instructions generated for bitwise (logical) operations with immediate
+	 constants. ([#41](https://github.com/boostorg/atomic/issues/41))
+* [Beast](/libs/beast/):
+
+	+ This update brings bug fixes and support for the `BOOST\_ASIO\_ENBALE\_HANDLER\_TRACKING`
+	 compile flag from Boost.Asio:
+	+ We'd love to know how you or your company use Beast, consider adding
+	 an entry to the [Companies
+	 and Individuals Using Beast](https://github.com/boostorg/beast/wiki/Companies-and-Individuals-Using-Beast) list.
+	+ See the full [Release
+	 Notes](/libs/beast/doc/html/beast/release_notes.html) for a complete list of changes.
+* [Container](/libs/container/):
+
+	+ New `devector`
+	 container.
+	+ Fixed bugs/issues:
+	 
+		- [#152](https://github.com/boostorg/container/issues/152) Tree-based containers have troubles with move-only
+		 types.
+		- [#156](https://github.com/boostorg/container/issues/156) Compile error with vector.
+		- [PR#157](https://github.com/boostorg/container/pull/157) Add missing include.
+		- [#159](https://github.com/boostorg/container/issues/159): pmr::monotonic\_buffer\_resource crashes on
+		 large single allocations.
+		- [#160](https://github.com/boostorg/container/issues/160): Usage of uses\_allocator needs a remove\_cvref\_t.
+		- [#162](https://github.com/boostorg/container/issues/162): small\_vector on MSVC x86 call-by-value crash.
+		- [#161](https://github.com/boostorg/container/issues/161): polymorphic\_allocator(memory\_resource\*) non-standard
+		 extension causes headache.
+		- [PR#163](https://github.com/boostorg/container/pull/163): container\_rebind for small\_vector with
+		 options.
+		- [#165](https://github.com/boostorg/container/issues/165): Link error with shared library and memory\_resource
+		 inline members.
+		- [PR#166](https://github.com/boostorg/container/pull/166): Fix encoding error in copyright headers.
+		- [PR#167](https://github.com/boostorg/container/pull/167): error: the address of 'msg' will always
+		 evaluate as 'true' warning with GCC 4.4.
+		- [#169](https://github.com/boostorg/container/issues/169): flood of warnings building dlmalloc\_ext\_2\_8\_6.c
+		 on clang11.
+* [Endian](/libs/endian/):
+
+	+ `endian\_arithmetic`
+	 no longer inherits from `endian\_buffer`
+	+ When `BOOST\_ENDIAN\_NO\_CTORS`
+	 is defined, the unaligned `endian\_buffer`
+	 and `endian\_arithmetic`
+	 are C++03 PODs, to enable use of `\_\_attribute\_\_((packed))`
+* [Filesystem](/libs/filesystem/):
+
+	+ **New:** Added `creation\_time`
+	 operation, which allows to obtain file creation time. (Inspired by
+	 [PR#134](https://github.com/boostorg/filesystem/pull/134))
+	+ The returned value of `last\_write\_time(p, ec)` operation in case of failure has
+	 been changed to a minimal value representable by `std::time\_t`
+	 instead of -1.
+	+ The returned value of `hard\_link\_count(p, ec)` operation in case of failure has
+	 been changed to `static\_cast<uintmax\_t>(-1)` instead of 0.
+	+ On POSIX systems, `file\_size`
+	 will now indicate error code `errc::function\_not\_supported`
+	 if the path resolves to a non-regular file. Previously, `errc::operation\_not\_permitted` was reported.
+	+ On Linux, many operations now use `statx`
+	 system call internally, when possible, which allows to reduce the
+	 amount of information queried from the filesystem and potentially
+	 improve performance. The `statx`
+	 system call was introduced in Linux kernel 4.11.
+	+ Removed `const`-qualification
+	 from return types of some `path`
+	 methods. This could prevent move construction and move assignment
+	 at the call site in some cases. ([#160](https://github.com/boostorg/filesystem/issues/160))
+	+ On OpenBSD 4.4 and newer, use `statvfs`
+	 system call to obtain filesystem space information. (Inspired by
+	 [PR#162](https://github.com/boostorg/filesystem/pull/162))
+	+ On Windows, `space`
+	 now returns with an error if the provided path does not idendify
+	 an existing file. ([#167](https://github.com/boostorg/filesystem/issues/167))
+* [Geometry](/libs/geometry/):
+
+	+ WARNING: Following the deprecation notice of C++03 issued with Boost
+	 1.73, from now on the Boost.Geometry requires a capable C++14 compiler.
+	+ Improvements
+	 
+		- [PR#726](https://github.com/boostorg/geometry/pull/726) Umbrella strategies for area, envelope, expand
+		 (undocumented for now).
+		- [PR#733](https://github.com/boostorg/geometry/pull/733) Added example of adaptation of std::array<>
+		 to Point concept (thanks to Ben FrantzDale).
+		- [PR#745](https://github.com/boostorg/geometry/pull/745) constexpr added in geometries and arithmetic.
+		- [PR#747](https://github.com/boostorg/geometry/pull/747) Added optional traits::make (undocumented
+		 for now).
+		- [PR#748](https://github.com/boostorg/geometry/pull/748) Modernized usage of type traits.
+		- [PR#759](https://github.com/boostorg/geometry/pull/759) MPL\_ASSERT replaced with standard static\_assert.
+		- [PR#767](https://github.com/boostorg/geometry/pull/767) Modernized usage of tuple.
+	+ Solved issues
+	 
+		- [#716](https://github.com/boostorg/geometry/issues/716) Dangling proxy references.
+	+ Bugfixes
+	 
+		- Various fixes in set operations and buffer.
+* [GIL](/libs/gil/):
+
+	+ BREAKING: In next release, we are going to drop support for GCC 5.
+	 We may also change the required minimum C++ version from C++11 to
+	 C++14.
+* [Histogram](/libs/histogram/):
+
+	+ This update brings
+	 
+		- Bug-fixes for corner-cases
+		- Small documentation improvements
+		- Fixes for new warnings from latest compilers and when compiling
+		 against the C++20 standard
+	+ See the full [Release
+	 Notes](/libs/histogram/doc/html/histogram/history.html) for a complete list of changes.
+* [Interprocess](/libs/interprocess/):
+
+	+ Fixed bugs:
+	 
+		- [#127](https://github.com/boostorg/interprocess/issues/127): static assertion failure with boost interprocess
+		 1.74 and basic\_managed\_shared\_memory.
+* [Intrusive](/libs/intrusive/):
+
+	+ Fixed bugs:
+	 
+		- [PR#48](https://github.com/boostorg/intrusive/pull/48): MSVC "assignment within conditional"
+		 warning fix.
+		- [PR#49](https://github.com/boostorg/intrusive/pull/49): Fix empty control statement warnings.
+		- [#52](https://github.com/boostorg/intrusive/issues/52): Invalid casting in BOOST\_INTRUSIVE\_BSR\_INTRINSIC.
+* [Log](/libs/log/):
+
+	+ Bug fixes:
+	 
+		- Corrected the file counter that would be used in `text\_file\_backend` when generating
+		 the target file name (based on the pattern set by `set\_target\_file\_name\_pattern`
+		 method) when the log file is rotated. ([#125](https://github.com/boostorg/log/issues/125))
+		- Replaced a volatile version counter in `basic\_sink\_frontend`
+		 with an atomic. ([#128](https://github.com/boostorg/log/issues/128))
+		- In the `asynchronous\_sink`
+		 frontend, resolved a possible conflict between `flush` and `run`
+		 methods, if `run`
+		 is called from a user's thread instead of the internal dedicated
+		 thread spawned by the frontend. ([#131](https://github.com/boostorg/log/issues/131))
+	+ See [changelog](/libs/log/doc/html/log/changelog.html)
+	 for more details.
+* [Move](/libs/move/):
+
+	+ Fixed bugs:
+	 
+		- [#30](https://github.com/boostorg/move/issues/30): (void) C-cast is a non-portable way of suppressing
+		 compiler warnings.
+* [Mp11](/libs/mp11/):
+
+	+ Added `mp\_pairwise\_fold`
+	 (suggested by Barry Revzin)
+	+ Removed `mp\_invoke`
+	 (use `mp\_invoke\_q`)
+* [Optional](/libs/optional/):
+
+	+ `boost::none` is `constexpr`-declared.
+	+ Fixed [issue
+	 #78](https://github.com/boostorg/optional/issues/78).
+* [Outcome](/libs/outcome/):
+
+	+ Announcements:
+	 
+		- After a year and three major Boost releases announcing this
+		 upcoming change, this is the FINAL RELEASE of the v2.1 branch.
+		 From Boost 1.76 onwards, the v2.2 branch becomes the default.
+		 This branch has a number of major breaking changes to Outcome
+		 v2.1, see the documentation for details.
+	+ Enhancements:
+	 
+		- The ADL discovered event hooks have been replaced with policy-specified
+		 event hooks instead. This is due to brittleness (where hooks
+		 would quietly self-disable if somebody changed something),
+		 compiler bugs (a difference in compiler settings causes the
+		 wrong hooks, or some but not all hooks, to get discovered),
+		 and end user difficulty in using them at all. The policy-specified
+		 event hooks can be told to default to ADL discovered hooks
+		 for backwards compatibility: set `OUTCOME\_ENABLE\_LEGACY\_SUPPORT\_FOR`
+		 to less than `220`
+		 to enable emulation.
+		- Improve configuring `OUTCOME\_GCC6\_CONCEPT\_BOOL`.
+		 Older GCCs had boolean based concepts syntax, whereas newer
+		 GCCs are standards conforming. However the precise logic of
+		 when to use legacy and conforming syntax was not well understood,
+		 which caused Outcome to fail to compile depending on what options
+		 you pass to GCC. The new logic always uses the legacy syntax
+		 if on GCC 8 or older, otherwise we use conforming syntax if
+		 and only if GCC is in C++ 20 mode or later. This hopefully
+		 will resolve the corner case build failures on GCC.
+	+ Bug fixes:
+	 
+		- Boost.Outcome should now compile with `BOOST\_NO\_EXCEPTIONS`
+		 defined. Thanks to Emil, maintainer of Boost.Exception, making
+		 a change for me, Boost.Outcome should now compile with C++
+		 exceptions globally disabled. You won't be able to use `boost::exception\_ptr` as it can't
+		 be included if C++ exceptions are globally disabled.
+		- [#236](https://github.com/ned14/outcome/issues/236)
+		 In the Coroutine support the `final\_suspend()` was not `noexcept`,
+		 despite being required to be so in the C++ 20 standard. This
+		 has been fixed, but only if your compiler implements `noop\_coroutine`. Additionally,
+		 if `noop\_coroutine`
+		 is available, we use the much more efficient coroutine handle
+		 returning variant of `await\_suspend()` which should significantly
+		 improve codegen and context switching performance.
+* [Polygon](/libs/polygon/):
+
+	+ C++20 fixes for `event\_comparison\_type`,
+	 `vertex\_equality\_predicate\_type`,
+	 and `voronoi\_predicates`.
+	 (Glen Fernandes)
+* [Preprocessor](/libs/preprocessor/):
+
+	+ When variadic data is empty in C++20 mode with \_\_VA\_OPT\_\_ support
+	 the variadic size has been corrected to be 0. This also means that
+	 in this C++20 mode it is now valid to convert to and from empty arrays
+	 and lists and variadic data. The end-user can read the "C++20
+	 Support For Variadic Macros" part of the "variadic macros"
+	 topic for more information about empty variadic data in the library.
+	+ The macro BOOST\_PP\_IS\_STANDARD() has been added for identifying if
+	 the currently used preprocessor is a C++ standard conforming preprocessor.
+	 A number of preprocessors which generally work correctly with the
+	 library but need various internal workarounds, including the currently
+	 default VC++ preprocessor, are not considered C++ standard conforming
+	 preprocessors. However most preprocessors, including among others
+	 gcc, clang, and the new but currently non-default VC++ preprocessor
+	 in VS2019, are C++ standard conforming preprocessors.
+	+ For C++ standard conforming preprocessors a number of the limits
+	 defined in the config/limits.hpp can now be changed to higher amounts
+	 for a TU. The end-user should read the "limitations" topic
+	 to understand how and which limits can be changed.
+	+ For C++ standard conforming preprocessors, in order to allow the
+	 maximum number of FOR and WHILE iterations, the beginning 'r' and
+	 'd' iteration numbers in the user-defined macros start at 1 and not
+	 2, as it did in previous releases. This could be a breaking change
+	 if these iteration numbers are used in the user-defined macros (
+	 they probably would not be ), but the change was necessary to fix
+	 some arcane bugs when dealing with numerical/logical operations with
+	 maximum numbers as well to allow the user-defined macros to be called
+	 the correct possible maximum number of times. For non-C++ conforming
+	 preprocessors, this change was not made because those non-conforming
+	 C++ preprocessors generally have limitations which disallow the maximum
+	 number of looping constructs to be run, and it was felt not to introduce
+	 a possible breaking change to those more fragile preprocessors would
+	 be better. It was also felt that besides fixing some arcane preprocessor
+	 bugs and providing the possible maximum number of user-defined macro
+	 invocations, this change could be made because it has never been
+	 documented what the starting 'r' and 'd' iteration numbers actually
+	 are but only that these numbers are incremented for each iteration.
+	+ The library has been upgraded to assume variadic macro support for
+	 any compiler working with the library. Ostensibly this means that
+	 the library is now a C++11 on up library, yet most of the major compilers,
+	 including gcc, clang, and VC++, also support variadic macros in C++98/C++03
+	 mode as long as strict compliance to C++98/C++03 is not turned on
+	 when using one of those compilers.
+* [Rational](/libs/rational/):
+
+	+ Fix Rational operators to not break under new C++20 `operator==`
+	 rewriting rules. (Glen Fernandes)
+* [Signals2](/libs/signals2/):
+
+	+ Correct C++ allocator model support to fix compilation in C++20 standards
+	 mode. (Glen Fernandes)
+* [System](/libs/system/):
+
+	+ The platform-specific headers `windows\_error.hpp`,
+	 `linux\_error.hpp`, and `cygwin\_error.hpp`
+	 emit deprecation messages and are slated for removal.
+	+ The old names for `generic\_category()` and `system\_category()` emit deprecation messages and are
+	 slated for removal.
+	+ `error\_condition::failed` is deprecated and is slated
+	 for removal. `operator bool()`
+	 for `error\_condition`
+	 has been reverted to its old meaning of `value() != 0`. This is done for compatibility with
+	 `std::error\_condition` as the next release
+	 is expected to improve interoperability with `<system\_error>`
+	 even further. *Note that this does not
+	 affect* `error\_code::failed`,
+	 which is still alive and well.
+	+ The overload of `error\_condition::message`
+	 that takes a buffer is deprecated and is slated for removal, for
+	 the same reasons. *Note that this does
+	 not affect* `error\_code::message`.
+* [uBLAS](/libs/numeric/ublas/):
+
+	+ Correct C++ allocator model support to fix compilation in C++20 standards
+	 mode. (Glen Fernandes and Conrad Poelman)
+* [VMD](/libs/vmd/):
+
+	+ The VMD number parsing has been upgraded to support the ability for
+	 the end-user to change the number limits in the Preprocessor library.
+	+ The macro BOOST\_VMD\_IS\_GENERAL\_IDENTIFIER has been added to support
+	 the parsing of input that represents a preprocessor token which matches
+	 the VMD identifier syntax, without having to register the identifier
+	 as a specific identifier.
+* [Wave](/libs/wave/):
+
+	+ Added new C++20 tokens, including the spaceship operator <=>
+	+ Fixed bugs:
+	 
+		- [#94](https://github.com/boostorg/wave/issues/94): fix incorrect behavior of \_\_LINE\_\_ and \_\_FILE\_\_
+		 under rescanning
+
+### Compilers Tested
+ Boost's primary test compilers are:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 4.0.1, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0,
+	 9.0.0, 10.0.0, 11.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0, 9.0.0, 10.0.0, 11.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0, 9.0.0, 10.0.0, 11.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 5.4.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0, 11.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0, 11.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+ Boost's additional test compilers include:
+ 
+
+
+* Linux:
+ 
+	+ Clang: 3.0, 3.8.1, 3.9.1, 4.0.1, 5.0.2, 6.0.1
+	+ Clang, C++0x: 3.0
+	+ Clang, C++11: 3.0, 3.1, 3.2, 3.3, 3.4, 4.0.1, 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++14: 3.5.0, 3.6.0, 3.7.1, 3.8.0, 3.9.1, 4.0.0, 4.0.1, 5.0.2,
+	 6.0.1, 7.0.0, 8.0.0
+	+ Clang, C++17: 5.0.2, 6.0.1, 7.0.0, 8.0.0
+	+ GCC: 4.4.7, 4.5.3, 4.6.3, 4.9.4, 5.4.0, 5.5.0, 8.0.1
+	+ GCC, C++0x: 4.4.7
+	+ GCC, C++11: 4.7.3, 4.8.5, 4.9.4, 5.4.0, 6.4.0, 7.1.0, 8.0.1
+	+ GCC, C++14: 5.4.0, 5.5.0, 6.3.0, 6.4.0, 7.1.0, 7.3.0, 8.0.1, 8.1.0
+	+ GCC, C++17: 7.3.0, 8.0.1
+	+ Intel, C++14: 18.0
+* OS X:
+ 
+	+ Apple Clang: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++11: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++14: 9.0.0, 9.1.0, 10.0.0
+	+ Apple Clang, C++17: 9.1.0, 10.0.0
+	+ Apple Clang, C++1z: 9.0.0
+	+ Apple Clang, C++2a: 10.0.0
+* Windows:
+ 
+	+ GCC: 3.4.5, 4.1.2, 4.2.4, 4.3.3, 4.4.0, 4.5.4
+	+ GCC, C++0x: 4.6.4
+	+ GCC, C++11: 4.7.3, 4.8.1, 4.9.3
+	+ GCC, C++14: 5.1.0, 5.2.0, 5.3.0, 6.1.0, 6.2.0, 6.3.0, 6.4.0
+	+ GCC, C++17: 7.1.0, 7.2.0, 7.3.0
+	+ Visual C++: 7.1, 8.0, 9.0, 10.0, 11.0, 12.0, 14.0, 14.1
+* FreeBSD:
+ 
+	+ Clang: 4.0.0
+	+ Clang, C++11: 4.0.0
+	+ Clang, C++14: 4.0.0
+	+ Clang, C++1z: 4.0.0
+
+### Acknowledgements
+ Marshall Clow, Michael Caisse and Glen Fernandes managed this release.
+ 
+
+
+
+ 
+
+
+
+ 
+
+ 
+

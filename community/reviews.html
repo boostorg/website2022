@@ -1,0 +1,373 @@
+---
+title: Boost Formal Review Process
+copyright: Beman Dawes, 2000.
+revised: 
+---
+
+
+Boost Formal Review Process
+
+
+
+Boost Formal Review Process
+===========================
+
+Before Requesting a Formal Review
+---------------------------------
+
+
+**Read and follow the Boost [submission
+ process](/development/submissions.html).** There are several steps a library author
+ must take before a formal review is requested.
+
+* [Introduction](#Introduction)
+* [What to include in Review Comments](#Comments)
+* [Results](#Results)
+* [Notes for Review Managers](#Review_Manager)
+* [Notes for Library Submitters](#Submitters)
+* [Library Maintainer's Rights and
+ Responsibilities](#Maintainer)
+* [Review Wizard](#Wizard)
+* [Fast Track Reviews](#Fast-Track)
+
+
+Introduction
+------------
+
+
+Proposed libraries are accepted into Boost only after
+ undergoing a formal review, where Boost mailing list members
+ comment on their evaluation of the library.
+
+
+The final "accept" or "reject" decision is made by the
+ [Review Manager](#Review_Manager), based on the
+ review comments received from boost mailing list members.
+
+
+Boost mailing list members are encouraged to submit Formal
+ Review comments:
+
+
+* Publicly on the mailing list.
+* Privately to the Review Manager.
+
+
+Private comments to a library submitter may be helpful to
+ her or him, but won't help the Review Manager reach a decision,
+ so the other forms are preferred.
+
+
+The review period will normally last for 10 days.
+
+
+What to include in
+ Review Comments
+-----------------------------------
+
+
+Your comments may be brief or lengthy, but the
+ Review Manager needs your evaluation of the library. If you
+ identify problems along the way, please note if they are minor,
+ serious, or showstoppers.
+
+
+The goal of a Boost library review is to improve the library
+ through constructive criticism, and at the end a decision must
+ be made: is the library good enough at this point to accept
+ into Boost? If not, we hope to have provided enough
+ constructive criticism for it to be improved and accepted at a
+ later time. The Serialization library is a good example of how
+ constructive criticism resulted in revisions resulting in an
+ excellent library that was accepted in its second review.
+
+
+Here are some questions you might want to answer in your
+ review:
+
+
+* What is your evaluation of the design?
+* What is your evaluation of the implementation?
+* What is your evaluation of the documentation?
+* What is your evaluation of the potential usefulness of
+ the library?
+* Did you try to use the library? With what compiler? Did
+ you have any problems?
+* How much effort did you put into your evaluation? A
+ glance? A quick reading? In-depth study?
+* Are you knowledgeable about the problem domain?
+
+
+And finally, every review should answer this question:
+
+
+* Do you think the library should be accepted as a Boost
+ library? Be sure to say this explicitly so that your other
+ comments don't obscure your overall opinion.
+
+
+Many reviews include questions for library authors. Authors
+ are interested in defending their library against your
+ criticisms; otherwise, they would not have brought their library
+ up for review. If you don't get a response to your question
+ quickly, be patient; if it takes too long or you don't get an
+ answer you feel is sufficient, ask again or try to rephrase the
+ question. Do remember that English is not the native language
+ for many Boosters, and that can cause misunderstandings.
+
+
+E-mail is a poor communication medium, and even if messages
+ rarely get lost in transmission, they often get drowned in the
+ deluge of other messages. Don't assume that an unanswered
+ message means you're being ignored. Given constructively,
+ criticism will be taken better and have more positive effects,
+ and you'll get the answers you want.
+
+
+Results
+-------
+
+
+Within a reasonable time after the conclusion of the comment
+ period, the Review Manager will post a message to the mailing
+ list saying if the library has been accepted or rejected. A
+ rationale is also helpful, but its extent is up to the Review
+ Manager. If there are suggestions, or conditions that must be
+ met before final inclusion, they should be stated. Concerns
+ about the timeliness or quality of the review report should be
+ brought to the Review Wizards off-list.
+
+
+Notes for
+ Review Managers
+--------------------------
+
+
+Before a library can be scheduled for formal review, an
+ active boost member not connected with the library submission
+ must volunteer to be the "Review Manager" for the library.
+ Members may contact a library author on- or off-list to express
+ interest in managing the review. The library author has to accept
+ a person as a review manager.
+
+
+The Review Manager:
+
+
+* Checks the submission to make sure it really is complete
+ enough to warrant formal review. See the [Boost Library Requirements
+ and Guidelines](/development/requirements.html). If necessary, work with the submitter to
+ verify the code compiles and runs correctly on several
+ compilers and platforms.
+* Finalizes the schedule with the Review Wizard and the submitter.
+* Posts a notice of the review schedule on both the regular
+ **[boost mailing list](mailto:boost@lists.boost.org)** and the
+ **[boost-announce](mailto:boost-announce@lists.boost.org) mailing list**.
+	+ The notice should include a brief description of the
+	 library and what it does, to let readers know if the
+	 library is one they are interested in reviewing.
+	+ If the library is known to fail with certain
+	 compilers, please mention them in the review notice so
+	 reviewers with those compilers won't waste time
+	 diagnosing known problems.
+	+ It is advised to send the notice to each mailing list
+	 in a separate e-mail, otherwise online e-mail to news
+	 gateways could get confused.
+* Inspects the Boost [library catalogue](/doc/libs/release/libs/libraries.htm)
+ for libraries which may interact with the new submission.
+ These potential interactions should be pointed out in the
+ review announcement, and the author(s) of these libraries
+ should be privately notified and urged to participate in the
+ review.
+* Urges people to do reviews if they aren't forthcoming.
+* Follows review discussions regarding the library,
+ moderating or answering questions as needed.
+* Asks the [review wizard](#Wizard) for
+ permission to extend the review schedule if it appears that
+ too few reviews will be submitted during the review period.
+* Decides if there is consensus to accept the library and
+ if there are any conditions attached. Consensus is not the
+ same as a vote. The Review Manager has discretion to weigh
+ opinions based on authority or thoughtfulness.
+* Posts a notice of the [review
+ results](#Results) on the regular **[boost](mailto:boost@lists.boost.org)** mailing
+ list, the **[boost-users](mailto:boost-users@lists.boost.org)**
+ mailing list, and the **[boost-announce](mailto:boost-announce@lists.boost.org)**
+ mailing list.
+
+
+In other words, it is the Review Manager's responsibility to
+ make sure the review process works smoothly.
+
+
+Although the review manager is also allowed to review the library,
+ they are expected to serve the interests of the Boost users.
+ Since the review manager may have a (strong) opinion about the library,
+ it is recommended as a matter of principle they do not share their opinion
+ until the very end of the review. Possibly, until the summary of reviews.
+ The review manager will make the final choice and announcing an opinion early
+ in the process could negatively affect the review process.
+
+
+Notes for Library
+ Submitters
+-----------------------------
+
+
+See [Submission
+ Process](/development/submissions.html) for a description of the steps a library developer
+ goes through to get a library accepted by Boost.
+
+
+First, the library author should accept a review manager.
+ If they feel, for whatever reason, a candidate for a review manager
+ is not competent or fair, they should not accept such candidate.
+
+
+A proposed library should remain stable during the review
+ period; it will just confuse and irritate reviewers if there
+ are numerous changes. It is, however, useful to upload fixes
+ for serious bugs right away, particularly those which prevent
+ reviewers from fully evaluating the library. Post a notice of
+ such fixes on the mailing list.
+
+
+Library improvements suggested by reviewers should normally
+ be held until after the completion of review period. If the
+ suggested changes might affect the reviewer's judgments, post a
+ notice of the pending change on the mailing list.
+
+
+Library
+ Maintainer's Rights and Responsibilities
+-------------------------------------------------
+
+
+By submitting a library to boost, you accept responsibility
+ for maintaining your library or finding a qualified volunteer
+ to serve as maintainer. You must be willing to put your library
+ and documentation under a Boost-compatible license.
+
+
+You will be expected to respond to reasonable bug reports
+ and questions on time and to participate as needed
+ in discussions of your library on the boost mailing lists.
+
+
+You are free to change your library in any way you wish, and
+ you are encouraged to actively make improvements. However, peer
+ review is an important part of the Boost process and as such
+ you are also encouraged to get feedback from the boost
+ community before making substantial changes to the interface of
+ an accepted library.
+
+
+If at some point you no longer wish to serve as maintainer
+ of your library, it is your responsibility to make this known
+ to the boost community and to find another individual to take
+ your place.
+
+
+Libraries which have been abandoned will be put in care of
+ the [Community
+ Maintenance Team](https://svn.boost.org/trac/boost/wiki/CommunityMaintenance).
+
+
+Review Wizards
+--------------
+
+
+The Review Wizards coordinate the formal review
+ schedule:
+
+
+* When a formal review is requested for a library:
+	+ Approve the review manager based on initial acceptance
+	 by the library submitter, their participation in the Boost
+	 community, including the mailing list, previous reviews,
+	 and other forums.
+	+ Suggest a schedule, after checking (via private
+	 email) the availability of the review manager and library
+	 author.
+	+ Finalize the schedule, once the review manager
+	 verifies the library is ready for review.
+	+ Resolve schedule slips or other issues with review
+	 managers and submitters.
+* Maintains a schedule of both past and pending reviews, in
+ the form of the [Review
+ Schedule](review_schedule.html) web page.
+* Resolves questions from review managers and library
+ submitters, who sometimes want a third opinion on questions
+ such as "Should we extend the review period because
+ ...?"
+* Monitors the general review process, and makes minor
+ adjustments as needed, or queries the list about possible
+ major adjustments.
+
+
+The role of Boost Review Wizard is currently played by:
+
+
+* Mateusz Loskot (mateusz at loskot dot net)
+* John Phillips (johnphillipsithaca at gmail dot com)
+
+
+Past Review Wizards (we thank you for your service):
+
+
+* Ronald Garcia
+* Tom Brinkman
+* Thomas Witt
+
+
+Fast Track
+ Reviews
+-------------------
+
+
+To qualify for fast track review:
+
+
+* The component must be small.
+* The technique must be already in use in Boost libraries
+ and the new component provides a common implementation.
+* A full Boost-conformant implementation is available in
+ the sandbox.
+* The Review Wizard determines that the proposal qualifies
+ for fast track review.
+
+
+Procedure:
+
+
+* The Boost Review Wizard posts a review announcement to
+ the main Boost developer's list. The fast track review period will
+ normally last for 5 days. No two fast-track reviews will run
+ in parallel. Fast track reviews may run during full reviews,
+ though generally, this is to be avoided.
+* After the review period ends, the submitter will post a
+ review summary containing proposed changes to the reviewed
+ implementation.
+* The Review Wizard will accept or reject the proposed
+ library and proposed changes.
+* After applying the proposed changes, the component is
+ checked into the repository like any other library.
+
+
+Mini-Reviews
+------------
+
+
+If a review results in conditions on acceptance, the review
+ manager may request a Mini-Review to determine if the
+ conditions have been met. The Mini-Review is usually conducted
+ by the same review manager.
+
+
+
+
+
+
+
+
+
